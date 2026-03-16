@@ -31,6 +31,8 @@ const PROFIT_FOLLOWUP_DELAY_MINUTES = Number(
 const PROFIT_BASELINE_DELAY_MS = Math.max(0, PROFIT_BASELINE_DELAY_MINUTES) * 60 * 1000;
 const PROFIT_FOLLOWUP_DELAY_MS = Math.max(0, PROFIT_FOLLOWUP_DELAY_MINUTES) * 60 * 1000;
 const EMAIL_SCHEDULER_POLL_MS = 30 * 1000;
+const RATE_LIMIT_RETRY_DELAY_MS = 15 * 60 * 1000;
+const MAX_SCHEDULED_EMAIL_RETRIES = 6;
 
 const ENTITY_STORAGE_KEYS = {
   BusinessRequest: `${STORAGE_PREFIX}BusinessRequest`,
@@ -319,10 +321,20 @@ async function sendEmailWithFormSubmit(payload) {
 
   const responseData = await response.json().catch(() => ({}));
   const responseMessage = String(responseData?.message || '').toLowerCase();
+  const rateLimited = response.status === 429 || responseMessage.includes('rate limit');
   const activationRequired =
     responseMessage.includes('activate form') ||
     responseMessage.includes('activation') ||
     responseMessage.includes('actived');
+
+  if (rateLimited) {
+    console.warn('[VTC] FormSubmit rate limited; skipping hard failure', {
+      relayRecipient,
+      intendedRecipient,
+      responseData,
+    });
+    return { success: false, skipped: true, reason: 'FormSubmit rate limited' };
+  }
 
   if (activationRequired) {
     console.warn('[VTC] FormSubmit activation required; skipping hard failure', {
@@ -358,8 +370,16 @@ async function flushScheduledEmails() {
     try {
       await sendEmailWithFormSubmit(task.payload);
     } catch (error) {
-      // Keep failed tasks queued for retry on next poll.
-      pending.push(task);
+      const retryCount = Number(task?.retry_count || 0) + 1;
+      if (retryCount <= MAX_SCHEDULED_EMAIL_RETRIES) {
+        // Back off retry attempts to avoid repeated 429 loops.
+        pending.push({
+          ...task,
+          retry_count: retryCount,
+          send_at_ms: Date.now() + RATE_LIMIT_RETRY_DELAY_MS,
+          last_error: String(error?.message || error),
+        });
+      }
       console.warn('[VTC] Scheduled email send failed; will retry', { error, task });
     }
   }
