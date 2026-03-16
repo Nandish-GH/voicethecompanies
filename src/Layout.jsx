@@ -22,6 +22,7 @@ const programLinks = [
 export default function Layout({ children, currentPageName }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const logoSrc = `${import.meta.env.BASE_URL}logo.png`;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -52,7 +53,7 @@ export default function Layout({ children, currentPageName }) {
               aria-label="Go to homepage">
 
               <img
-                src="/logo.png"
+                src={logoSrc}
                 alt="Voice the Companies logo"
                 className="w-9 h-9 rounded-xl object-cover transition-transform group-hover:scale-105"
               />
@@ -169,7 +170,7 @@ export default function Layout({ children, currentPageName }) {
             <div className="md:col-span-1">
               <div className="flex items-center gap-2.5 mb-4">
                 <img
-                  src="/logo.png"
+                  src={logoSrc}
                   alt="Voice the Companies logo"
                   className="w-8 h-8 rounded-lg object-cover"
                 />
