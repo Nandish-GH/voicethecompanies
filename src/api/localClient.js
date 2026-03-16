@@ -4,13 +4,16 @@ const EMAIL_LOG_KEY = `${STORAGE_PREFIX}email_log`;
 const SCHEDULED_EMAILS_KEY = `${STORAGE_PREFIX}scheduled_emails`;
 const SUBMISSIONS_WEBHOOK_KEY = `${STORAGE_PREFIX}submissions_webhook_url`;
 const FORM_SUBMIT_BASE_URL = 'https://formsubmit.co/ajax';
+const DEFAULT_SUBMISSIONS_WEBHOOK_URL =
+  'https://script.google.com/macros/s/AKfycbypMUt_t88wVFg6ID6e1AhOQbuQ4mfaiqXhnGQk7WwdmGG67N1KDHhjas5tzDL5cCXP/exec';
 const FORM_SUBMIT_RELAY_TO =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_FORMSUBMIT_RELAY_TO) ||
   '2009nandish@gmail.com';
 const FORM_SUBMIT_RELAY_TOKEN =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_FORMSUBMIT_RELAY_TOKEN) || '';
 const SUBMISSIONS_WEBHOOK_URL =
-  (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUBMISSIONS_WEBHOOK_URL) || '';
+  (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUBMISSIONS_WEBHOOK_URL) ||
+  DEFAULT_SUBMISSIONS_WEBHOOK_URL;
 const PROFIT_BASELINE_FORM_URL =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_PROFIT_BASELINE_FORM_URL) || '';
 const PROFIT_FOLLOWUP_FORM_URL =
@@ -188,7 +191,7 @@ function formatProfitFormBody({ ownerName, businessName, formUrl, isFollowUp }) 
     return `Hi ${greetingName},\n\nThis is your scheduled follow-up${subjectContext}.\n\nWhen you have a moment, please complete this optional progress form so we can understand how things changed after support:\n${formUrl || 'Please reply to this email with your updates.'}\n\nThank you,\nVoice the Companies`;
   }
 
-  return `Hi ${greetingName},\n\nThanks for submitting your business request${subjectContext}.\n\nBefore joining, you can optionally share your current profit baseline here:\n${formUrl || 'Please reply to this email with your current numbers.'}\n\nThis helps us measure impact over time.\n\nThank you,\nVoice the Companies`;
+  return `Hi ${greetingName},\n\nThanks for submitting your business request${subjectContext}.\n\nPlease complete your optional baseline form here:\n${formUrl || 'Please reply to this email with your current numbers.'}\n\nThis gives us your starting point so we can compare before/after outcomes later.\n\nThank you,\nVoice the Companies`;
 }
 
 function isDemoOrUnsupportedRecipient(email) {
@@ -420,14 +423,6 @@ export const localClient = {
           throw new Error('Missing recipient email for profit journey emails');
         }
 
-        if (USE_EXTERNAL_PROFIT_AUTOMATION) {
-          return {
-            success: true,
-            skipped: true,
-            reason: 'Handled by external Google Sheets automation',
-          };
-        }
-
         if (isDemoOrUnsupportedRecipient(to)) {
           return {
             success: true,
@@ -436,7 +431,7 @@ export const localClient = {
           };
         }
 
-        const baselineSubject = `Optional Profit Baseline Form${businessName ? `: ${businessName}` : ''}`;
+        const baselineSubject = `Action Requested: Optional Profit Baseline Form${businessName ? ` (${businessName})` : ''}`;
         const baselineBody = formatProfitFormBody({
           ownerName,
           businessName,
@@ -460,6 +455,15 @@ export const localClient = {
               body: baselineBody,
             },
           });
+        }
+
+        if (USE_EXTERNAL_PROFIT_AUTOMATION) {
+          return {
+            success: true,
+            baseline_sent_by_app: true,
+            followup_skipped: true,
+            reason: 'Follow-up handled by external Google Sheets automation',
+          };
         }
 
         const followupSubject = `Profit Follow-Up Form${businessName ? `: ${businessName}` : ''}`;
