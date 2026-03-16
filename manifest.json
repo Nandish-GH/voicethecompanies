@@ -1,0 +1,9 @@
+{
+  "name": "Voice the Companies",
+  "short_name": "VTC",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAF8",
+  "theme_color": "#B2C9AD",
+  "description": "Voice the Companies local web app"
+}

@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --sage: #B2C9AD;
+  --sage-dark: #8FAF88;
+  --sage-light: #D4E4D0;
+  --sage-lighter: #EDF3EB;
+  --charcoal: #2D2D2D;
+  --charcoal-light: #4A4A4A;
+  --charcoal-muted: #6B6B6B;
+  --warm-white: #FAFAF8;
+}
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  color: var(--charcoal);
+  background-color: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--sage-dark);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--sage);
+  border-radius: 3px;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 18%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 18%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 18%;
+    --primary: 130 18% 73%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 130 18% 90%;
+    --secondary-foreground: 0 0% 18%;
+    --muted: 60 5% 96%;
+    --muted-foreground: 0 0% 42%;
+    --accent: 130 18% 90%;
+    --accent-foreground: 0 0% 18%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 130 18% 73%;
+    --radius: 0.75rem;
+  }
+}
