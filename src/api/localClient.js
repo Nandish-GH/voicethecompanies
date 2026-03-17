@@ -494,16 +494,14 @@ export const localClient = {
         return { success: true };
       },
       async SendProfitJourneyEmails({ to, ownerName, businessName }) {
+        return {
+          success: true,
+          skipped: true,
+          reason: 'Handled by Google Apps Script sheet automation',
+        };
+
         if (!to) {
           throw new Error('Missing recipient email for profit journey emails');
-        }
-
-        if (USE_EXTERNAL_PROFIT_AUTOMATION) {
-          return {
-            success: true,
-            skipped: true,
-            reason: 'Handled by external Google Sheets automation',
-          };
         }
 
         if (isDemoOrUnsupportedRecipient(to)) {
