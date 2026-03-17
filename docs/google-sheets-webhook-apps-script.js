@@ -33,8 +33,22 @@ const TAB_HEADERS = {
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('VTC Mail')
+    .addItem('Setup VTC System', 'setupVtcSystem')
     .addItem('Send Pending Owner Emails', 'sendOwnerEmailsFromDraft')
     .addToUi();
+}
+
+function setupVtcSystem() {
+  ensureTabsExist_();
+  const ownersSheet = getOrCreateSheet_(TAB_OWNERS);
+  const ownersHeaders = TAB_HEADERS[TAB_OWNERS];
+  ensureHeader_(ownersSheet, ownersHeaders);
+
+  const ownerHeaderValues = ownersSheet
+    .getRange(1, 1, 1, ownersSheet.getLastColumn() || ownersHeaders.length)
+    .getValues()[0]
+    .filter((v) => String(v || '').trim() !== '');
+  ensureStatusColumn_(ownersSheet, ownerHeaderValues, MAIL_STATUS_COL);
 }
 
 function doGet() {
@@ -51,8 +65,9 @@ function doPost(e) {
     const submittedAt = String(payload.submitted_at || new Date().toISOString());
     const data = (payload && typeof payload.data === 'object' && payload.data) ? payload.data : {};
 
+    ensureTabsExist_();
     const tabName = resolveTabName(entity, data, payload.sheet_tab_hint);
-    const sheet = getExistingSheet_(tabName);
+    const sheet = getOrCreateSheet_(tabName);
     const headers = TAB_HEADERS[tabName];
     ensureHeader_(sheet, headers);
 
@@ -148,17 +163,26 @@ function resolveTabName(entity, data, sheetTabHint) {
   return TAB_OWNERS;
 }
 
-function getExistingSheet_(name) {
+function ensureTabsExist_() {
+  [TAB_OWNERS, TAB_STUDENTS, TAB_WORKSHOPS, TAB_BEFORE_AFTER].forEach((tabName) => {
+    const sheet = getOrCreateSheet_(tabName);
+    const headers = TAB_HEADERS[tabName];
+    ensureHeader_(sheet, headers);
+  });
+}
+
+function getOrCreateSheet_(name) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getSheetByName(name);
+  let sheet = ss.getSheetByName(name);
   if (!sheet) {
-    throw new Error('Missing required tab: ' + name);
+    sheet = ss.insertSheet(name);
   }
   return sheet;
 }
 
 function sendOwnerEmailsFromDraft() {
-  const sheet = getExistingSheet_(MAIL_TAB);
+  ensureTabsExist_();
+  const sheet = getOrCreateSheet_(MAIL_TAB);
   const dataRange = sheet.getDataRange();
   const values = dataRange.getDisplayValues();
   if (values.length < 2) return;
