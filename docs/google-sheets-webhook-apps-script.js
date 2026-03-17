@@ -44,8 +44,7 @@ function doGet() {
 
 function doPost(e) {
   try {
-    const body = (e && e.postData && e.postData.contents) ? e.postData.contents : '{}';
-    const payload = JSON.parse(body);
+    const payload = parseIncomingPayload_(e);
 
     const entity = String(payload.entity || '').trim();
     const submittedAt = String(payload.submitted_at || new Date().toISOString());
@@ -77,6 +76,47 @@ function doPost(e) {
       .createTextOutput(JSON.stringify({ ok: false, error: String(error && error.message ? error.message : error) }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+function parseIncomingPayload_(e) {
+  const empty = {};
+  if (!e) return empty;
+
+  const rawBody = (e.postData && typeof e.postData.contents === 'string') ? e.postData.contents : '';
+  if (rawBody) {
+    try {
+      const parsed = JSON.parse(rawBody);
+      if (parsed && typeof parsed === 'object') return parsed;
+    } catch (_) {
+      // Continue with other parsing strategies.
+    }
+  }
+
+  const params = (e.parameter && typeof e.parameter === 'object') ? e.parameter : {};
+  if (params.payload) {
+    try {
+      const parsedPayload = JSON.parse(String(params.payload));
+      if (parsedPayload && typeof parsedPayload === 'object') return parsedPayload;
+    } catch (_) {
+      // Continue with flattened parameter fallback.
+    }
+  }
+
+  const hasFlatKeys = params.entity || params.submitted_at || params.email || params.owner_email;
+  if (hasFlatKeys) {
+    const flatData = { ...params };
+    delete flatData.entity;
+    delete flatData.submitted_at;
+    delete flatData.sheet_tab_hint;
+    return {
+      entity: params.entity || '',
+      submitted_at: params.submitted_at || new Date().toISOString(),
+      sheet_tab_hint: params.sheet_tab_hint || '',
+      data: flatData,
+    };
+  }
+
+  return empty;
 }
 
 function sendNotificationEmail_(entity, data, submittedAt, tabName) {
