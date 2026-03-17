@@ -6,11 +6,13 @@ const SUBMISSIONS_WEBHOOK_KEY = `${STORAGE_PREFIX}submissions_webhook_url`;
 const FORM_SUBMIT_BASE_URL = 'https://formsubmit.co/ajax';
 const DEFAULT_SUBMISSIONS_WEBHOOK_URL =
   'https://script.google.com/macros/s/AKfycbypMUt_t88wVFg6ID6e1AhOQbuQ4mfaiqXhnGQk7WwdmGG67N1KDHhjas5tzDL5cCXP/exec';
+const DEFAULT_FORM_SUBMIT_RELAY_TOKEN = '75a71653f574fd04c7ea1f7e4f116f93';
 const FORM_SUBMIT_RELAY_TO =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_FORMSUBMIT_RELAY_TO) ||
   '2009nandish@gmail.com';
 const FORM_SUBMIT_RELAY_TOKEN =
-  (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_FORMSUBMIT_RELAY_TOKEN) || '';
+  (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_FORMSUBMIT_RELAY_TOKEN) ||
+  DEFAULT_FORM_SUBMIT_RELAY_TOKEN;
 const SUBMISSIONS_WEBHOOK_URL =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUBMISSIONS_WEBHOOK_URL) ||
   DEFAULT_SUBMISSIONS_WEBHOOK_URL;
