@@ -468,19 +468,16 @@ export const localClient = {
   integrations: {
     Core: {
       async SendEmail(payload) {
-        if (USE_EXTERNAL_PROFIT_AUTOMATION) {
-          return {
-            success: true,
-            skipped: true,
-            reason: 'Handled by external Google Sheets automation',
-          };
-        }
-
         if (isBrowser) {
           const log = readList(EMAIL_LOG_KEY);
           log.push({ ...payload, sent_at: nowIso() });
           writeList(EMAIL_LOG_KEY, log);
-          await sendEmailWithFormSubmit(payload);
+          const delivery = await sendEmailWithFormSubmit(payload);
+          return {
+            success: true,
+            delivery,
+            external_automation_enabled: USE_EXTERNAL_PROFIT_AUTOMATION,
+          };
         }
         return { success: true };
       },
