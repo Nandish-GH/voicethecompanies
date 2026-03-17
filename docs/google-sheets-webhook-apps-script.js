@@ -13,6 +13,9 @@ const TAB_OWNERS = 'Owners';
 const TAB_STUDENTS = 'Students';
 const TAB_WORKSHOPS = 'Workshops';
 const TAB_BEFORE_AFTER = 'BeforeVsAfter';
+const COMPANY_NAME = 'Voice the Companies';
+const COMPANY_EMAIL = '2009nandish@gmail.com';
+const COMPANY_FROM_ALIAS = '';
 const ADMIN_EMAIL = '2009nandish@gmail.com';
 const BASELINE_FORM_URL = 'https://forms.gle/X6YKriBykBpNe6C1A';
 
@@ -79,7 +82,7 @@ function sendNotificationEmail_(entity, data, submittedAt, tabName) {
   ].join('\n');
 
   try {
-    MailApp.sendEmail(ADMIN_EMAIL, `New ${entity} submission`, summary);
+    sendEmailFromCompany_(ADMIN_EMAIL, `New ${entity} submission`, summary);
   } catch (error) {
     // Keep webhook successful even if admin email delivery fails.
     console.log('Admin email notification failed', String(error));
@@ -90,16 +93,43 @@ function sendNotificationEmail_(entity, data, submittedAt, tabName) {
     if (!ownerEmail) return;
 
     try {
-      MailApp.sendEmail({
-        to: ownerEmail,
-        subject: `Action Requested: Optional Profit Baseline Form${data.business_name ? ` (${data.business_name})` : ''}`,
-        body: `Hi ${data.owner_name || 'there'},\n\nThanks for submitting your business request.\n\nPlease complete your optional baseline form here:\n${BASELINE_FORM_URL}\n\nThis gives us your starting point so we can compare before/after outcomes later.\n\nSubmitted: ${formattedTime}\n\nThank you,\nVoice the Companies`,
-      });
+      sendEmailFromCompany_(
+        ownerEmail,
+        `Action Requested: Optional Profit Baseline Form${data.business_name ? ` (${data.business_name})` : ''}`,
+        `Hi ${data.owner_name || 'there'},\n\nThanks for submitting your business request.\n\nPlease complete your optional baseline form here:\n${BASELINE_FORM_URL}\n\nThis gives us your starting point so we can compare before/after outcomes later.\n\nSubmitted: ${formattedTime}\n\nThank you,\nVoice the Companies`
+      );
     } catch (error) {
       // Keep webhook successful even if owner email delivery fails.
       console.log('Owner baseline email failed', String(error));
     }
   }
+}
+
+function sendEmailFromCompany_(to, subject, body) {
+  const recipient = String(to || '').trim();
+  if (!recipient) throw new Error('Missing recipient email');
+
+  const options = {
+    name: COMPANY_NAME,
+    replyTo: COMPANY_EMAIL,
+  };
+
+  if (COMPANY_FROM_ALIAS) {
+    try {
+      GmailApp.sendEmail(recipient, subject, body, { ...options, from: COMPANY_FROM_ALIAS });
+      return;
+    } catch (error) {
+      console.log('Company alias send failed; falling back', String(error));
+    }
+  }
+
+  MailApp.sendEmail({
+    to: recipient,
+    subject,
+    body,
+    name: COMPANY_NAME,
+    replyTo: COMPANY_EMAIL,
+  });
 }
 
 function isTimestampField_(key) {
