@@ -21,6 +21,8 @@ const TAB_HEADERS = {
   [TAB_BEFORE_AFTER]: ['submitted_at', 'entity', 'id', 'business_name', 'owner_email', 'period_label', 'website_sessions', 'unique_visitors', 'social_followers', 'social_reach', 'google_profile_views', 'google_direction_requests', 'confidence_website', 'confidence_social', 'confidence_analytics', 'notes', 'created_date', 'updated_date'],
 };
 
+const SHEET_DATE_FORMAT = 'MMM d, yyyy h:mm a';
+
 function doGet() {
   return ContentService
     .createTextOutput(JSON.stringify({ ok: true, service: 'vtc-webhook', status: 'ready' }))
@@ -44,10 +46,11 @@ function doPost(e) {
     ensureHeader_(sheet, headers);
 
     const row = headers.map((key) => {
-      if (key === 'submitted_at') return submittedAt;
+      if (key === 'submitted_at') return formatTimestampForSheet_(submittedAt);
       if (key === 'entity') return entity;
       const value = data[key];
       if (value === null || typeof value === 'undefined') return '';
+      if (isTimestampField_(key)) return formatTimestampForSheet_(value);
       if (typeof value === 'object') return JSON.stringify(value);
       return value;
     });
@@ -62,6 +65,16 @@ function doPost(e) {
       .createTextOutput(JSON.stringify({ ok: false, error: String(error && error.message ? error.message : error) }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+function isTimestampField_(key) {
+  return key === 'submitted_at' || key.endsWith('_date');
+}
+
+function formatTimestampForSheet_(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return Utilities.formatDate(date, Session.getScriptTimeZone(), SHEET_DATE_FORMAT);
 }
 
 function resolveTabName(entity, data, sheetTabHint) {
