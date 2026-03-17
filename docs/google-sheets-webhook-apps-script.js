@@ -41,9 +41,7 @@ function doPost(e) {
     const data = (payload && typeof payload.data === 'object' && payload.data) ? payload.data : {};
 
     const tabName = resolveTabName(entity, data, payload.sheet_tab_hint);
-    ensureTabsExist_();
-
-    const sheet = getOrCreateSheet_(tabName);
+    const sheet = getExistingSheet_(tabName);
     const headers = TAB_HEADERS[tabName];
     ensureHeader_(sheet, headers);
 
@@ -71,36 +69,36 @@ function doPost(e) {
 }
 
 function sendNotificationEmail_(entity, data, submittedAt, tabName) {
+  const formattedTime = formatTimestampForSheet_(submittedAt);
+  const summary = [
+    `Entity: ${entity}`,
+    `Sheet tab: ${tabName}`,
+    `Submitted: ${formattedTime}`,
+    '',
+    `Payload: ${JSON.stringify(data, null, 2)}`,
+  ].join('\n');
+
   try {
-    const formattedTime = formatTimestampForSheet_(submittedAt);
-
-    if (entity === 'BusinessRequest') {
-      const ownerEmail = String(data.email || '').trim();
-      if (ownerEmail) {
-        MailApp.sendEmail({
-          to: ownerEmail,
-          subject: `Action Requested: Optional Profit Baseline Form${data.business_name ? ` (${data.business_name})` : ''}`,
-          body: `Hi ${data.owner_name || 'there'},\n\nThanks for submitting your business request.\n\nPlease complete your optional baseline form here:\n${BASELINE_FORM_URL}\n\nThis gives us your starting point so we can compare before/after outcomes later.\n\nSubmitted: ${formattedTime}\n\nThank you,\nVoice the Companies`,
-        });
-      }
-    }
-
-    const summary = [
-      `Entity: ${entity}`,
-      `Sheet tab: ${tabName}`,
-      `Submitted: ${formattedTime}`,
-      '',
-      `Payload: ${JSON.stringify(data, null, 2)}`,
-    ].join('\n');
-
-    MailApp.sendEmail({
-      to: ADMIN_EMAIL,
-      subject: `New ${entity} submission`,
-      body: summary,
-    });
+    MailApp.sendEmail(ADMIN_EMAIL, `New ${entity} submission`, summary);
   } catch (error) {
-    // Keep webhook successful even if email delivery fails.
-    console.log('Email notification failed', String(error));
+    // Keep webhook successful even if admin email delivery fails.
+    console.log('Admin email notification failed', String(error));
+  }
+
+  if (entity === 'BusinessRequest') {
+    const ownerEmail = String(data.email || '').trim();
+    if (!ownerEmail) return;
+
+    try {
+      MailApp.sendEmail({
+        to: ownerEmail,
+        subject: `Action Requested: Optional Profit Baseline Form${data.business_name ? ` (${data.business_name})` : ''}`,
+        body: `Hi ${data.owner_name || 'there'},\n\nThanks for submitting your business request.\n\nPlease complete your optional baseline form here:\n${BASELINE_FORM_URL}\n\nThis gives us your starting point so we can compare before/after outcomes later.\n\nSubmitted: ${formattedTime}\n\nThank you,\nVoice the Companies`,
+      });
+    } catch (error) {
+      // Keep webhook successful even if owner email delivery fails.
+      console.log('Owner baseline email failed', String(error));
+    }
   }
 }
 
@@ -133,17 +131,11 @@ function resolveTabName(entity, data, sheetTabHint) {
   return TAB_OWNERS;
 }
 
-function ensureTabsExist_() {
-  [TAB_OWNERS, TAB_STUDENTS, TAB_WORKSHOPS, TAB_BEFORE_AFTER].forEach((name) => {
-    getOrCreateSheet_(name);
-  });
-}
-
-function getOrCreateSheet_(name) {
+function getExistingSheet_(name) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(name);
+  const sheet = ss.getSheetByName(name);
   if (!sheet) {
-    sheet = ss.insertSheet(name);
+    throw new Error('Missing required tab: ' + name);
   }
   return sheet;
 }
