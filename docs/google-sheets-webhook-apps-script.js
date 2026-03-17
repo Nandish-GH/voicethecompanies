@@ -13,19 +13,15 @@ const TAB_OWNERS = 'Owners';
 const TAB_STUDENTS = 'Students';
 const TAB_WORKSHOPS = 'Workshops';
 const TAB_BEFORE_AFTER = 'BeforeVsAfter';
-const COMPANY_NAME = 'Voice the Companies';
-const COMPANY_EMAIL = 'voicethecompanies@gmail.com';
-const COMPANY_FROM_ALIAS = '';
+const SHEET_DATE_FORMAT = 'MMM d, yyyy h:mm a';
 
-function getAdminEmail_() {
-  try {
-    const email = Session.getEffectiveUser().getEmail();
-    return email || COMPANY_EMAIL;
-  } catch (e) {
-    return COMPANY_EMAIL;
-  }
-}
-const BASELINE_FORM_URL = 'https://forms.gle/X6YKriBykBpNe6C1A';
+// Mail merge configuration for the same source sheet.
+const MAIL_TAB = TAB_OWNERS;
+const MAIL_RECIPIENT_COL = 'email';
+const MAIL_STATUS_COL = 'Email Sent';
+const MAIL_DRAFT_SUBJECT = 'VTC Baseline Form';
+const MAIL_SENDER_NAME = 'Voice the Companies';
+const MAIL_REPLY_TO = 'voicethecompanies@gmail.com';
 
 const TAB_HEADERS = {
   [TAB_OWNERS]: ['submitted_at', 'entity', 'id', 'business_name', 'owner_name', 'email', 'phone', 'business_type', 'website_exists', 'services_needed', 'additional_info', 'created_date', 'updated_date'],
@@ -34,7 +30,12 @@ const TAB_HEADERS = {
   [TAB_BEFORE_AFTER]: ['submitted_at', 'entity', 'id', 'business_name', 'owner_email', 'period_label', 'website_sessions', 'unique_visitors', 'social_followers', 'social_reach', 'google_profile_views', 'google_direction_requests', 'confidence_website', 'confidence_social', 'confidence_analytics', 'notes', 'created_date', 'updated_date'],
 };
 
-const SHEET_DATE_FORMAT = 'MMM d, yyyy h:mm a';
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('VTC Mail')
+    .addItem('Send Pending Owner Emails', 'sendOwnerEmailsFromDraft')
+    .addToUi();
+}
 
 function doGet() {
   return ContentService
@@ -66,7 +67,6 @@ function doPost(e) {
     });
 
     sheet.appendRow(row);
-    sendNotificationEmail_(entity, data, submittedAt, tabName);
 
     return ContentService
       .createTextOutput(JSON.stringify({ ok: true, tab: tabName }))
@@ -119,93 +119,6 @@ function parseIncomingPayload_(e) {
   return empty;
 }
 
-function sendNotificationEmail_(entity, data, submittedAt, tabName) {
-  const formattedTime = formatTimestampForSheet_(submittedAt);
-  const summary = [
-    `Entity: ${entity}`,
-    `Sheet tab: ${tabName}`,
-    `Submitted: ${formattedTime}`,
-    '',
-    `Payload: ${JSON.stringify(data, null, 2)}`,
-  ].join('\n');
-
-  try {
-    sendEmailFromCompany_(getAdminEmail_(), `New ${entity} submission`, summary);
-  } catch (error) {
-    // Keep webhook successful even if admin email delivery fails.
-    console.log('Admin email notification failed', String(error));
-  }
-
-  const isOwnerSubmission = tabName === TAB_OWNERS || entity === 'BusinessRequest';
-  if (isOwnerSubmission) {
-    const ownerEmail = getOwnerEmail_(data);
-    if (!ownerEmail) return;
-
-    try {
-      const ownerSubject = `Action Requested: Optional Profit Baseline Form${data.business_name ? ` (${data.business_name})` : ''}`;
-      const ownerBody = `Hi ${data.owner_name || 'there'},\n\nThanks for submitting your business request.\n\nPlease complete your optional baseline form here:\n${BASELINE_FORM_URL}\n\nThis gives us your starting point so we can compare before/after outcomes later.\n\nSubmitted: ${formattedTime}\n\nThank you,\nVoice the Companies`;
-
-      sendEmailFromCompany_(
-        ownerEmail,
-        ownerSubject,
-        ownerBody
-      );
-
-      // Delivery trace so the deployer can verify owner-send branch executed.
-      sendEmailFromCompany_(
-        getAdminEmail_(),
-        `[Owner Email Sent] ${ownerSubject}`,
-        `Owner baseline email sent successfully.\n\nOwner recipient: ${ownerEmail}\nEntity: ${entity}\nTab: ${tabName}\nSubmitted: ${formattedTime}`
-      );
-    } catch (error) {
-      // Keep webhook successful even if owner email delivery fails.
-      console.log('Owner baseline email failed', String(error));
-      try {
-        sendEmailFromCompany_(
-          getAdminEmail_(),
-          '[Owner Email Failed] Optional Profit Baseline Form',
-          `Owner baseline email failed.\n\nOwner recipient: ${ownerEmail}\nEntity: ${entity}\nTab: ${tabName}\nSubmitted: ${formattedTime}\nError: ${String(error)}`
-        );
-      } catch (_) {
-        // Do not throw from diagnostics.
-      }
-    }
-  }
-}
-
-function getOwnerEmail_(data) {
-  return String(
-    (data && (data.email || data.owner_email || data.ownerEmail || data.contact_email)) || ''
-  ).trim();
-}
-
-function sendEmailFromCompany_(to, subject, body) {
-  const recipient = String(to || '').trim();
-  if (!recipient) throw new Error('Missing recipient email');
-
-  const options = {
-    name: COMPANY_NAME,
-    replyTo: COMPANY_EMAIL,
-  };
-
-  if (COMPANY_FROM_ALIAS) {
-    try {
-      GmailApp.sendEmail(recipient, subject, body, { ...options, from: COMPANY_FROM_ALIAS });
-      return;
-    } catch (error) {
-      console.log('Company alias send failed; falling back', String(error));
-    }
-  }
-
-  MailApp.sendEmail({
-    to: recipient,
-    subject,
-    body,
-    name: COMPANY_NAME,
-    replyTo: COMPANY_EMAIL,
-  });
-}
-
 function isTimestampField_(key) {
   return key === 'submitted_at' || key.endsWith('_date');
 }
@@ -244,28 +157,135 @@ function getExistingSheet_(name) {
   return sheet;
 }
 
-/**
- * Run this function manually from the Apps Script editor to:
- * 1. Authorize MailApp permissions (required on first run)
- * 2. Confirm emails are actually being delivered
- * After running, check voicethecompanies@gmail.com inbox for the test message.
- */
-function testEmailDelivery() {
-  const testRecipient = getAdminEmail_();
-  const timestamp = new Date().toLocaleString();
-  try {
-    MailApp.sendEmail({
-      to: testRecipient,
-      subject: 'VTC Apps Script email test - ' + timestamp,
-      body: 'This is a test email from the Voice the Companies Apps Script webhook.\n\nIf you received this, MailApp is authorized and working correctly.\n\nSent: ' + timestamp,
-      name: COMPANY_NAME,
-      replyTo: COMPANY_EMAIL,
-    });
-    Logger.log('Test email sent successfully to ' + testRecipient);
-  } catch (error) {
-    Logger.log('Test email FAILED: ' + String(error));
-    throw error;
+function sendOwnerEmailsFromDraft() {
+  const sheet = getExistingSheet_(MAIL_TAB);
+  const dataRange = sheet.getDataRange();
+  const values = dataRange.getDisplayValues();
+  if (values.length < 2) return;
+
+  const headers = values[0];
+  const recipientColIdx = headers.indexOf(MAIL_RECIPIENT_COL);
+  const statusColIdx = ensureStatusColumn_(sheet, headers, MAIL_STATUS_COL);
+
+  if (recipientColIdx === -1) {
+    throw new Error('Missing required column: ' + MAIL_RECIPIENT_COL);
   }
+
+  const template = getGmailTemplateFromDrafts_(MAIL_DRAFT_SUBJECT);
+  const rows = values.slice(1).map((r) =>
+    headers.reduce((obj, key, i) => {
+      obj[key] = r[i] || '';
+      return obj;
+    }, {})
+  );
+
+  const out = [];
+  rows.forEach((row) => {
+    const alreadySent = String(row[MAIL_STATUS_COL] || '').trim();
+    const recipient = String(row[MAIL_RECIPIENT_COL] || '').trim();
+
+    if (alreadySent) {
+      out.push([alreadySent]);
+      return;
+    }
+
+    if (!recipient || recipient.indexOf('@') === -1) {
+      out.push(['Invalid or missing recipient']);
+      return;
+    }
+
+    try {
+      const filled = fillInTemplateFromObject_(template.message, row);
+      GmailApp.sendEmail(recipient, filled.subject, filled.text, {
+        htmlBody: filled.html,
+        name: MAIL_SENDER_NAME,
+        replyTo: MAIL_REPLY_TO,
+        attachments: template.attachments,
+        inlineImages: template.inlineImages,
+      });
+      out.push([new Date()]);
+    } catch (error) {
+      out.push([String(error && error.message ? error.message : error)]);
+    }
+  });
+
+  sheet.getRange(2, statusColIdx + 1, out.length, 1).setValues(out);
+}
+
+function ensureStatusColumn_(sheet, headers, statusColName) {
+  const idx = headers.indexOf(statusColName);
+  if (idx !== -1) return idx;
+
+  const newColIndex = headers.length + 1;
+  sheet.getRange(1, newColIndex).setValue(statusColName);
+  return newColIndex - 1;
+}
+
+function getGmailTemplateFromDrafts_(subjectLine) {
+  const drafts = GmailApp.getDrafts();
+  const draft = drafts.find((d) => d.getMessage().getSubject() === subjectLine);
+  if (!draft) {
+    throw new Error('No draft found with subject: ' + subjectLine);
+  }
+
+  const msg = draft.getMessage();
+  const htmlBody = msg.getBody();
+
+  const allInlineImages = msg.getAttachments({
+    includeInlineImages: true,
+    includeAttachments: false,
+  });
+  const attachments = msg.getAttachments({
+    includeInlineImages: false,
+    includeAttachments: true,
+  });
+
+  const imageByName = allInlineImages.reduce((obj, img) => {
+    obj[img.getName()] = img;
+    return obj;
+  }, {});
+
+  const inlineImages = {};
+  const imgRegex = /<img.*?src="cid:(.*?)".*?alt="(.*?)"[^>]*>/g;
+  const matches = [...htmlBody.matchAll(imgRegex)];
+  matches.forEach((m) => {
+    const cid = m[1];
+    const altName = m[2];
+    if (imageByName[altName]) {
+      inlineImages[cid] = imageByName[altName];
+    }
+  });
+
+  return {
+    message: {
+      subject: subjectLine,
+      text: msg.getPlainBody(),
+      html: htmlBody,
+    },
+    attachments,
+    inlineImages,
+  };
+}
+
+function fillInTemplateFromObject_(template, data) {
+  let templateString = JSON.stringify(template);
+  templateString = templateString.replace(/{{[^{}]+}}/g, (token) => {
+    const key = token.replace(/[{}]+/g, '');
+    return escapeData_(String(data[key] || ''));
+  });
+  return JSON.parse(templateString);
+}
+
+function escapeData_(str) {
+  return str
+    .replace(/[\\]/g, '\\\\')
+    .replace(/[\"]/g, '\\"')
+    .replace(/[\/]/g, '\\/')
+    .replace(/[\b]/g, '\\b')
+    .replace(/[\f]/g, '\\f')
+    .replace(/[\n]/g, '\\n')
+    .replace(/[\r]/g, '\\r')
+    .replace(/[\t]/g, '\\t');
 }
 
 function ensureHeader_(sheet, headers) {
