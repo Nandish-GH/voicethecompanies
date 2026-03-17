@@ -21,7 +21,6 @@ const MAIL_RECIPIENT_COL = 'email';
 const MAIL_STATUS_COL = 'Email Sent';
 const MAIL_DRAFT_SUBJECT = 'VTC Baseline Form';
 const MAIL_SENDER_NAME = 'Voice the Companies';
-const MAIL_REPLY_TO = 'voicethecompanies@gmail.com';
 const MAIL_TRIGGER_HANDLER = 'runAutomatedOwnerEmailJob';
 const MAIL_TRIGGER_EVERY_MINUTES = 5;
 
@@ -82,6 +81,15 @@ function ensureAutoEmailTrigger_() {
 
 function runAutomatedOwnerEmailJob() {
   sendOwnerEmailsFromDraft();
+}
+
+function getAuthorizedRunnerEmail_() {
+  try {
+    const email = Session.getEffectiveUser().getEmail();
+    return String(email || '').trim();
+  } catch (_) {
+    return '';
+  }
 }
 
 function doGet() {
@@ -256,7 +264,7 @@ function sendOwnerEmailsFromDraft() {
       GmailApp.sendEmail(recipient, filled.subject, filled.text, {
         htmlBody: filled.html,
         name: MAIL_SENDER_NAME,
-        replyTo: MAIL_REPLY_TO,
+        replyTo: getAuthorizedRunnerEmail_() || undefined,
         attachments: template.attachments,
         inlineImages: template.inlineImages,
       });
