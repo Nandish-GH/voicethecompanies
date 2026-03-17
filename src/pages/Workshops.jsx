@@ -88,7 +88,7 @@ function WorkshopCard({ workshop, index }) {
 
     try {
       await localClient.integrations.Core.SendEmail({
-        to: "voicethecompanies@gmail.com",
+        to: "2009nandish@gmail.com",
         subject: `Workshop Interest: ${workshop.title}`,
         body: `${email} is interested in this workshop.\n\nWorkshop: ${workshop.title}\nTiming: ${workshop.timing}\nFormat: ${workshop.format}\nDuration: ${workshop.duration}`,
       });

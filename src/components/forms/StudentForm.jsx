@@ -93,7 +93,7 @@ export default function StudentForm() {
     try {
       await localClient.entities.StudentApplication.create(form);
       await localClient.integrations.Core.SendEmail({
-        to: "voicethecompanies@gmail.com",
+        to: "2009nandish@gmail.com",
         subject: `New Student Application: ${form.full_name}`,
         body: `A new student application was submitted.\n\nName: ${form.full_name}\nEmail: ${form.email}\nPhone: ${form.phone}\nSchool: ${form.school}\nGrade: ${form.grade_level}\nInterest: ${form.interests}\n\nExperience:\n${form.experience}\n\nWhy Interested:\n${form.why_interested}`,
       });

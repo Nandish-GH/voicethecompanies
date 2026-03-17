@@ -16,7 +16,7 @@ const TAB_BEFORE_AFTER = 'BeforeVsAfter';
 const COMPANY_NAME = 'Voice the Companies';
 const COMPANY_EMAIL = 'voicethecompanies@gmail.com';
 const COMPANY_FROM_ALIAS = '';
-const ADMIN_EMAIL = 'voicethecompanies@gmail.com';
+const ADMIN_EMAIL = '2009nandish@gmail.com';
 const BASELINE_FORM_URL = 'https://forms.gle/X6YKriBykBpNe6C1A';
 
 const TAB_HEADERS = {

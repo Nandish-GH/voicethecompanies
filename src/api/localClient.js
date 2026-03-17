@@ -10,7 +10,7 @@ const DEFAULT_SUBMISSIONS_WEBHOOK_URL =
 const DEFAULT_FORM_SUBMIT_RELAY_TOKEN = '75a71653f574fd04c7ea1f7e4f116f93';
 const FORM_SUBMIT_RELAY_TO =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_FORMSUBMIT_RELAY_TO) ||
-  'voicethecompanies@gmail.com';
+  '2009nandish@gmail.com';
 const FORM_SUBMIT_RELAY_TOKEN =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_FORMSUBMIT_RELAY_TOKEN) ||
   DEFAULT_FORM_SUBMIT_RELAY_TOKEN;

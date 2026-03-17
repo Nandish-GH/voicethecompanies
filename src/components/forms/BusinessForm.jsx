@@ -67,7 +67,7 @@ export default function BusinessForm() {
     try {
       await localClient.entities.BusinessRequest.create(form);
       await localClient.integrations.Core.SendEmail({
-        to: "voicethecompanies@gmail.com",
+        to: "2009nandish@gmail.com",
         subject: `New Business Request: ${form.business_name}`,
         body: `A new business service request was submitted.\n\nBusiness: ${form.business_name}\nOwner: ${form.owner_name}\nEmail: ${form.email}\nPhone: ${form.phone}\nBusiness Type: ${form.business_type}\nHas Website: ${form.website_exists ? "Yes" : "No"}\n\nServices Needed:\n${form.services_needed}\n\nAdditional Info:\n${form.additional_info}`,
       });

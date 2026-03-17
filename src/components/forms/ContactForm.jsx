@@ -59,7 +59,7 @@ export default function ContactForm() {
     try {
       await localClient.entities.ContactInquiry.create(form);
       await localClient.integrations.Core.SendEmail({
-        to: "voicethecompanies@gmail.com",
+        to: "2009nandish@gmail.com",
         subject: `New Contact Inquiry: ${form.subject || "General Inquiry"}`,
         body: `A new contact inquiry was submitted.\n\nName: ${form.name}\nEmail: ${form.email}\nInquiry Type: ${form.inquiry_type}\nSubject: ${form.subject}\n\nMessage:\n${form.message}`,
       });
