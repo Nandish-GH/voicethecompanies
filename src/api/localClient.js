@@ -2,6 +2,7 @@ const STORAGE_PREFIX = 'vtc_local_';
 const ACTIVE_USER_KEY = `${STORAGE_PREFIX}active_user`;
 const EMAIL_LOG_KEY = `${STORAGE_PREFIX}email_log`;
 const SCHEDULED_EMAILS_KEY = `${STORAGE_PREFIX}scheduled_emails`;
+const FORM_SUBMIT_COOLDOWN_UNTIL_KEY = `${STORAGE_PREFIX}formsubmit_cooldown_until`;
 const SUBMISSIONS_WEBHOOK_KEY = `${STORAGE_PREFIX}submissions_webhook_url`;
 const FORM_SUBMIT_BASE_URL = 'https://formsubmit.co/ajax';
 const DEFAULT_SUBMISSIONS_WEBHOOK_URL =
@@ -35,6 +36,7 @@ const PROFIT_FOLLOWUP_DELAY_MS = Math.max(0, PROFIT_FOLLOWUP_DELAY_MINUTES) * 60
 const EMAIL_SCHEDULER_POLL_MS = 30 * 1000;
 const RATE_LIMIT_RETRY_DELAY_MS = 15 * 60 * 1000;
 const MAX_SCHEDULED_EMAIL_RETRIES = 6;
+const FORM_SUBMIT_COOLDOWN_MS = 30 * 60 * 1000;
 
 const ENTITY_STORAGE_KEYS = {
   BusinessRequest: `${STORAGE_PREFIX}BusinessRequest`,
@@ -142,6 +144,17 @@ function writeList(key, value) {
 
 function nowIso() {
   return new Date().toISOString();
+}
+
+function getFormSubmitCooldownUntil() {
+  if (!isBrowser) return 0;
+  const value = Number(window.localStorage.getItem(FORM_SUBMIT_COOLDOWN_UNTIL_KEY) || 0);
+  return Number.isFinite(value) ? value : 0;
+}
+
+function setFormSubmitCooldownUntil(untilMs) {
+  if (!isBrowser) return;
+  window.localStorage.setItem(FORM_SUBMIT_COOLDOWN_UNTIL_KEY, String(untilMs));
 }
 
 function randomId(prefix) {
@@ -306,6 +319,16 @@ async function sendEmailWithFormSubmit(payload) {
     ? `Intended recipient: ${intendedRecipient}\n\n${messageBody}`
     : messageBody;
 
+  const cooldownUntil = getFormSubmitCooldownUntil();
+  if (cooldownUntil > Date.now()) {
+    return {
+      success: false,
+      skipped: true,
+      reason: 'FormSubmit cooldown active',
+      retry_after_ms: cooldownUntil,
+    };
+  }
+
   const relayPath = String(FORM_SUBMIT_RELAY_TOKEN || '').trim() || relayRecipient;
   const endpoint = `${FORM_SUBMIT_BASE_URL}/${encodeURIComponent(relayPath)}`;
   const response = await fetch(endpoint, {
@@ -330,6 +353,7 @@ async function sendEmailWithFormSubmit(payload) {
     responseMessage.includes('actived');
 
   if (rateLimited) {
+    setFormSubmitCooldownUntil(Date.now() + FORM_SUBMIT_COOLDOWN_MS);
     console.warn('[VTC] FormSubmit rate limited; skipping hard failure', {
       relayRecipient,
       intendedRecipient,
@@ -370,7 +394,19 @@ async function flushScheduledEmails() {
     }
 
     try {
-      await sendEmailWithFormSubmit(task.payload);
+      const result = await sendEmailWithFormSubmit(task.payload);
+      if (result?.skipped && (result.reason === 'FormSubmit rate limited' || result.reason === 'FormSubmit cooldown active')) {
+        const retryCount = Number(task?.retry_count || 0) + 1;
+        if (retryCount <= MAX_SCHEDULED_EMAIL_RETRIES) {
+          pending.push({
+            ...task,
+            retry_count: retryCount,
+            send_at_ms: Date.now() + RATE_LIMIT_RETRY_DELAY_MS,
+            last_error: result.reason,
+          });
+        }
+        continue;
+      }
     } catch (error) {
       const retryCount = Number(task?.retry_count || 0) + 1;
       if (retryCount <= MAX_SCHEDULED_EMAIL_RETRIES) {
