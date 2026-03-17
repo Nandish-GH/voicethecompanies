@@ -25,6 +25,10 @@ const USE_EXTERNAL_PROFIT_AUTOMATION =
   String(
     (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_USE_GOOGLE_SHEETS_AUTOMATION) || 'false'
   ).toLowerCase() === 'true';
+const OUTBOUND_EMAILS_ENABLED =
+  String(
+    (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_OUTBOUND_EMAILS_ENABLED) || 'false'
+  ).toLowerCase() === 'true';
 const PROFIT_BASELINE_DELAY_MINUTES = Number(
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_PROFIT_BASELINE_DELAY_MINUTES) || 0
 );
@@ -304,6 +308,14 @@ function getActiveUser() {
 }
 
 async function sendEmailWithFormSubmit(payload) {
+  if (!OUTBOUND_EMAILS_ENABLED) {
+    return {
+      success: false,
+      skipped: true,
+      reason: 'Outbound emails disabled',
+    };
+  }
+
   if (!payload?.to) {
     throw new Error('Missing recipient email');
   }
