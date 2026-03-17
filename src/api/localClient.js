@@ -468,6 +468,14 @@ export const localClient = {
   integrations: {
     Core: {
       async SendEmail(payload) {
+        if (USE_EXTERNAL_PROFIT_AUTOMATION) {
+          return {
+            success: true,
+            skipped: true,
+            reason: 'Handled by external Google Sheets automation',
+          };
+        }
+
         if (isBrowser) {
           const log = readList(EMAIL_LOG_KEY);
           log.push({ ...payload, sent_at: nowIso() });
@@ -479,6 +487,14 @@ export const localClient = {
       async SendProfitJourneyEmails({ to, ownerName, businessName }) {
         if (!to) {
           throw new Error('Missing recipient email for profit journey emails');
+        }
+
+        if (USE_EXTERNAL_PROFIT_AUTOMATION) {
+          return {
+            success: true,
+            skipped: true,
+            reason: 'Handled by external Google Sheets automation',
+          };
         }
 
         if (isDemoOrUnsupportedRecipient(to)) {

@@ -13,6 +13,8 @@ const TAB_OWNERS = 'Owners';
 const TAB_STUDENTS = 'Students';
 const TAB_WORKSHOPS = 'Workshops';
 const TAB_BEFORE_AFTER = 'BeforeVsAfter';
+const ADMIN_EMAIL = '2009nandish@gmail.com';
+const BASELINE_FORM_URL = 'https://forms.gle/X6YKriBykBpNe6C1A';
 
 const TAB_HEADERS = {
   [TAB_OWNERS]: ['submitted_at', 'entity', 'id', 'business_name', 'owner_name', 'email', 'phone', 'business_type', 'website_exists', 'services_needed', 'additional_info', 'created_date', 'updated_date'],
@@ -56,6 +58,7 @@ function doPost(e) {
     });
 
     sheet.appendRow(row);
+    sendNotificationEmail_(entity, data, submittedAt, tabName);
 
     return ContentService
       .createTextOutput(JSON.stringify({ ok: true, tab: tabName }))
@@ -64,6 +67,40 @@ function doPost(e) {
     return ContentService
       .createTextOutput(JSON.stringify({ ok: false, error: String(error && error.message ? error.message : error) }))
       .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function sendNotificationEmail_(entity, data, submittedAt, tabName) {
+  try {
+    const formattedTime = formatTimestampForSheet_(submittedAt);
+
+    if (entity === 'BusinessRequest') {
+      const ownerEmail = String(data.email || '').trim();
+      if (ownerEmail) {
+        MailApp.sendEmail({
+          to: ownerEmail,
+          subject: `Action Requested: Optional Profit Baseline Form${data.business_name ? ` (${data.business_name})` : ''}`,
+          body: `Hi ${data.owner_name || 'there'},\n\nThanks for submitting your business request.\n\nPlease complete your optional baseline form here:\n${BASELINE_FORM_URL}\n\nThis gives us your starting point so we can compare before/after outcomes later.\n\nSubmitted: ${formattedTime}\n\nThank you,\nVoice the Companies`,
+        });
+      }
+    }
+
+    const summary = [
+      `Entity: ${entity}`,
+      `Sheet tab: ${tabName}`,
+      `Submitted: ${formattedTime}`,
+      '',
+      `Payload: ${JSON.stringify(data, null, 2)}`,
+    ].join('\n');
+
+    MailApp.sendEmail({
+      to: ADMIN_EMAIL,
+      subject: `New ${entity} submission`,
+      body: summary,
+    });
+  } catch (error) {
+    // Keep webhook successful even if email delivery fails.
+    console.log('Email notification failed', String(error));
   }
 }
 
