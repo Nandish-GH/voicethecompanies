@@ -25,7 +25,7 @@ const workshops = [
     ],
     format: "Virtual or In-Person",
     formatIcon: Video,
-    duration: "60 minutes",
+    duration: "20 minutes",
     available: true,
   },
   {
@@ -44,7 +44,7 @@ const workshops = [
     ],
     format: "Virtual",
     formatIcon: Video,
-    duration: "75 minutes",
+    duration: "30 minutes",
     available: true,
   },
   {
@@ -63,26 +63,7 @@ const workshops = [
     ],
     format: "Hybrid (In-Person + Virtual)",
     formatIcon: MapPin,
-    duration: "90 minutes",
-    available: true,
-  },
-  {
-    icon: Star,
-    timing: "Annual Community Event",
-    badge: "Workshop 4",
-    title: "Alumni Gathering",
-    description:
-      "Once a year, all program alumni businesses gather to share what's worked, hear from a local tech professional or guest speaker, and connect with one another. Businesses may also request a project refresh if their digital needs have significantly evolved.",
-    agenda: [
-      "Welcome reception and alumni networking",
-      "Featured guest speaker from the local tech or business community",
-      "Alumni spotlights: businesses share wins and lessons learned",
-      "Open Q&A with student teams and program mentors",
-      "Optional: sign up for a project refresh consultation",
-    ],
-    format: "In-Person",
-    formatIcon: Users,
-    duration: "Half-day event",
+    duration: "45 minutes",
     available: true,
   },
 ];
@@ -107,7 +88,7 @@ function WorkshopCard({ workshop, index }) {
 
     try {
       await localClient.integrations.Core.SendEmail({
-        to: "2009nandish@gmail.com",
+        to: "voicethecompanies@gmail.com",
         subject: `Workshop Interest: ${workshop.title}`,
         body: `${email} is interested in this workshop.\n\nWorkshop: ${workshop.title}\nTiming: ${workshop.timing}\nFormat: ${workshop.format}\nDuration: ${workshop.duration}`,
       });

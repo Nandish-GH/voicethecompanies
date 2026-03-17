@@ -14,9 +14,9 @@ const TAB_STUDENTS = 'Students';
 const TAB_WORKSHOPS = 'Workshops';
 const TAB_BEFORE_AFTER = 'BeforeVsAfter';
 const COMPANY_NAME = 'Voice the Companies';
-const COMPANY_EMAIL = '2009nandish@gmail.com';
+const COMPANY_EMAIL = 'voicethecompanies@gmail.com';
 const COMPANY_FROM_ALIAS = '';
-const ADMIN_EMAIL = '2009nandish@gmail.com';
+const ADMIN_EMAIL = 'voicethecompanies@gmail.com';
 const BASELINE_FORM_URL = 'https://forms.gle/X6YKriBykBpNe6C1A';
 
 const TAB_HEADERS = {
@@ -168,6 +168,30 @@ function getExistingSheet_(name) {
     throw new Error('Missing required tab: ' + name);
   }
   return sheet;
+}
+
+/**
+ * Run this function manually from the Apps Script editor to:
+ * 1. Authorize MailApp permissions (required on first run)
+ * 2. Confirm emails are actually being delivered
+ * After running, check voicethecompanies@gmail.com inbox for the test message.
+ */
+function testEmailDelivery() {
+  const testRecipient = ADMIN_EMAIL;
+  const timestamp = new Date().toLocaleString();
+  try {
+    MailApp.sendEmail({
+      to: testRecipient,
+      subject: 'VTC Apps Script email test - ' + timestamp,
+      body: 'This is a test email from the Voice the Companies Apps Script webhook.\n\nIf you received this, MailApp is authorized and working correctly.\n\nSent: ' + timestamp,
+      name: COMPANY_NAME,
+      replyTo: COMPANY_EMAIL,
+    });
+    Logger.log('Test email sent successfully to ' + testRecipient);
+  } catch (error) {
+    Logger.log('Test email FAILED: ' + String(error));
+    throw error;
+  }
 }
 
 function ensureHeader_(sheet, headers) {

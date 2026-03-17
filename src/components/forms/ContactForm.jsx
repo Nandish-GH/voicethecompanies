@@ -23,7 +23,7 @@ const demoMessages = [
   "I am interested in learning how we can sponsor student project teams.",
   "Please share next steps for getting involved as a community partner.",
 ];
-const DEMO_EMAIL = "2009nandish@gmail.com";
+const DEMO_EMAIL = "voicethecompanies@gmail.com";
 
 export default function ContactForm() {
   const [form, setForm] = useState({
@@ -59,7 +59,7 @@ export default function ContactForm() {
     try {
       await localClient.entities.ContactInquiry.create(form);
       await localClient.integrations.Core.SendEmail({
-        to: "2009nandish@gmail.com",
+        to: "voicethecompanies@gmail.com",
         subject: `New Contact Inquiry: ${form.subject || "General Inquiry"}`,
         body: `A new contact inquiry was submitted.\n\nName: ${form.name}\nEmail: ${form.email}\nInquiry Type: ${form.inquiry_type}\nSubject: ${form.subject}\n\nMessage:\n${form.message}`,
       });

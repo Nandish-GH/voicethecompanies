@@ -23,7 +23,7 @@ const demoAdditionalInfo = [
   "We want to start posting consistently but need a repeatable process.",
   "Our busiest season starts soon and we need updates before then.",
 ];
-const DEMO_EMAIL = "2009nandish@gmail.com";
+const DEMO_EMAIL = "voicethecompanies@gmail.com";
 
 export default function BusinessForm() {
   const [form, setForm] = useState({
@@ -67,7 +67,7 @@ export default function BusinessForm() {
     try {
       await localClient.entities.BusinessRequest.create(form);
       await localClient.integrations.Core.SendEmail({
-        to: "2009nandish@gmail.com",
+        to: "voicethecompanies@gmail.com",
         subject: `New Business Request: ${form.business_name}`,
         body: `A new business service request was submitted.\n\nBusiness: ${form.business_name}\nOwner: ${form.owner_name}\nEmail: ${form.email}\nPhone: ${form.phone}\nBusiness Type: ${form.business_type}\nHas Website: ${form.website_exists ? "Yes" : "No"}\n\nServices Needed:\n${form.services_needed}\n\nAdditional Info:\n${form.additional_info}`,
       });

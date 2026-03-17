@@ -100,12 +100,12 @@ export default function GetInvolved() {
               <p className="text-sm text-[#6B6B6B] mb-6">
                 Prefer email? Contact us directly at{" "}
                 <a
-                  href={`mailto:2009nandish@gmail.com?subject=${encodeURIComponent(
+                  href={`mailto:voicethecompanies@gmail.com?subject=${encodeURIComponent(
                     activeTrack === "student" ? "Student Application" : "Business Service Request"
                   )}`}
                   className="text-[#8FAF88] font-semibold underline underline-offset-4 hover:text-[#6F8F68]"
                 >
-                  2009nandish@gmail.com
+                  voicethecompanies@gmail.com
                 </a>
                 .
               </p>
