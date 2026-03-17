@@ -22,6 +22,8 @@ const MAIL_STATUS_COL = 'Email Sent';
 const MAIL_DRAFT_SUBJECT = 'VTC Baseline Form';
 const MAIL_SENDER_NAME = 'Voice the Companies';
 const MAIL_REPLY_TO = 'voicethecompanies@gmail.com';
+const MAIL_TRIGGER_HANDLER = 'runAutomatedOwnerEmailJob';
+const MAIL_TRIGGER_EVERY_MINUTES = 5;
 
 const TAB_HEADERS = {
   [TAB_OWNERS]: ['submitted_at', 'entity', 'id', 'business_name', 'owner_name', 'email', 'phone', 'business_type', 'website_exists', 'services_needed', 'additional_info', 'created_date', 'updated_date'],
@@ -35,6 +37,8 @@ function onOpen() {
     .createMenu('VTC Mail')
     .addItem('Setup VTC System', 'setupVtcSystem')
     .addItem('Send Pending Owner Emails', 'sendOwnerEmailsFromDraft')
+    .addItem('Enable Auto Email Scheduler', 'enableAutoEmailScheduler')
+    .addItem('Disable Auto Email Scheduler', 'disableAutoEmailScheduler')
     .addToUi();
 }
 
@@ -49,6 +53,35 @@ function setupVtcSystem() {
     .getValues()[0]
     .filter((v) => String(v || '').trim() !== '');
   ensureStatusColumn_(ownersSheet, ownerHeaderValues, MAIL_STATUS_COL);
+  ensureAutoEmailTrigger_();
+}
+
+function enableAutoEmailScheduler() {
+  ensureAutoEmailTrigger_();
+}
+
+function disableAutoEmailScheduler() {
+  const triggers = ScriptApp.getProjectTriggers();
+  triggers.forEach((trigger) => {
+    if (trigger.getHandlerFunction() === MAIL_TRIGGER_HANDLER) {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+}
+
+function ensureAutoEmailTrigger_() {
+  const triggers = ScriptApp.getProjectTriggers();
+  const exists = triggers.some((trigger) => trigger.getHandlerFunction() === MAIL_TRIGGER_HANDLER);
+  if (exists) return;
+
+  ScriptApp.newTrigger(MAIL_TRIGGER_HANDLER)
+    .timeBased()
+    .everyMinutes(MAIL_TRIGGER_EVERY_MINUTES)
+    .create();
+}
+
+function runAutomatedOwnerEmailJob() {
+  sendOwnerEmailsFromDraft();
 }
 
 function doGet() {
