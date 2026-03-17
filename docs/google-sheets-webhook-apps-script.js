@@ -19,10 +19,10 @@ const SHEET_DATE_FORMAT = 'MMM d, yyyy h:mm a';
 const MAIL_TAB = TAB_OWNERS;
 const MAIL_RECIPIENT_COL = 'email';
 const MAIL_STATUS_COL = 'Email Sent';
-const MAIL_DRAFT_SUBJECT = 'VTC Baseline Form';
 const MAIL_SENDER_NAME = 'Voice the Companies';
 const MAIL_TRIGGER_HANDLER = 'runAutomatedOwnerEmailJob';
 const MAIL_TRIGGER_EVERY_MINUTES = 5;
+const VTC_OPTIONAL_DATA_FORM_URL = 'https://forms.gle/X6YKriBykBpNe6C1A';
 
 const TAB_HEADERS = {
   [TAB_OWNERS]: ['submitted_at', 'entity', 'id', 'business_name', 'owner_name', 'email', 'phone', 'business_type', 'website_exists', 'services_needed', 'additional_info', 'created_date', 'updated_date'],
@@ -236,7 +236,6 @@ function sendOwnerEmailsFromDraft() {
     throw new Error('Missing required column: ' + MAIL_RECIPIENT_COL);
   }
 
-  const template = getGmailTemplateFromDrafts_(MAIL_DRAFT_SUBJECT);
   const rows = values.slice(1).map((r) =>
     headers.reduce((obj, key, i) => {
       obj[key] = r[i] || '';
@@ -260,13 +259,33 @@ function sendOwnerEmailsFromDraft() {
     }
 
     try {
-      const filled = fillInTemplateFromObject_(template.message, row);
-      GmailApp.sendEmail(recipient, filled.subject, filled.text, {
-        htmlBody: filled.html,
+      const ownerName = String(row.owner_name || 'there').trim();
+      const businessName = String(row.business_name || '').trim();
+      const subject = businessName
+        ? `VTC Optional Data Form - ${businessName}`
+        : 'VTC Optional Data Form';
+
+      const textBody = [
+        `Hi ${ownerName},`,
+        '',
+        'Please fill this short form for VTC data (optional):',
+        VTC_OPTIONAL_DATA_FORM_URL,
+        '',
+        'Thank you,',
+        'Voice the Companies',
+      ].join('\n');
+
+      const htmlBody = `
+        <p>Hi ${escapeHtml_(ownerName)},</p>
+        <p>Please fill this short form for VTC data (optional):</p>
+        <p><a href="${VTC_OPTIONAL_DATA_FORM_URL}">${VTC_OPTIONAL_DATA_FORM_URL}</a></p>
+        <p>Thank you,<br/>Voice the Companies</p>
+      `;
+
+      GmailApp.sendEmail(recipient, subject, textBody, {
+        htmlBody,
         name: MAIL_SENDER_NAME,
         replyTo: getAuthorizedRunnerEmail_() || undefined,
-        attachments: template.attachments,
-        inlineImages: template.inlineImages,
       });
       out.push([new Date()]);
     } catch (error) {
@@ -286,71 +305,13 @@ function ensureStatusColumn_(sheet, headers, statusColName) {
   return newColIndex - 1;
 }
 
-function getGmailTemplateFromDrafts_(subjectLine) {
-  const drafts = GmailApp.getDrafts();
-  const draft = drafts.find((d) => d.getMessage().getSubject() === subjectLine);
-  if (!draft) {
-    throw new Error('No draft found with subject: ' + subjectLine);
-  }
-
-  const msg = draft.getMessage();
-  const htmlBody = msg.getBody();
-
-  const allInlineImages = msg.getAttachments({
-    includeInlineImages: true,
-    includeAttachments: false,
-  });
-  const attachments = msg.getAttachments({
-    includeInlineImages: false,
-    includeAttachments: true,
-  });
-
-  const imageByName = allInlineImages.reduce((obj, img) => {
-    obj[img.getName()] = img;
-    return obj;
-  }, {});
-
-  const inlineImages = {};
-  const imgRegex = /<img.*?src="cid:(.*?)".*?alt="(.*?)"[^>]*>/g;
-  const matches = [...htmlBody.matchAll(imgRegex)];
-  matches.forEach((m) => {
-    const cid = m[1];
-    const altName = m[2];
-    if (imageByName[altName]) {
-      inlineImages[cid] = imageByName[altName];
-    }
-  });
-
-  return {
-    message: {
-      subject: subjectLine,
-      text: msg.getPlainBody(),
-      html: htmlBody,
-    },
-    attachments,
-    inlineImages,
-  };
-}
-
-function fillInTemplateFromObject_(template, data) {
-  let templateString = JSON.stringify(template);
-  templateString = templateString.replace(/{{[^{}]+}}/g, (token) => {
-    const key = token.replace(/[{}]+/g, '');
-    return escapeData_(String(data[key] || ''));
-  });
-  return JSON.parse(templateString);
-}
-
-function escapeData_(str) {
-  return str
-    .replace(/[\\]/g, '\\\\')
-    .replace(/[\"]/g, '\\"')
-    .replace(/[\/]/g, '\\/')
-    .replace(/[\b]/g, '\\b')
-    .replace(/[\f]/g, '\\f')
-    .replace(/[\n]/g, '\\n')
-    .replace(/[\r]/g, '\\r')
-    .replace(/[\t]/g, '\\t');
+function escapeHtml_(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function ensureHeader_(sheet, headers) {
