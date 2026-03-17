@@ -98,20 +98,45 @@ function sendNotificationEmail_(entity, data, submittedAt, tabName) {
 
   const isOwnerSubmission = tabName === TAB_OWNERS || entity === 'BusinessRequest';
   if (isOwnerSubmission) {
-    const ownerEmail = String(data.email || data.owner_email || '').trim();
+    const ownerEmail = getOwnerEmail_(data);
     if (!ownerEmail) return;
 
     try {
+      const ownerSubject = `Action Requested: Optional Profit Baseline Form${data.business_name ? ` (${data.business_name})` : ''}`;
+      const ownerBody = `Hi ${data.owner_name || 'there'},\n\nThanks for submitting your business request.\n\nPlease complete your optional baseline form here:\n${BASELINE_FORM_URL}\n\nThis gives us your starting point so we can compare before/after outcomes later.\n\nSubmitted: ${formattedTime}\n\nThank you,\nVoice the Companies`;
+
       sendEmailFromCompany_(
         ownerEmail,
-        `Action Requested: Optional Profit Baseline Form${data.business_name ? ` (${data.business_name})` : ''}`,
-        `Hi ${data.owner_name || 'there'},\n\nThanks for submitting your business request.\n\nPlease complete your optional baseline form here:\n${BASELINE_FORM_URL}\n\nThis gives us your starting point so we can compare before/after outcomes later.\n\nSubmitted: ${formattedTime}\n\nThank you,\nVoice the Companies`
+        ownerSubject,
+        ownerBody
+      );
+
+      // Delivery trace so the deployer can verify owner-send branch executed.
+      sendEmailFromCompany_(
+        getAdminEmail_(),
+        `[Owner Email Sent] ${ownerSubject}`,
+        `Owner baseline email sent successfully.\n\nOwner recipient: ${ownerEmail}\nEntity: ${entity}\nTab: ${tabName}\nSubmitted: ${formattedTime}`
       );
     } catch (error) {
       // Keep webhook successful even if owner email delivery fails.
       console.log('Owner baseline email failed', String(error));
+      try {
+        sendEmailFromCompany_(
+          getAdminEmail_(),
+          '[Owner Email Failed] Optional Profit Baseline Form',
+          `Owner baseline email failed.\n\nOwner recipient: ${ownerEmail}\nEntity: ${entity}\nTab: ${tabName}\nSubmitted: ${formattedTime}\nError: ${String(error)}`
+        );
+      } catch (_) {
+        // Do not throw from diagnostics.
+      }
     }
   }
+}
+
+function getOwnerEmail_(data) {
+  return String(
+    (data && (data.email || data.owner_email || data.ownerEmail || data.contact_email)) || ''
+  ).trim();
 }
 
 function sendEmailFromCompany_(to, subject, body) {
