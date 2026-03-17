@@ -16,7 +16,15 @@ const TAB_BEFORE_AFTER = 'BeforeVsAfter';
 const COMPANY_NAME = 'Voice the Companies';
 const COMPANY_EMAIL = 'voicethecompanies@gmail.com';
 const COMPANY_FROM_ALIAS = '';
-const ADMIN_EMAIL = '2009nandish@gmail.com';
+
+function getAdminEmail_() {
+  try {
+    const email = Session.getEffectiveUser().getEmail();
+    return email || COMPANY_EMAIL;
+  } catch (e) {
+    return COMPANY_EMAIL;
+  }
+}
 const BASELINE_FORM_URL = 'https://forms.gle/X6YKriBykBpNe6C1A';
 
 const TAB_HEADERS = {
@@ -82,7 +90,7 @@ function sendNotificationEmail_(entity, data, submittedAt, tabName) {
   ].join('\n');
 
   try {
-    sendEmailFromCompany_(ADMIN_EMAIL, `New ${entity} submission`, summary);
+    sendEmailFromCompany_(getAdminEmail_(), `New ${entity} submission`, summary);
   } catch (error) {
     // Keep webhook successful even if admin email delivery fails.
     console.log('Admin email notification failed', String(error));
@@ -177,7 +185,7 @@ function getExistingSheet_(name) {
  * After running, check voicethecompanies@gmail.com inbox for the test message.
  */
 function testEmailDelivery() {
-  const testRecipient = ADMIN_EMAIL;
+  const testRecipient = getAdminEmail_();
   const timestamp = new Date().toLocaleString();
   try {
     MailApp.sendEmail({
