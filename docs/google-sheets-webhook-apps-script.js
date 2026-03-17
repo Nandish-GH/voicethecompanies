@@ -96,8 +96,9 @@ function sendNotificationEmail_(entity, data, submittedAt, tabName) {
     console.log('Admin email notification failed', String(error));
   }
 
-  if (entity === 'BusinessRequest') {
-    const ownerEmail = String(data.email || '').trim();
+  const isOwnerSubmission = tabName === TAB_OWNERS || entity === 'BusinessRequest';
+  if (isOwnerSubmission) {
+    const ownerEmail = String(data.email || data.owner_email || '').trim();
     if (!ownerEmail) return;
 
     try {
