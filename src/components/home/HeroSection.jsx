@@ -46,7 +46,7 @@ export default function HeroSection() {
             className="mt-6 text-lg md:text-xl text-[#6B6B6B] leading-relaxed max-w-2xl"
           >
             We connect high school and college students with local small businesses
-            to build professional websites and social media presences — creating
+            to build professional websites and social media presences, creating
             real-world experience and lasting community impact.
           </motion.p>
 

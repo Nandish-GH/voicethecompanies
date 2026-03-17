@@ -79,7 +79,7 @@ export default function Impact() {
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <h2 id="metrics-heading" className="text-2xl md:text-3xl font-bold text-[#2D2D2D] mb-4">What We Track</h2>
           <p className="text-[#6B6B6B] text-lg leading-relaxed">
-            As a newly launched program, we are actively collecting our first round of outcomes data. This page will be updated with verified results from our participating businesses and students as projects are completed. We are committed to full transparency — every number we publish will be real, sourced, and reported on a regular basis.
+            As a newly launched program, we are actively collecting our first round of outcomes data. This page will be updated with verified results from our participating businesses and students as projects are completed. We are committed to full transparency, and every number we publish will be real, sourced, and reported on a regular basis.
           </p>
           <div className="mt-8 inline-flex items-center gap-2 px-5 py-3 bg-[#EDF3EB] rounded-xl text-sm text-[#4A4A4A] font-medium">
             <Globe className="w-4 h-4 text-[#8FAF88]" aria-hidden="true" />

@@ -17,7 +17,7 @@ const tracks = [
     icon: Store,
     title: "I'm a Business Owner",
     subtitle: "Request digital services",
-    description: "Get a professional website and social media presence built by a talented student team — completely free of charge.",
+    description: "Get a professional website and social media presence built by a talented student team, completely free of charge.",
   },
 ];
 

@@ -131,7 +131,7 @@ function RoleCard({ role, index }) {
           </ul>
         </div>
 
-        {/* Skills & gain — 2 column on larger screens */}
+        {/* Skills & gain, 2 column on larger screens */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-5 border-t border-gray-100">
           <div>
             <h4 className="text-xs font-bold text-[#2D2D2D] uppercase tracking-wider mb-3 flex items-center gap-1.5">

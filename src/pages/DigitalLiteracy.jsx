@@ -354,7 +354,7 @@ function QuizSection({ quiz }) {
               ? "Excellent work!"
               : score >= quiz.length / 2
               ? "Good effort. Review any missed answers above."
-              : "Keep reviewing — you'll get it!"}
+              : "Keep reviewing, you'll get it!"}
           </p>
         </div>
       )}
@@ -373,7 +373,7 @@ function LessonCard({ lesson, index }) {
       transition={{ duration: 0.45, delay: index * 0.06 }}
       className="bg-white rounded-2xl border border-gray-100 overflow-hidden"
     >
-      {/* Header — always visible */}
+      {/* Header, always visible */}
       <button
         onClick={() => setOpen(!open)}
         className="w-full text-left p-6 md:p-8 flex items-start gap-5 group hover:bg-[#FAFAF8] transition-colors"
@@ -479,7 +479,7 @@ export default function DigitalLiteracy() {
                 <span className="text-[#8FAF88]">digital presence</span>
               </h1>
               <p className="mt-5 text-lg text-[#6B6B6B] max-w-xl leading-relaxed">
-                These five self-paced lessons are designed specifically for small business owners — no technical background required. Work through them at your own pace, in any order.
+                These five self-paced lessons are designed specifically for small business owners, and no technical background is required. Work through them at your own pace, in any order.
               </p>
             </motion.div>
           </div>

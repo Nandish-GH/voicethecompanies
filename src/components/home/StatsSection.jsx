@@ -20,7 +20,7 @@ export default function StatsSection() {
           </h2>
           <p className="text-gray-400 text-lg leading-relaxed">
             Our program is newly launched and actively taking on its first cohort of businesses and student teams.
-            Real outcomes data will be published here as our projects complete — transparently and in full.
+            Real outcomes data will be published here as our projects complete, transparently and in full.
           </p>
         </motion.div>
       </div>

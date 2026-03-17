@@ -85,7 +85,7 @@ const studentMetrics = [
   },
 ];
 
-// Sample/placeholder chart data — labeled clearly as illustrative
+// Sample/placeholder chart data, labeled clearly as illustrative
 const sampleTrafficData = [
   { month: "Pre-Launch", sessions: 120 },
   { month: "Month 1", sessions: 310 },
