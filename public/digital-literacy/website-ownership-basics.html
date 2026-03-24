@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Ownership Basics - Voice the Companies Digital Literacy Curriculum</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --sage:        #B2C9AD;
+    --sage-dark:   #7a9e74;
+    --sage-deep:   #4a7044;
+    --sage-deeper: #2d4d2a;
+    --sage-light:  #eef4ec;
+    --sage-border: #9ebd98;
+    --ink:         #2E2E2E;
+    --soft-ink:    #4a4a4a;
+    --bg:          #f7faf6;
+    --paper:       #ffffff;
+    --rule:        #d4e0d1;
+    --muted:       #7a8c78;
+    --warn-bg:     #fff8f0;
+    --warn-border: #e0a060;
+    --tip-bg:      #f0faf0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: linear-gradient(150deg, #1e3a1a 0%, #2d4d2a 40%, #1a2e18 100%);
+    color: white;
+    padding: 70px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 50px,
+      rgba(255,255,255,0.012) 50px, rgba(255,255,255,0.012) 100px
+    );
+  }
+  .cover-logo {
+    width: 170px;
+    height: auto;
+    max-width: 60%;
+    margin-bottom: 22px;
+    filter: none;
+    position: relative; z-index: 1;
+  }
+  .cover-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.55); margin-bottom: 14px;
+    position: relative; z-index: 1;
+  }
+  .cover h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 50px; font-weight: 900; line-height: 1.05;
+    margin-bottom: 18px; position: relative; z-index: 1;
+  }
+  .cover h1 em { color: var(--sage); font-style: normal; }
+  .cover-sub {
+    font-size: 16px; color: rgba(255,255,255,0.78);
+    max-width: 500px; line-height: 1.65; position: relative; z-index: 1;
+  }
+  .cover-badges {
+    display: flex; gap: 10px; margin-top: 36px; flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .badge {
+    border: 1px solid rgba(178,201,173,0.4);
+    padding: 5px 14px; border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+  }
+  .cover-back-link {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 8px 14px;
+    border: 1px solid rgba(178,201,173,0.6);
+    border-radius: 999px;
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  }
+  .cover-back-link:hover {
+    background: rgba(178,201,173,0.22);
+    border-color: rgba(178,201,173,0.9);
+    color: #ffffff;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 40px 60px; }
+
+  /* ── TABLE OF CONTENTS ── */
+  .toc {
+    background: var(--paper);
+    border-left: 4px solid var(--sage);
+    margin: 44px 0;
+    padding: 32px 36px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .toc-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 20px; color: var(--ink);
+  }
+  .toc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .toc-section {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--sage-deep);
+    margin: 16px 0 7px;
+  }
+  .toc a {
+    display: block; font-size: 13.5px; color: var(--soft-ink);
+    text-decoration: none; padding: 3px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .toc a:hover { color: var(--sage-deep); }
+
+  /* ── TOPIC / SECTION BANNERS ── */
+  .topic-banner {
+    margin: 52px -40px 0;
+    padding: 38px 40px 30px;
+    background: var(--sage-deeper);
+    position: relative;
+  }
+  .topic-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); margin-bottom: 9px;
+  }
+  .topic-banner h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px; font-weight: 800; color: white;
+    line-height: 1.2;
+  }
+  .topic-banner h2 span { color: var(--sage); }
+
+  /* ── SECTION HEADERS ── */
+  .section {
+    margin-top: 44px;
+    padding-top: 28px;
+    border-top: 2px solid var(--rule);
+  }
+  .section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px; font-weight: 700;
+    color: var(--ink); margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; background: var(--sage-deep);
+    color: white; padding: 3px 10px; border-radius: 3px;
+    letter-spacing: 1px; white-space: nowrap;
+  }
+  .section-title .num.warn { background: #c0763a; }
+  .section-title .num.success { background: var(--sage-dark); }
+
+  /* ── GUIDE LIST ── */
+  ul.guide-list { list-style: none; padding: 0; }
+  ul.guide-list > li {
+    padding: 6px 0 6px 22px;
+    position: relative; font-size: 14.5px;
+    border-bottom: 1px dotted var(--rule);
+  }
+  ul.guide-list > li:last-child { border-bottom: none; }
+  ul.guide-list > li::before {
+    content: '▸';
+    position: absolute; left: 0; color: var(--sage-dark);
+    font-size: 11px; top: 9px;
+  }
+  ul.guide-list li strong { color: var(--ink); }
+  ul.guide-list li em { color: var(--sage-deep); font-style: normal; font-weight: 600; }
+  ul.sub-list { list-style: none; margin: 7px 0 5px 18px; }
+  ul.sub-list li {
+    font-size: 13.5px; padding: 2px 0 2px 16px;
+    position: relative; color: var(--soft-ink);
+  }
+  ul.sub-list li::before {
+    content: '–'; position: absolute; left: 0; color: var(--sage);
+  }
+
+  /* ── STAT GRID ── */
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; margin: 22px 0;
+  }
+  .stat-box {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--sage-dark);
+    padding: 16px; text-align: center;
+  }
+  .stat-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 26px; font-weight: 900;
+    color: var(--sage-deep); display: block;
+  }
+  .stat-label { font-size: 11.5px; color: var(--soft-ink); margin-top: 4px; line-height: 1.35; }
+
+  /* ── PILLARS / STEP CARDS ── */
+  .pillar {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    margin: 0 0 16px;
+  }
+  .pillar-header {
+    background: var(--sage-light);
+    border-bottom: 2px solid var(--sage-border);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .pillar-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px; font-weight: 900;
+    color: var(--sage-dark); line-height: 1; min-width: 36px;
+  }
+  .pillar-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .pillar-tag { font-size: 11px; color: var(--muted); margin-top: 2px; font-style: italic; }
+  .pillar-body { padding: 18px 22px; }
+  .pillar-section { margin-bottom: 14px; }
+  .pillar-section:last-child { margin-bottom: 0; }
+  .pillar-section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sage-deep); margin-bottom: 7px; font-weight: 700;
+  }
+  .pillar-section p { font-size: 14px; color: var(--soft-ink); line-height: 1.7; }
+  .pillar-section ul { padding-left: 18px; }
+  .pillar-section li { font-size: 13.5px; margin-bottom: 4px; color: var(--soft-ink); }
+
+  /* ── TABLE ── */
+  .guide-table {
+    width: 100%; border-collapse: collapse;
+    margin: 20px 0; font-size: 13.5px;
+  }
+  .guide-table th {
+    background: var(--sage-deep); color: white;
+    padding: 10px 14px; text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .guide-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .guide-table tr:nth-child(even) td { background: var(--sage-light); }
+  .guide-table td strong { color: var(--sage-deep); }
+
+  /* ── NOTE / CALLOUT BOX ── */
+  .note-box {
+    background: var(--sage-light);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 14px 18px; font-size: 13.5px;
+    margin: 16px 0; color: var(--soft-ink);
+    line-height: 1.7;
+  }
+  .note-box strong { color: var(--sage-deep); }
+
+  /* ── WARNING / "DON'T TOUCH" BOX ── */
+  .warn-box {
+    background: var(--warn-bg);
+    border: 1px solid #f0d0b0;
+    border-left: 4px solid var(--warn-border);
+    padding: 16px 20px; margin: 14px 0;
+  }
+  .warn-box h5 {
+    font-size: 13.5px; font-weight: 700;
+    color: #b06020; margin-bottom: 8px;
+    font-family: 'Poppins', sans-serif;
+  }
+  .warn-box p { font-size: 13.5px; color: var(--soft-ink); line-height: 1.65; }
+  .warn-box .safe-note {
+    background: var(--tip-bg);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 10px 14px; margin-top: 10px;
+    font-size: 13.5px; color: var(--soft-ink);
+  }
+  .warn-box .safe-note strong { color: var(--sage-deep); }
+
+  /* ── TIP / QUOTE BOX ── */
+  .tip-box {
+    background: linear-gradient(135deg, var(--sage-light) 0%, #f0f7ee 100%);
+    border: 1px solid var(--rule);
+    padding: 20px 26px; margin: 16px 0;
+    position: relative;
+  }
+  .tip-box::before {
+    content: '"';
+    font-family: 'Poppins', sans-serif;
+    font-size: 90px; color: rgba(74,112,68,0.08);
+    position: absolute; top: -14px; left: 12px;
+    line-height: 1;
+  }
+  .tip-box p { font-size: 14px; line-height: 1.75; padding-left: 16px; font-style: italic; color: var(--soft-ink); }
+  .tip-box .tip-note {
+    font-style: normal; font-size: 11.5px; color: var(--muted);
+    margin-top: 8px; padding-left: 16px;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px;
+  }
+
+  /* ── TAKEAWAY CARDS ── */
+  .takeaway-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0;
+  }
+  .takeaway-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-top: 3px solid var(--sage-dark);
+    padding: 18px 20px;
+  }
+  .takeaway-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px; font-weight: 900;
+    color: var(--sage); line-height: 1; margin-bottom: 8px;
+  }
+  .takeaway-title {
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .takeaway-card p { font-size: 13.5px; color: var(--soft-ink); line-height: 1.65; }
+
+  /* ── QUIZ ── */
+  .quiz-q {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 18px 22px; margin: 14px 0;
+  }
+  .quiz-q-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .quiz-q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; background: var(--sage-deep);
+    color: white; padding: 2px 8px; border-radius: 3px;
+    letter-spacing: 1px; margin-right: 8px;
+    display: inline-block; margin-bottom: 10px;
+  }
+  .quiz-choices { list-style: none; padding: 0; }
+  .quiz-choices li {
+    font-size: 13.5px; color: var(--soft-ink);
+    padding: 5px 0 5px 22px; position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .quiz-choices li:last-child { border-bottom: none; }
+  .quiz-choices li::before {
+    content: '○'; position: absolute; left: 0;
+    color: var(--sage); font-size: 12px; top: 6px;
+  }
+  /* ── INTERACTIVE WORKBOOK ── */
+  .interactive-panel {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 18px 20px;
+    margin: 24px 0 36px;
+  }
+  .interactive-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .interactive-sub {
+    font-size: 13px;
+    color: var(--soft-ink);
+    margin-bottom: 14px;
+  }
+  .progress-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .progress-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .progress-item label {
+    font-size: 13px;
+    color: var(--soft-ink);
+    cursor: pointer;
+  }
+  .progress-item input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--sage-deep);
+  }
+  .progress-status {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.4px;
+    margin-bottom: 12px;
+  }
+  .interactive-notes-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--sage-deep);
+    margin-bottom: 6px;
+  }
+  .interactive-notes {
+    width: 100%;
+    min-height: 92px;
+    border: 1px solid var(--rule);
+    background: #fff;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    resize: vertical;
+  }
+
+  .quiz-choices li {
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .quiz-choices li:hover {
+    background: #f5f9f4;
+  }
+  .quiz-choices li.quiz-selected {
+    background: #edf3eb;
+    border-color: var(--sage-border);
+  }
+  .quiz-choices li.quiz-selected::before {
+    content: '◉';
+    color: var(--sage-deep);
+  }
+  .quiz-choices li.quiz-correct {
+    background: #eaf6e7;
+    border-color: #8ab27f;
+  }
+  .quiz-choices li.quiz-correct::before {
+    content: '✓';
+    color: #3f7f33;
+    font-weight: 700;
+  }
+  .quiz-choices li.quiz-incorrect {
+    background: #fff1f0;
+    border-color: #d99891;
+  }
+  .quiz-choices li.quiz-incorrect::before {
+    content: '✕';
+    color: #b24b42;
+    font-weight: 700;
+  }
+  .quiz-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .quiz-btn {
+    background: var(--sage-deep);
+    color: #fff;
+    border: 1px solid var(--sage-deep);
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .quiz-btn.secondary {
+    background: #fff;
+    color: var(--sage-deep);
+  }
+  .quiz-result {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--soft-ink);
+  }
+  /* ── CHEAT SHEET ── */
+  .cheat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border: 1px solid var(--sage-border); margin: 20px 0;
+  }
+  .cheat-cell {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--sage-border);
+    border-right: 1px solid var(--sage-border);
+  }
+  .cheat-cell:nth-child(even) { border-right: none; }
+  .cheat-cell:nth-last-child(1),
+  .cheat-cell:nth-last-child(2) { border-bottom: none; }
+  .cheat-cell dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700; color: var(--sage-deep);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;
+  }
+  .cheat-cell dd { font-size: 13px; color: var(--soft-ink); line-height: 1.6; }
+  .cheat-cell dd ul { padding-left: 14px; margin-top: 4px; }
+  .cheat-cell dd li { margin-bottom: 2px; font-size: 12.5px; }
+  .cheat-header {
+    grid-column: 1 / -1;
+    background: var(--sage-deep); color: white;
+    padding: 9px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+    border-bottom: 1px solid var(--sage-border);
+  }
+
+  /* ── WELCOME ── */
+  .welcome-banner {
+    background: var(--sage-light);
+    border-left: 4px solid var(--sage-dark);
+    padding: 22px 28px; margin: 20px 0;
+  }
+  .welcome-banner p { font-size: 14.5px; color: var(--soft-ink); line-height: 1.75; }
+
+  /* ── CHECKLIST ── */
+  ul.checklist { list-style: none; padding: 0; margin: 14px 0; }
+  ul.checklist li {
+    font-size: 14px; color: var(--soft-ink);
+    padding: 6px 0 6px 26px; position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+  ul.checklist li:last-child { border-bottom: none; }
+  ul.checklist li::before {
+    content: '✓'; position: absolute; left: 0;
+    color: var(--sage-dark); font-weight: 700; font-size: 13px; top: 7px;
+  }
+
+  /* ── COMPARISON GRID ── */
+  .compare-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;
+  }
+  .compare-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    overflow: hidden;
+  }
+  .compare-card-head {
+    background: var(--sage-deep); color: white;
+    padding: 12px 18px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px; font-weight: 700;
+  }
+  .compare-card-head.alt { background: var(--sage-dark); }
+  .compare-card-body { padding: 16px 18px; font-size: 13.5px; color: var(--soft-ink); line-height: 1.7; }
+  .compare-card-body strong { color: var(--sage-deep); display: block; margin-bottom: 4px; }
+
+  /* ── DIVIDERS ── */
+  .divider { border: none; border-top: 1px solid var(--rule); margin: 32px 0; }
+
+  /* ── META ROW ── */
+  .meta-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px;
+  }
+  .meta-cell {
+    background: #f4f4f4; padding: 10px 14px; font-size: 12.5px; color: var(--soft-ink);
+  }
+  .meta-cell strong {
+    display: block; font-size: 9.5px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    background: var(--ink); color: rgba(255,255,255,0.45);
+    text-align: center; padding: 28px 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 1px;
+    margin-top: 60px;
+  }
+  .doc-footer span { color: var(--sage); }
+
+  @media print {
+    .cover { padding: 40px; }
+    body { font-size: 13px; }
+    .topic-banner { margin: 40px 0 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ COVER ══════════════════ -->
+<div class="cover">
+  <img class="cover-logo" src="../logo.png" alt="Voice the Companies logo" />
+  <div class="cover-label">Voice the Companies · Digital Literacy Curriculum · Lesson 1 of 5</div>
+  <h1>Website<br><em>Ownership</em><br>Basics</h1>
+  <p class="cover-sub">A beginner-friendly guide to logging in, understanding your website, and making confident edits - no technical background required.</p>
+  <div class="cover-badges">
+    <div class="badge">7 Steps</div>
+    <div class="badge">4 Key Takeaways</div>
+    <div class="badge">Knowledge Check</div>
+    <div class="badge">Printable Cheat Sheet</div>
+    <div class="badge">No Tech Experience Required</div>
+  </div>
+  <a class="cover-back-link" href="/digital-literacy">Back to Digital Literacy</a>
+</div>
+
+<div class="container">
+
+<!-- ══════════════════ TABLE OF CONTENTS ══════════════════ -->
+<div class="toc">
+  <div class="toc-title">Table of Contents</div>
+  <div class="toc-cols">
+    <div>
+      <div class="toc-section">Getting Started</div>
+      <a href="#welcome">Welcome</a>
+      <a href="#how-to-use">How to Use This Guide</a>
+      <div class="toc-section">The Seven Steps</div>
+      <a href="#step1">Step 1 - Logging In</a>
+      <a href="#step2">Step 2 - Hosting vs. Domain</a>
+      <a href="#step3">Step 3 - Navigating the Dashboard</a>
+      <a href="#step4">Step 4 - Making a Simple Text Edit</a>
+    </div>
+    <div>
+      <div class="toc-section">&nbsp;</div>
+      <a href="#step5">Step 5 - Updating an Image</a>
+      <a href="#step6">Step 6 - What Not to Touch</a>
+      <a href="#step7">Step 7 - Password Security</a>
+      <div class="toc-section">Wrap-Up</div>
+      <a href="#takeaways">Key Takeaways</a>
+      <a href="#quiz">Knowledge Check</a>
+      <a href="#cheatsheet">Printable Cheat Sheet</a>
+    </div>
+  </div>
+</div>
+
+<div class="interactive-panel" id="workbook-tools">
+  <div class="interactive-title">Interactive Workbook</div>
+  <p class="interactive-sub">Track your progress and keep notes while you work through this lesson.</p>
+  <ul class="progress-list" id="interactive-step-list"></ul>
+  <p class="progress-status" id="interactive-progress-status"></p>
+  <label class="interactive-notes-label" for="interactive-notes">My Notes</label>
+  <textarea class="interactive-notes" id="interactive-notes" placeholder="Write reminders, questions, or actions you want to take..."></textarea>
+</div>
+
+<!-- ══════════════════ WELCOME ══════════════════ -->
+<div class="topic-banner" id="welcome">
+  <div class="topic-tag">Voice the Companies · Digital Literacy Curriculum · Lesson 1</div>
+  <h2>Welcome to <span>Website Ownership Basics</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">INTRO</span> A Note Before You Begin</div>
+
+  <div class="welcome-banner">
+    <p>Glad you are here. If websites have ever felt intimidating, you are not alone. The main thing to remember is simple: <strong>your website belongs to you.</strong> You are allowed to log in, click around, and make updates. This guide walks you through it in plain language so you can do that with confidence.</p>
+  </div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:14px;">
+    At Voice the Companies, we want small business owners to feel in control of their online presence. This first lesson gives you practical basics you can use right away.
+  </p>
+
+  <div class="stat-grid">
+    <div class="stat-box"><span class="stat-num">7</span><div class="stat-label">Step-by-step lessons</div></div>
+    <div class="stat-box"><span class="stat-num">4</span><div class="stat-label">Core takeaways</div></div>
+    <div class="stat-box"><span class="stat-num">5</span><div class="stat-label">Quiz questions</div></div>
+    <div class="stat-box"><span class="stat-num">1</span><div class="stat-label">Printable cheat sheet</div></div>
+  </div>
+
+  <p style="font-size:14px; color:var(--soft-ink); line-height:1.75; margin-bottom:14px;">By the end of this lesson, you will be able to:</p>
+  <ul class="checklist">
+    <li>Log into your website dashboard on any major platform</li>
+    <li>Explain the difference between a domain and hosting</li>
+    <li>Find your way around your dashboard without confusion</li>
+    <li>Make simple text and image edits with confidence</li>
+    <li>Identify which areas to leave to the experts</li>
+    <li>Build good habits around password security and account protection</li>
+  </ul>
+</div>
+
+<!-- HOW TO USE -->
+<div class="section" id="how-to-use">
+  <div class="section-title"><span class="num">GUIDE</span> How to Use This Curriculum</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    This guide is designed to be worked through at your own pace. You can complete it in one sitting or spread it across several sessions - whatever fits your schedule. Here is how to get the most out of it.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">1</div>
+      <div>
+        <div class="pillar-name">Read each section carefully</div>
+        <div class="pillar-tag">Every step builds on the one before it</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Each of the seven steps is connected. Going through them in order the first time will give you the clearest understanding. After that, feel free to jump to any section whenever you need a refresher.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">2</div>
+      <div>
+        <div class="pillar-name">Try it as you go</div>
+        <div class="pillar-tag">Open your website alongside this guide</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">If you have access to your website, we encourage you to open it in a separate window and follow along in real time. Doing things yourself is the fastest way to build confidence.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">3</div>
+      <div>
+        <div class="pillar-name">Keep the cheat sheet nearby</div>
+        <div class="pillar-tag">A printable reference is included at the end</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">At the end of this guide, you will find a one-page reference summary you can print and keep near your computer. It covers login URLs, safe edits, areas to avoid, and password habits - all in one place.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">4</div>
+      <div>
+        <div class="pillar-name">Take the knowledge check</div>
+        <div class="pillar-tag">Five short questions - no grades, just for you</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">The quiz at the end of this lesson is just for you. There are no grades and no wrong answers in the sense of failing - it is simply a chance to confirm you absorbed the key ideas before moving on.</p>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <strong>A note on platforms:</strong> This guide references WordPress, Squarespace, and Wix because they are the most common website platforms for small businesses. The core concepts apply to almost every platform, even if the exact menu names look slightly different on yours.
+  </div>
+</div>
+
+<!-- ══════════════════ STEP 1 ══════════════════ -->
+<div class="topic-banner" id="step1" style="margin-top:44px;">
+  <div class="topic-tag">Step 1 of 7</div>
+  <h2>Logging <span>In</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 01</span> Getting Into Your Dashboard</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Before you can do anything with your website, you need to know how to get in. Think of this like unlocking the back door to your business - once you know where the key is, it becomes second nature.
+  </p>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Login URL</th>
+        <th>What to Do</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>WordPress</strong></td>
+        <td><code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--sage-deep);">yourwebsite.com/wp-admin</code></td>
+        <td>Type your website address followed by /wp-admin. Enter your username and password on the login screen.</td>
+      </tr>
+      <tr>
+        <td><strong>Squarespace</strong></td>
+        <td><code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--sage-deep);">account.squarespace.com</code></td>
+        <td>Visit account.squarespace.com and sign in with your email and password. Your site will appear in your dashboard.</td>
+      </tr>
+      <tr>
+        <td><strong>Wix</strong></td>
+        <td><code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--sage-deep);">manage.wix.com</code></td>
+        <td>Go to manage.wix.com and log in through your Wix account to access your site editor and settings.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <p>Bookmark your login page right now. Most business owners log in through their platform's main website, not through a link on their own site. Saving the bookmark takes ten seconds and will save you a lot of searching later.</p>
+    <div class="tip-note">▸ Pro tip from your VTC student team</div>
+  </div>
+
+  <ul class="guide-list" style="margin-top:14px;">
+    <li><strong>Once you are logged in,</strong> you will see your dashboard - the control panel for your entire website. Do not worry if it looks complicated at first. The next step will walk you through exactly what everything means.</li>
+    <li><strong>Nothing changes on your live site</strong> just from looking around the dashboard. You can explore freely without worrying about breaking anything.</li>
+    <li><strong>If you forget your password,</strong> every platform has a "Forgot Password" link on the login page. It will send a reset link to the email address associated with your account.</li>
+  </ul>
+</div>
+
+<!-- ══════════════════ STEP 2 ══════════════════ -->
+<div class="topic-banner" id="step2" style="margin-top:44px;">
+  <div class="topic-tag">Step 2 of 7</div>
+  <h2>Hosting <span>vs. Domain</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 02</span> Understanding the Two Parts of Your Website</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Many business owners are surprised to learn that a website is actually two separate things working together. Understanding this distinction helps you manage your website confidently and avoid confusion when something needs to be renewed or updated.
+  </p>
+
+  <div class="compare-grid">
+    <div class="compare-card">
+      <div class="compare-card-head">Your Domain Name</div>
+      <div class="compare-card-body">
+        <strong>What it is</strong>
+        The address people type into their browser to find you - for example, yourbusiness.com. It is the name of your digital storefront.
+        <br/><br/>
+        <strong>Think of it as</strong>
+        Your business's street address. It tells people where to find you.
+        <br/><br/>
+        <strong>Renewal</strong>
+        Usually renewed once per year. If it expires, people cannot find your site.
+      </div>
+    </div>
+    <div class="compare-card">
+      <div class="compare-card-head alt">Your Hosting</div>
+      <div class="compare-card-body">
+        <strong>What it is</strong>
+        The server - essentially a computer - where your website's files, images, and content are stored and delivered to visitors.
+        <br/><br/>
+        <strong>Think of it as</strong>
+        The physical building at your address. It is where everything actually lives.
+        <br/><br/>
+        <strong>Renewal</strong>
+        Usually renewed monthly or annually. If hosting lapses, your site goes offline.
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <strong>Important:</strong> Your domain and hosting may be through the same provider (like Squarespace or Wix, which bundle both) or through separate companies (common with WordPress). Check the original setup emails from your student team to confirm where yours are managed.
+  </div>
+
+  <ul class="guide-list" style="margin-top:16px;">
+    <li><strong>If your site suddenly goes offline,</strong> the first thing to check is whether your hosting or domain has expired. Log into the provider account and look for renewal notices.</li>
+    <li><strong>Set calendar reminders</strong> for your renewal dates - both domain and hosting - so you are never caught off guard.</li>
+    <li><em>Key distinction:</em> You can own a domain name without having hosting, but your site will not load for visitors. You need both working together for your site to be visible.</li>
+  </ul>
+</div>
+
+<!-- ══════════════════ STEP 3 ══════════════════ -->
+<div class="topic-banner" id="step3" style="margin-top:44px;">
+  <div class="topic-tag">Step 3 of 7</div>
+  <h2>Navigating <span>the Dashboard</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 03</span> Finding Your Way Around</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Every website platform has a dashboard, and while they each look a little different, they all contain the same core sections. Here is what to look for and what each area does.
+  </p>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Dashboard Area</th>
+        <th>What It Does</th>
+        <th>Safe to Edit?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Pages</strong></td>
+        <td>Manage the main pages of your site - Home, About, Contact, Services, etc.</td>
+        <td style="color:var(--sage-deep); font-weight:600;">Yes</td>
+      </tr>
+      <tr>
+        <td><strong>Posts / Blog</strong></td>
+        <td>Add, edit, or delete articles, news updates, or any regularly updated content.</td>
+        <td style="color:var(--sage-deep); font-weight:600;">Yes</td>
+      </tr>
+      <tr>
+        <td><strong>Media / Images</strong></td>
+        <td>Upload and manage all photos, graphics, and files used on your site.</td>
+        <td style="color:var(--sage-deep); font-weight:600;">Yes</td>
+      </tr>
+      <tr>
+        <td><strong>Settings</strong></td>
+        <td>Site title, contact email, general preferences - safe for basic edits.</td>
+        <td style="color:#c0763a; font-weight:600;">With care</td>
+      </tr>
+      <tr>
+        <td><strong>Appearance / Design</strong></td>
+        <td>Controls your site's theme, fonts, and layout. Best left to your student team.</td>
+        <td style="color:#b03030; font-weight:600;">Not recommended</td>
+      </tr>
+      <tr>
+        <td><strong>Plugins / Apps</strong></td>
+        <td>Add-on programs that extend your site's features. Changing settings here requires technical knowledge.</td>
+        <td style="color:#b03030; font-weight:600;">No</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <p>Spend ten minutes just clicking around your dashboard without editing anything. Get familiar with where things are. The more you explore, the less intimidating it becomes - and nothing breaks just from looking.</p>
+    <div class="tip-note">▸ Recommended by your VTC student team</div>
+  </div>
+
+  <ul class="guide-list" style="margin-top:14px;">
+    <li><strong>Most platforms have a live preview option</strong> that lets you see how your site looks to visitors without publishing any changes. Look for a "Preview" button, usually in the top right corner.</li>
+    <li><strong>The left-side menu</strong> (in WordPress) or top navigation bar (in Squarespace and Wix) is your main way to move between sections of the dashboard.</li>
+    <li><em>A useful shortcut:</em> Bookmarking the Pages section of your dashboard directly will save you time when you need to make quick updates.</li>
+  </ul>
+</div>
+
+<!-- ══════════════════ STEP 4 ══════════════════ -->
+<div class="topic-banner" id="step4" style="margin-top:44px;">
+  <div class="topic-tag">Step 4 of 7</div>
+  <h2>Making a <span>Simple Text Edit</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 04</span> Updating Your Business Information</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    One of the most common things a business owner needs to update is basic contact information - a new phone number, adjusted hours, or a change of address. Here is how to do it safely, step by step.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">1</div>
+      <div>
+        <div class="pillar-name">Go to Pages and find the right page</div>
+        <div class="pillar-tag">Usually the Home, Contact, or About page</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Log into your dashboard and navigate to the Pages section. Click on the page that contains the information you want to change.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">2</div>
+      <div>
+        <div class="pillar-name">Click Edit to open the page editor</div>
+        <div class="pillar-tag">Look for an Edit or Pencil icon</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Every platform has a way to enter edit mode. In WordPress it may say "Edit with Elementor" or just "Edit." In Squarespace and Wix, clicking directly on your page content often opens the editor automatically.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">3</div>
+      <div>
+        <div class="pillar-name">Click directly on the text and edit it</div>
+        <div class="pillar-tag">Just like editing a Word document</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Find the text you want to change, click on it, and edit just like you would in any text document. Highlight the old text and type the new information.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">4</div>
+      <div>
+        <div class="pillar-name">Click Save or Publish when done</div>
+        <div class="pillar-tag">Usually a blue or green button in the top right</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">When you are done editing, always save your changes. Look for a Save, Update, or Publish button - it is almost always in the top right corner of the editor.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">5</div>
+      <div>
+        <div class="pillar-name">Check your live site to confirm the change</div>
+        <div class="pillar-tag">Open a new browser tab</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">After saving, visit your live website in a new browser tab and navigate to the page you edited. Confirm your change looks correct before closing the editor.</p>
+    </div>
+  </div>
+
+  <div class="note-box" style="margin-top:18px;">
+    <strong>Good to know:</strong> Editing text through the page editor does not affect your site's design, layout, or any technical settings. It is the safest kind of edit you can make. Small content changes never require a developer.
+  </div>
+</div>
+
+<!-- ══════════════════ STEP 5 ══════════════════ -->
+<div class="topic-banner" id="step5" style="margin-top:44px;">
+  <div class="topic-tag">Step 5 of 7</div>
+  <h2>Updating <span>an Image</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 05</span> Working With Your Media Library</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Your website has a media library where all uploaded photos and files are stored. Replacing or uploading an image is straightforward once you know where to look.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">1</div>
+      <div>
+        <div class="pillar-name">Go to Media or Images in the dashboard</div>
+        <div class="pillar-tag">Found in the left sidebar or main navigation</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Navigate to the Media or Images section from your dashboard menu to see all files currently uploaded to your site.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">2</div>
+      <div>
+        <div class="pillar-name">Upload a new image</div>
+        <div class="pillar-tag">Click Add New, Upload, or the + button</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">To add a new photo, click the upload button and select the file from your computer or phone. JPG and PNG files work for most purposes.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">3</div>
+      <div>
+        <div class="pillar-name">Replace an image on a specific page</div>
+        <div class="pillar-tag">Go to the page editor and click on the image</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">To replace a photo that is already on a page, go into the page editor, click directly on the image, and look for a Replace Image or Change option in the panel that appears.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">4</div>
+      <div>
+        <div class="pillar-name">Name your files descriptively before uploading</div>
+        <div class="pillar-tag">Good for organization and SEO</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Rename image files before uploading when you can. For example, <em>storefront-summer-2024.jpg</em> is far more useful than <em>IMG_4823.jpg</em> when you are looking for it later.</p>
+    </div>
+  </div>
+
+  <ul class="guide-list" style="margin-top:14px;">
+    <li><strong>Keep file sizes reasonable.</strong> Very large image files (above 2–3 MB) can slow your website down noticeably. If a photo is very large, free tools like <em>Squoosh.app</em> let you reduce file size before uploading.</li>
+    <li><strong>Common formats:</strong> JPG is best for photos. PNG is best for graphics with transparent backgrounds, such as logos.</li>
+    <li><em>Alt text matters:</em> When you upload an image, there will usually be a field for "Alt Text." Add a short description of the image - this helps visually impaired visitors and improves your site's search ranking.</li>
+  </ul>
+</div>
+
+<!-- ══════════════════ STEP 6 ══════════════════ -->
+<div class="topic-banner" id="step6" style="margin-top:44px;">
+  <div class="topic-tag">Step 6 of 7</div>
+  <h2>What <span>Not to Touch</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num warn">STEP 06</span> Staying Safe While Exploring</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Curiosity is a good thing, and exploring your dashboard will never break your site on its own. That said, there are a few areas that are best left alone unless you have specific guidance from your Voice the Companies student team or a technical professional.
+  </p>
+
+  <div class="warn-box">
+    <h5>⚠ Plugin or App Settings</h5>
+    <p>Plugins are small programs that add features to your site - contact forms, analytics, security tools, and more. Changing their settings without understanding what they do can break those features in ways that are difficult to undo.</p>
+    <div class="safe-note"><strong>Safe alternative:</strong> If a form or feature on your site stops working, contact your student team before touching plugin settings.</div>
+  </div>
+
+  <div class="warn-box">
+    <h5>⚠ Theme or Template Files</h5>
+    <p>Your theme controls the visual design of your entire site - layout, fonts, colors, and structure. Editing theme files directly requires knowledge of HTML and CSS. An accidental change here can alter your entire site's appearance at once.</p>
+    <div class="safe-note"><strong>Safe alternative:</strong> If you want to change how your site looks, describe what you have in mind to your student team and let them handle the technical side.</div>
+  </div>
+
+  <div class="warn-box">
+    <h5>⚠ Custom Code Areas (CSS / HTML / Code Injection)</h5>
+    <p>Any area labeled Custom CSS, HTML Editor, or Code Injection should only be edited by someone who understands what the code does. Mistakes in these areas can make parts of your site invisible or broken for visitors.</p>
+    <div class="safe-note"><strong>Safe alternative:</strong> Leave anything that looks like code exactly as it is. If you see an error on your live site, take a screenshot and share it with your student team.</div>
+  </div>
+
+  <div class="warn-box">
+    <h5>⚠ Domain or DNS Settings</h5>
+    <p>These settings control how your website address connects to your hosting server. An incorrect change here - even a small one - can take your site completely offline for hours or longer.</p>
+    <div class="safe-note"><strong>Safe alternative:</strong> If you ever need to transfer your domain or change a DNS setting, always work with your student team or hosting provider's support line.</div>
+  </div>
+
+  <div class="warn-box">
+    <h5>⚠ Deleting Admin Users or Accounts</h5>
+    <p>Removing an admin account - including your own - can lock you out of your site permanently. Always confirm with your student team before adding, editing, or removing any user accounts.</p>
+    <div class="safe-note"><strong>Safe alternative:</strong> If you need to give or remove access for someone, ask your student team to create a separate user account with the appropriate permissions.</div>
+  </div>
+
+  <div class="note-box" style="margin-top:6px;">
+    <strong>When in doubt, pause.</strong> If you are ever unsure whether something is safe to change, take a screenshot of what you are looking at and reach out to your Voice the Companies student team before proceeding. There is never any shame in asking.
+  </div>
+</div>
+
+<!-- ══════════════════ STEP 7 ══════════════════ -->
+<div class="topic-banner" id="step7" style="margin-top:44px;">
+  <div class="topic-tag">Step 7 of 7</div>
+  <h2>Password <span>Security</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num success">STEP 07</span> Keeping Your Account Protected</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Your website account is a business asset, and protecting it is just as important as locking your front door at night. These habits are simple but make a real difference.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">1</div>
+      <div>
+        <div class="pillar-name">Use a strong, unique password</div>
+        <div class="pillar-tag">Mix of letters, numbers, and a symbol</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">A strong password includes uppercase and lowercase letters, at least one number, and at least one symbol. Avoid using your business name, your birthday, or the word "password" in any form.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">2</div>
+      <div>
+        <div class="pillar-name">Store credentials securely</div>
+        <div class="pillar-tag">A password manager is the safest option</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">Recommended Tools</div>
+        <ul>
+          <li><strong>Bitwarden</strong> - Free, easy to use, works on all devices</li>
+          <li><strong>1Password</strong> - Popular option with a clean interface</li>
+          <li><strong>Apple Keychain</strong> - Built into iPhone and Mac, free to use</li>
+        </ul>
+      </div>
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7; margin-top:8px;">Avoid writing passwords on sticky notes or storing them in an unprotected spreadsheet or notes app.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">3</div>
+      <div>
+        <div class="pillar-name">Change your password every 90 days</div>
+        <div class="pillar-tag">Set a repeating reminder right now</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Open your phone's calendar app right now and set a repeating reminder every 90 days labeled "Change website password." This single habit significantly reduces your risk of being hacked.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">4</div>
+      <div>
+        <div class="pillar-name">Never share your login credentials directly</div>
+        <div class="pillar-tag">Use platform user management instead</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">If you need to give someone access to your website - a new employee, a contractor, or a VTC team member - never share your personal login. Use your platform's built-in user management to create a separate account for them with only the permissions they need.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">5</div>
+      <div>
+        <div class="pillar-name">Enable two-factor authentication (2FA)</div>
+        <div class="pillar-tag">An extra layer of protection at login</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Two-factor authentication requires a second confirmation step - usually a code sent to your phone - when logging in from a new device. If your platform offers it, turn it on. It is one of the most effective ways to prevent unauthorized access.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ KEY TAKEAWAYS ══════════════════ -->
+<div class="topic-banner" id="takeaways" style="margin-top:44px;">
+  <div class="topic-tag">Wrap-Up</div>
+  <h2>Key <span>Takeaways</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">REVIEW</span> What to Remember From This Lesson</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:20px;">
+    You covered a lot of ground in this lesson. Here are the four ideas that matter most - the ones worth returning to whenever you need a quick reminder.
+  </p>
+
+  <div class="takeaway-grid">
+    <div class="takeaway-card">
+      <div class="takeaway-num">01</div>
+      <div class="takeaway-title">Your website is yours. You have the right to edit it.</div>
+      <p>Ownership means having access and using it. You do not need permission or a technical degree to log in, look around, and make changes to content that belongs to your business.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">02</div>
+      <div class="takeaway-title">Most dashboards are built for non-technical users.</div>
+      <p>Platforms like WordPress, Squarespace, and Wix are designed so that everyday business owners can manage their own content. The menus may look complex at first, but they become familiar quickly.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">03</div>
+      <div class="takeaway-title">Small edits through the admin panel rarely break anything.</div>
+      <p>Editing text, updating images, and navigating pages are all safe actions. The areas to be cautious about - plugins, theme files, and code - are clearly labeled, and you now know to leave those alone.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">04</div>
+      <div class="takeaway-title">Backing up before big changes gives you a safety net.</div>
+      <p>If you ever plan to make a significant change to your site, ask your Voice the Companies student team how to create a backup first. Most platforms offer this with one click, and it gives you complete peace of mind.</p>
+    </div>
+  </div>
+
+  <div class="tip-box" style="margin-top:8px;">
+    <p>You have completed Lesson 1 of the Voice the Companies Digital Literacy Curriculum. The next lesson covers Social Media Fundamentals - how to set up and maintain your business profiles on key platforms, write a compelling bio, and post consistently using a simple content calendar.</p>
+    <div class="tip-note">▸ Next: Lesson 2 - Social Media Fundamentals</div>
+  </div>
+</div>
+
+<!-- ══════════════════ KNOWLEDGE CHECK ══════════════════ -->
+<div class="topic-banner" id="quiz" style="margin-top:44px;">
+  <div class="topic-tag">Wrap-Up</div>
+  <h2>Knowledge <span>Check</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">QUIZ</span> Five Quick Questions</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Answer these five questions to check your understanding. There are no grades here - this is just for you.
+  </p>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q1</span>
+    <div class="quiz-q-text">What is the difference between a domain name and hosting?</div>
+    <ul class="quiz-choices">
+      <li>A) They are two words for the same thing</li>
+      <li>B) A domain is your web address; hosting is where your files are stored</li>
+      <li>C) A domain is where your files live; hosting is your web address</li>
+      <li>D) Hosting is only needed for large business websites</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q2</span>
+    <div class="quiz-q-text">Which of the following is completely safe to edit on your own?</div>
+    <ul class="quiz-choices">
+      <li>A) Plugin settings</li>
+      <li>B) Theme files and custom CSS</li>
+      <li>C) Your phone number on the Contact page</li>
+      <li>D) DNS and domain settings</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q3</span>
+    <div class="quiz-q-text">Where do you go to upload or manage photos on your website?</div>
+    <ul class="quiz-choices">
+      <li>A) The Pages section</li>
+      <li>B) The Settings section</li>
+      <li>C) The Media Library</li>
+      <li>D) The Appearance or Design panel</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q4</span>
+    <div class="quiz-q-text">How often should you change your website account password?</div>
+    <ul class="quiz-choices">
+      <li>A) Only when you forget it</li>
+      <li>B) Every 90 days</li>
+      <li>C) Once every five years</li>
+      <li>D) Only when your student team tells you to</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q5</span>
+    <div class="quiz-q-text">What should you do before making a large or significant change to your website?</div>
+    <ul class="quiz-choices">
+      <li>A) Delete old pages to make room for new content</li>
+      <li>B) Turn off your hosting plan temporarily</li>
+      <li>C) Create a backup of your site first</li>
+      <li>D) Log out and log back in to refresh the system</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ══════════════════ CHEAT SHEET ══════════════════ -->
+<div class="topic-banner" id="cheatsheet" style="margin-top:44px;">
+  <div class="topic-tag">Reference</div>
+  <h2>Printable <span>Cheat Sheet</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">REF</span> Website Ownership Basics - Quick Reference</div>
+
+  <p style="font-size:14px; color:var(--muted); font-style:italic; margin-bottom:14px;">
+    Print this page and keep it near your computer. Everything you learned in this lesson, condensed onto one reference sheet.
+  </p>
+
+  <div class="cheat-grid">
+    <div class="cheat-header">Step 1 &amp; 2 - Logging In &amp; Key Concepts</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>WordPress Login</dt>
+        <dd>yourwebsite.com/wp-admin</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Squarespace Login</dt>
+        <dd>account.squarespace.com</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Wix Login</dt>
+        <dd>manage.wix.com</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Domain vs. Hosting</dt>
+        <dd>Domain = your web address. Hosting = where your files live. You need both.</dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Step 3 - Dashboard Areas</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Safe to Edit</dt>
+        <dd>
+          <ul>
+            <li>Pages (text, contact info)</li>
+            <li>Posts / Blog</li>
+            <li>Media / Images</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Leave to the Experts</dt>
+        <dd>
+          <ul>
+            <li>Plugin / App settings</li>
+            <li>Theme / Template files</li>
+            <li>Custom CSS or Code areas</li>
+            <li>DNS / Domain settings</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Steps 4 &amp; 5 - Editing Content</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Text Edit Steps</dt>
+        <dd>Dashboard → Pages → Edit → Click text → Update → Save → Check live site</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Image Update Steps</dt>
+        <dd>Dashboard → Media → Upload New, or go to page editor → click image → Replace Image</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Image Tips</dt>
+        <dd>Keep files under 2–3 MB. Use JPG for photos, PNG for logos. Add alt text when uploading.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Before Big Changes</dt>
+        <dd>Always create a backup first. Ask your VTC student team how if unsure.</dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Step 7 - Password Security</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Password Habits</dt>
+        <dd>
+          <ul>
+            <li>Change every 90 days</li>
+            <li>Use uppercase, lowercase, numbers, symbol</li>
+            <li>Never use your business name</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Credential Storage</dt>
+        <dd>
+          <ul>
+            <li>Bitwarden (free)</li>
+            <li>1Password</li>
+            <li>Apple Keychain (iPhone/Mac)</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Sharing Access</dt>
+        <dd>Never share your login. Create a separate user account through your platform's user management settings.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Two-Factor Auth (2FA)</dt>
+        <dd>Enable it if your platform offers it. Requires a second code at login - a major security upgrade.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="meta-row" style="margin-top:20px;">
+    <div class="meta-cell"><strong>Organization</strong>Voice the Companies</div>
+    <div class="meta-cell"><strong>Curriculum</strong>Digital Literacy - Lesson 1 of 5</div>
+    <div class="meta-cell"><strong>Next Lesson</strong>Social Media Fundamentals</div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="doc-footer">
+  <span>Voice the Companies</span> &nbsp;·&nbsp; Digital Literacy Curriculum &nbsp;·&nbsp; Website Ownership Basics &nbsp;·&nbsp; Lesson 1 of 5
+  <br/><br/>
+  This guide was prepared by the Voice the Companies student team for use by participating small business partners.
+  All rights reserved. For questions, contact your assigned student team or program coordinator.
+</div>
+
+<script>
+  (function () {
+    function initWorkbookTools() {
+      const slug = (window.location.pathname.split('/').pop() || 'lesson').replace('.html', '');
+      const progressKey = 'vtc_progress_' + slug;
+      const notesKey = 'vtc_notes_' + slug;
+
+      const stepList = document.getElementById('interactive-step-list');
+      const progressStatus = document.getElementById('interactive-progress-status');
+      const notesBox = document.getElementById('interactive-notes');
+
+      if (stepList && progressStatus) {
+        const stepLinks = Array.from(document.querySelectorAll('.toc a[href^="#step"]'));
+        const savedProgress = JSON.parse(window.localStorage.getItem(progressKey) || '[]');
+
+        stepLinks.forEach(function (link, index) {
+          const item = document.createElement('li');
+          item.className = 'progress-item';
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.id = 'progress-step-' + index;
+          checkbox.checked = Boolean(savedProgress[index]);
+
+          const label = document.createElement('label');
+          label.setAttribute('for', checkbox.id);
+          label.textContent = link.textContent.trim();
+
+          checkbox.addEventListener('change', function () {
+            const states = Array.from(stepList.querySelectorAll('input[type="checkbox"]')).map(function (node) {
+              return node.checked;
+            });
+            window.localStorage.setItem(progressKey, JSON.stringify(states));
+            updateProgress(states);
+          });
+
+          item.appendChild(checkbox);
+          item.appendChild(label);
+          stepList.appendChild(item);
+        });
+
+        function updateProgress(states) {
+          const done = states.filter(Boolean).length;
+          const total = states.length;
+          progressStatus.textContent = total
+            ? 'Progress: ' + done + '/' + total + ' steps completed'
+            : 'Progress tracker unavailable';
+        }
+
+        const initialStates = Array.from(stepList.querySelectorAll('input[type="checkbox"]')).map(function (node) {
+          return node.checked;
+        });
+        updateProgress(initialStates);
+      }
+
+      if (notesBox) {
+        notesBox.value = window.localStorage.getItem(notesKey) || '';
+        notesBox.addEventListener('input', function () {
+          window.localStorage.setItem(notesKey, notesBox.value);
+        });
+      }
+    }
+
+    function initInteractiveQuiz() {
+      const quizSection = document.querySelector('#quiz + .section');
+      if (!quizSection) return;
+
+      const questions = Array.from(quizSection.querySelectorAll('.quiz-q'));
+      if (!questions.length) return;
+
+      const answerMap = {
+        1: 'B',
+        2: 'C',
+        3: 'C',
+        4: 'B',
+        5: 'C'
+      };
+
+      const selections = {};
+
+      questions.forEach(function (question, qIndex) {
+        const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+        options.forEach(function (option, optIndex) {
+          const letter = String.fromCharCode(65 + optIndex);
+          option.dataset.letter = letter;
+          option.setAttribute('role', 'button');
+          option.setAttribute('tabindex', '0');
+
+          function choose() {
+            selections[qIndex + 1] = letter;
+            options.forEach(function (opt) {
+              opt.classList.remove('quiz-selected');
+            });
+            option.classList.add('quiz-selected');
+          }
+
+          option.addEventListener('click', choose);
+          option.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              choose();
+            }
+          });
+        });
+      });
+
+      const controls = document.createElement('div');
+      controls.className = 'quiz-controls';
+
+      const checkBtn = document.createElement('button');
+      checkBtn.className = 'quiz-btn';
+      checkBtn.type = 'button';
+      checkBtn.textContent = 'Check my answers';
+
+      const resetBtn = document.createElement('button');
+      resetBtn.className = 'quiz-btn secondary';
+      resetBtn.type = 'button';
+      resetBtn.textContent = 'Reset';
+
+      const result = document.createElement('div');
+      result.className = 'quiz-result';
+      result.setAttribute('aria-live', 'polite');
+
+      checkBtn.addEventListener('click', function () {
+        if (Object.keys(selections).length < questions.length) {
+          result.textContent = 'Answer all questions first, then check your score.';
+          return;
+        }
+
+        let score = 0;
+
+        questions.forEach(function (question, qIndex) {
+          const qNumber = qIndex + 1;
+          const correctLetter = answerMap[qNumber];
+          const selectedLetter = selections[qNumber];
+          const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+
+          options.forEach(function (option) {
+            option.classList.remove('quiz-correct', 'quiz-incorrect');
+            const letter = option.dataset.letter;
+            if (letter === correctLetter) {
+              option.classList.add('quiz-correct');
+            }
+            if (letter === selectedLetter && letter !== correctLetter) {
+              option.classList.add('quiz-incorrect');
+            }
+          });
+
+          if (selectedLetter === correctLetter) score += 1;
+        });
+
+        result.textContent = 'You scored ' + score + ' out of ' + questions.length + '.';
+      });
+
+      resetBtn.addEventListener('click', function () {
+        Object.keys(selections).forEach(function (key) {
+          delete selections[key];
+        });
+
+        questions.forEach(function (question) {
+          const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+          options.forEach(function (option) {
+            option.classList.remove('quiz-selected', 'quiz-correct', 'quiz-incorrect');
+          });
+        });
+
+        result.textContent = '';
+      });
+
+      controls.appendChild(checkBtn);
+      controls.appendChild(resetBtn);
+      quizSection.appendChild(controls);
+      quizSection.appendChild(result);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      initWorkbookTools();
+      initInteractiveQuiz();
+    });
+  })();
+</script>
+
+</body>
+</html>

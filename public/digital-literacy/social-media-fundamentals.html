@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media Fundamentals - Voice the Companies Digital Literacy Curriculum</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --sage:        #B2C9AD;
+    --sage-dark:   #7a9e74;
+    --sage-deep:   #4a7044;
+    --sage-deeper: #2d4d2a;
+    --sage-light:  #eef4ec;
+    --sage-border: #9ebd98;
+    --ink:         #2E2E2E;
+    --soft-ink:    #4a4a4a;
+    --bg:          #f7faf6;
+    --paper:       #ffffff;
+    --rule:        #d4e0d1;
+    --muted:       #7a8c78;
+    --warn-bg:     #fff8f0;
+    --warn-border: #e0a060;
+    --tip-bg:      #f0faf0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: linear-gradient(150deg, #1e3a1a 0%, #2d4d2a 40%, #1a2e18 100%);
+    color: white;
+    padding: 70px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 50px,
+      rgba(255,255,255,0.012) 50px, rgba(255,255,255,0.012) 100px
+    );
+  }
+  .cover-logo {
+    width: 170px;
+    height: auto;
+    max-width: 60%;
+    margin-bottom: 22px;
+    filter: none;
+    position: relative; z-index: 1;
+  }
+  .cover-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.55); margin-bottom: 14px;
+    position: relative; z-index: 1;
+  }
+  .cover h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 50px; font-weight: 900; line-height: 1.05;
+    margin-bottom: 18px; position: relative; z-index: 1;
+  }
+  .cover h1 em { color: var(--sage); font-style: normal; }
+  .cover-sub {
+    font-size: 16px; color: rgba(255,255,255,0.78);
+    max-width: 500px; line-height: 1.65; position: relative; z-index: 1;
+  }
+  .cover-badges {
+    display: flex; gap: 10px; margin-top: 36px; flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .badge {
+    border: 1px solid rgba(178,201,173,0.4);
+    padding: 5px 14px; border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+  }
+  .cover-back-link {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 8px 14px;
+    border: 1px solid rgba(178,201,173,0.6);
+    border-radius: 999px;
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  }
+  .cover-back-link:hover {
+    background: rgba(178,201,173,0.22);
+    border-color: rgba(178,201,173,0.9);
+    color: #ffffff;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 40px 60px; }
+
+  /* ── TABLE OF CONTENTS ── */
+  .toc {
+    background: var(--paper);
+    border-left: 4px solid var(--sage);
+    margin: 44px 0;
+    padding: 32px 36px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .toc-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 20px; color: var(--ink);
+  }
+  .toc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .toc-section {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--sage-deep);
+    margin: 16px 0 7px;
+  }
+  .toc a {
+    display: block; font-size: 13.5px; color: var(--soft-ink);
+    text-decoration: none; padding: 3px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .toc a:hover { color: var(--sage-deep); }
+
+  /* ── TOPIC / SECTION BANNERS ── */
+  .topic-banner {
+    margin: 52px -40px 0;
+    padding: 38px 40px 30px;
+    background: var(--sage-deeper);
+    position: relative;
+  }
+  .topic-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); margin-bottom: 9px;
+  }
+  .topic-banner h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px; font-weight: 800; color: white;
+    line-height: 1.2;
+  }
+  .topic-banner h2 span { color: var(--sage); }
+
+  /* ── SECTION HEADERS ── */
+  .section {
+    margin-top: 44px;
+    padding-top: 28px;
+    border-top: 2px solid var(--rule);
+  }
+  .section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px; font-weight: 700;
+    color: var(--ink); margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; background: var(--sage-deep);
+    color: white; padding: 3px 10px; border-radius: 3px;
+    letter-spacing: 1px; white-space: nowrap;
+  }
+  .section-title .num.warn { background: #c0763a; }
+  .section-title .num.success { background: var(--sage-dark); }
+
+  /* ── GUIDE LIST ── */
+  ul.guide-list { list-style: none; padding: 0; }
+  ul.guide-list > li {
+    padding: 6px 0 6px 22px;
+    position: relative; font-size: 14.5px;
+    border-bottom: 1px dotted var(--rule);
+  }
+  ul.guide-list > li:last-child { border-bottom: none; }
+  ul.guide-list > li::before {
+    content: '▸';
+    position: absolute; left: 0; color: var(--sage-dark);
+    font-size: 11px; top: 9px;
+  }
+  ul.guide-list li strong { color: var(--ink); }
+  ul.guide-list li em { color: var(--sage-deep); font-style: normal; font-weight: 600; }
+  ul.sub-list { list-style: none; margin: 7px 0 5px 18px; }
+  ul.sub-list li {
+    font-size: 13.5px; padding: 2px 0 2px 16px;
+    position: relative; color: var(--soft-ink);
+  }
+  ul.sub-list li::before {
+    content: '–'; position: absolute; left: 0; color: var(--sage);
+  }
+
+  /* ── STAT GRID ── */
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; margin: 22px 0;
+  }
+  .stat-box {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--sage-dark);
+    padding: 16px; text-align: center;
+  }
+  .stat-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 26px; font-weight: 900;
+    color: var(--sage-deep); display: block;
+  }
+  .stat-label { font-size: 11.5px; color: var(--soft-ink); margin-top: 4px; line-height: 1.35; }
+
+  /* ── PILLARS / STEP CARDS ── */
+  .pillar {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    margin: 0 0 16px;
+  }
+  .pillar-header {
+    background: var(--sage-light);
+    border-bottom: 2px solid var(--sage-border);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .pillar-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px; font-weight: 900;
+    color: var(--sage-dark); line-height: 1; min-width: 36px;
+  }
+  .pillar-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .pillar-tag { font-size: 11px; color: var(--muted); margin-top: 2px; font-style: italic; }
+  .pillar-body { padding: 18px 22px; }
+  .pillar-section { margin-bottom: 14px; }
+  .pillar-section:last-child { margin-bottom: 0; }
+  .pillar-section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sage-deep); margin-bottom: 7px; font-weight: 700;
+  }
+  .pillar-section p { font-size: 14px; color: var(--soft-ink); line-height: 1.7; }
+  .pillar-section ul { padding-left: 18px; }
+  .pillar-section li { font-size: 13.5px; margin-bottom: 4px; color: var(--soft-ink); }
+
+  /* ── TABLE ── */
+  .guide-table {
+    width: 100%; border-collapse: collapse;
+    margin: 20px 0; font-size: 13.5px;
+  }
+  .guide-table th {
+    background: var(--sage-deep); color: white;
+    padding: 10px 14px; text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .guide-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .guide-table tr:nth-child(even) td { background: var(--sage-light); }
+  .guide-table td strong { color: var(--sage-deep); }
+
+  /* ── NOTE / CALLOUT BOX ── */
+  .note-box {
+    background: var(--sage-light);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 14px 18px; font-size: 13.5px;
+    margin: 16px 0; color: var(--soft-ink);
+    line-height: 1.7;
+  }
+  .note-box strong { color: var(--sage-deep); }
+
+  /* ── WARNING BOX ── */
+  .warn-box {
+    background: var(--warn-bg);
+    border: 1px solid #f0d0b0;
+    border-left: 4px solid var(--warn-border);
+    padding: 16px 20px; margin: 14px 0;
+  }
+  .warn-box h5 {
+    font-size: 13.5px; font-weight: 700;
+    color: #b06020; margin-bottom: 8px;
+    font-family: 'Poppins', sans-serif;
+  }
+  .warn-box p { font-size: 13.5px; color: var(--soft-ink); line-height: 1.65; }
+  .warn-box .safe-note {
+    background: var(--tip-bg);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 10px 14px; margin-top: 10px;
+    font-size: 13.5px; color: var(--soft-ink);
+  }
+  .warn-box .safe-note strong { color: var(--sage-deep); }
+
+  /* ── TIP / QUOTE BOX ── */
+  .tip-box {
+    background: linear-gradient(135deg, var(--sage-light) 0%, #f0f7ee 100%);
+    border: 1px solid var(--rule);
+    padding: 20px 26px; margin: 16px 0;
+    position: relative;
+  }
+  .tip-box::before {
+    content: '"';
+    font-family: 'Poppins', sans-serif;
+    font-size: 90px; color: rgba(74,112,68,0.08);
+    position: absolute; top: -14px; left: 12px;
+    line-height: 1;
+  }
+  .tip-box p { font-size: 14px; line-height: 1.75; padding-left: 16px; font-style: italic; color: var(--soft-ink); }
+  .tip-box .tip-note {
+    font-style: normal; font-size: 11.5px; color: var(--muted);
+    margin-top: 8px; padding-left: 16px;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px;
+  }
+
+  /* ── TAKEAWAY CARDS ── */
+  .takeaway-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0;
+  }
+  .takeaway-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-top: 3px solid var(--sage-dark);
+    padding: 18px 20px;
+  }
+  .takeaway-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px; font-weight: 900;
+    color: var(--sage); line-height: 1; margin-bottom: 8px;
+  }
+  .takeaway-title {
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .takeaway-card p { font-size: 13.5px; color: var(--soft-ink); line-height: 1.65; }
+
+  /* ── QUIZ ── */
+  .quiz-q {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 18px 22px; margin: 14px 0;
+  }
+  .quiz-q-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .quiz-q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; background: var(--sage-deep);
+    color: white; padding: 2px 8px; border-radius: 3px;
+    letter-spacing: 1px; margin-right: 8px;
+    display: inline-block; margin-bottom: 10px;
+  }
+  .quiz-choices { list-style: none; padding: 0; }
+  .quiz-choices li {
+    font-size: 13.5px; color: var(--soft-ink);
+    padding: 5px 0 5px 22px; position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .quiz-choices li:last-child { border-bottom: none; }
+  .quiz-choices li::before {
+    content: '○'; position: absolute; left: 0;
+    color: var(--sage); font-size: 12px; top: 6px;
+  }
+  /* ── INTERACTIVE WORKBOOK ── */
+  .interactive-panel {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 18px 20px;
+    margin: 24px 0 36px;
+  }
+  .interactive-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .interactive-sub {
+    font-size: 13px;
+    color: var(--soft-ink);
+    margin-bottom: 14px;
+  }
+  .progress-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .progress-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .progress-item label {
+    font-size: 13px;
+    color: var(--soft-ink);
+    cursor: pointer;
+  }
+  .progress-item input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--sage-deep);
+  }
+  .progress-status {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.4px;
+    margin-bottom: 12px;
+  }
+  .interactive-notes-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--sage-deep);
+    margin-bottom: 6px;
+  }
+  .interactive-notes {
+    width: 100%;
+    min-height: 92px;
+    border: 1px solid var(--rule);
+    background: #fff;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    resize: vertical;
+  }
+
+  .quiz-choices li {
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .quiz-choices li:hover {
+    background: #f5f9f4;
+  }
+  .quiz-choices li.quiz-selected {
+    background: #edf3eb;
+    border-color: var(--sage-border);
+  }
+  .quiz-choices li.quiz-selected::before {
+    content: '◉';
+    color: var(--sage-deep);
+  }
+  .quiz-choices li.quiz-correct {
+    background: #eaf6e7;
+    border-color: #8ab27f;
+  }
+  .quiz-choices li.quiz-correct::before {
+    content: '✓';
+    color: #3f7f33;
+    font-weight: 700;
+  }
+  .quiz-choices li.quiz-incorrect {
+    background: #fff1f0;
+    border-color: #d99891;
+  }
+  .quiz-choices li.quiz-incorrect::before {
+    content: '✕';
+    color: #b24b42;
+    font-weight: 700;
+  }
+  .quiz-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .quiz-btn {
+    background: var(--sage-deep);
+    color: #fff;
+    border: 1px solid var(--sage-deep);
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .quiz-btn.secondary {
+    background: #fff;
+    color: var(--sage-deep);
+  }
+  .quiz-result {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--soft-ink);
+  }
+  /* ── CHEAT SHEET ── */
+  .cheat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border: 1px solid var(--sage-border); margin: 20px 0;
+  }
+  .cheat-cell {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--sage-border);
+    border-right: 1px solid var(--sage-border);
+  }
+  .cheat-cell:nth-child(even) { border-right: none; }
+  .cheat-cell:nth-last-child(1),
+  .cheat-cell:nth-last-child(2) { border-bottom: none; }
+  .cheat-cell dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700; color: var(--sage-deep);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;
+  }
+  .cheat-cell dd { font-size: 13px; color: var(--soft-ink); line-height: 1.6; }
+  .cheat-cell dd ul { padding-left: 14px; margin-top: 4px; }
+  .cheat-cell dd li { margin-bottom: 2px; font-size: 12.5px; }
+  .cheat-header {
+    grid-column: 1 / -1;
+    background: var(--sage-deep); color: white;
+    padding: 9px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+    border-bottom: 1px solid var(--sage-border);
+  }
+
+  /* ── WELCOME ── */
+  .welcome-banner {
+    background: var(--sage-light);
+    border-left: 4px solid var(--sage-dark);
+    padding: 22px 28px; margin: 20px 0;
+  }
+  .welcome-banner p { font-size: 14.5px; color: var(--soft-ink); line-height: 1.75; }
+
+  /* ── CHECKLIST ── */
+  ul.checklist { list-style: none; padding: 0; margin: 14px 0; }
+  ul.checklist li {
+    font-size: 14px; color: var(--soft-ink);
+    padding: 6px 0 6px 26px; position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+  ul.checklist li:last-child { border-bottom: none; }
+  ul.checklist li::before {
+    content: '✓'; position: absolute; left: 0;
+    color: var(--sage-dark); font-weight: 700; font-size: 13px; top: 7px;
+  }
+
+  /* ── BEFORE / AFTER ── */
+  .before-after {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;
+  }
+  .ba-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    overflow: hidden;
+  }
+  .ba-head {
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    font-weight: 700;
+  }
+  .ba-head.before { background: #fff4ee; color: #b06020; border-bottom: 2px solid #e0a060; }
+  .ba-head.after  { background: var(--sage-light); color: var(--sage-deep); border-bottom: 2px solid var(--sage-border); }
+  .ba-body { padding: 14px 16px; font-size: 13.5px; color: var(--soft-ink); line-height: 1.7; }
+  .ba-body em { font-style: italic; color: var(--muted); }
+
+  /* ── CALENDAR GRID ── */
+  .cal-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    border: 1px solid var(--sage-border); margin: 20px 0;
+  }
+  .cal-head {
+    background: var(--sage-deep); color: white;
+    padding: 8px 6px; text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 1.5px; text-transform: uppercase;
+    border-right: 1px solid rgba(255,255,255,0.15);
+  }
+  .cal-head:last-child { border-right: none; }
+  .cal-cell {
+    padding: 12px 8px; text-align: center; font-size: 12px;
+    border-right: 1px solid var(--sage-border);
+    border-top: 1px solid var(--sage-border);
+    color: var(--soft-ink); line-height: 1.4; min-height: 64px;
+    vertical-align: top;
+  }
+  .cal-cell:last-child { border-right: none; }
+  .cal-cell.post {
+    background: var(--sage-light);
+  }
+  .cal-cell .post-label {
+    display: inline-block;
+    background: var(--sage-dark); color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 2px; margin-bottom: 5px;
+  }
+  .cal-cell .post-idea { font-size: 11px; color: var(--sage-deep); font-style: italic; }
+  .cal-cell.rest { background: #f9f9f9; color: var(--muted); font-size: 11px; }
+
+  /* ── PLATFORM ICONS ── */
+  .platform-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 22px 0;
+  }
+  .platform-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-top: 4px solid var(--sage-dark);
+    padding: 18px;
+    text-align: center;
+  }
+  .platform-icon {
+    font-size: 28px; margin-bottom: 10px; display: block;
+  }
+  .platform-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px; font-weight: 700; color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .platform-type {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sage-deep); margin-bottom: 10px;
+  }
+  .platform-card p { font-size: 13px; color: var(--soft-ink); line-height: 1.6; }
+
+  /* ── DIVIDERS ── */
+  .divider { border: none; border-top: 1px solid var(--rule); margin: 32px 0; }
+
+  /* ── META ROW ── */
+  .meta-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px;
+  }
+  .meta-cell {
+    background: #f4f4f4; padding: 10px 14px; font-size: 12.5px; color: var(--soft-ink);
+  }
+  .meta-cell strong {
+    display: block; font-size: 9.5px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── BIO TEMPLATE ── */
+  .bio-template {
+    background: var(--paper);
+    border: 2px dashed var(--sage-border);
+    padding: 22px 26px; margin: 18px 0;
+    font-size: 14.5px; color: var(--soft-ink); line-height: 1.9;
+  }
+  .bio-template .fill {
+    border-bottom: 2px solid var(--sage-dark);
+    display: inline-block; min-width: 140px;
+    color: var(--sage-deep); font-weight: 600;
+    font-style: italic;
+  }
+  .bio-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sage-deep); margin-bottom: 8px;
+    display: block;
+  }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    background: var(--ink); color: rgba(255,255,255,0.45);
+    text-align: center; padding: 28px 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 1px;
+    margin-top: 60px;
+  }
+  .doc-footer span { color: var(--sage); }
+
+  @media print {
+    .cover { padding: 40px; }
+    body { font-size: 13px; }
+    .topic-banner { margin: 40px 0 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ COVER ══════════════════ -->
+<div class="cover">
+  <img class="cover-logo" src="../logo.png" alt="Voice the Companies logo" />
+  <div class="cover-label">Voice the Companies · Digital Literacy Curriculum · Lesson 2 of 5</div>
+  <h1>Social Media<br><em>Fundamentals</em></h1>
+  <p class="cover-sub">Learn how to claim your business profiles on Instagram, Facebook, and Google Business, write a bio people remember, and post consistently with a simple content calendar - no marketing degree required.</p>
+  <div class="cover-badges">
+    <div class="badge">7 Steps</div>
+    <div class="badge">4 Key Takeaways</div>
+    <div class="badge">Knowledge Check</div>
+    <div class="badge">Printable Cheat Sheet</div>
+    <div class="badge">No Tech Experience Required</div>
+  </div>
+  <a class="cover-back-link" href="/digital-literacy">Back to Digital Literacy</a>
+</div>
+
+<div class="container">
+
+<!-- ══════════════════ TABLE OF CONTENTS ══════════════════ -->
+<div class="toc">
+  <div class="toc-title">Table of Contents</div>
+  <div class="toc-cols">
+    <div>
+      <div class="toc-section">Getting Started</div>
+      <a href="#welcome">Welcome &amp; What You'll Learn</a>
+      <a href="#why">Why Social Media Matters</a>
+      <div class="toc-section">The Seven Steps</div>
+      <a href="#step1">Step 1 - Search &amp; Claim Your Profiles</a>
+      <a href="#step2">Step 2 - Set Up a Business Account</a>
+      <a href="#step3">Step 3 - Write Your Bio</a>
+      <a href="#step4">Step 4 - Add a Profile Photo</a>
+    </div>
+    <div>
+      <div class="toc-section">&nbsp;</div>
+      <a href="#step5">Step 5 - Link All Platforms Together</a>
+      <a href="#step6">Step 6 - Use a Content Calendar</a>
+      <a href="#step7">Step 7 - Schedule Posts in Advance</a>
+      <div class="toc-section">Wrap-Up</div>
+      <a href="#takeaways">Key Takeaways</a>
+      <a href="#quiz">Knowledge Check</a>
+      <a href="#cheatsheet">Printable Cheat Sheet</a>
+    </div>
+  </div>
+</div>
+
+<div class="interactive-panel" id="workbook-tools">
+  <div class="interactive-title">Interactive Workbook</div>
+  <p class="interactive-sub">Track your progress and keep notes while you work through this lesson.</p>
+  <ul class="progress-list" id="interactive-step-list"></ul>
+  <p class="progress-status" id="interactive-progress-status"></p>
+  <label class="interactive-notes-label" for="interactive-notes">My Notes</label>
+  <textarea class="interactive-notes" id="interactive-notes" placeholder="Write reminders, questions, or actions you want to take..."></textarea>
+</div>
+
+<!-- ══════════════════ WELCOME ══════════════════ -->
+<div class="topic-banner" id="welcome">
+  <div class="topic-tag">Voice the Companies · Digital Literacy Curriculum · Lesson 2</div>
+  <h2>Welcome to <span>Social Media Fundamentals</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">INTRO</span> A Note Before You Begin</div>
+
+  <div class="welcome-banner">
+    <p>Welcome back. Now that your website basics are in place, let’s get your social profiles working for you too. Whether you are starting from scratch or dusting off old accounts, this lesson keeps it simple and step-by-step. <strong>You do not need to be a marketing expert.</strong> You just need a clear plan and a consistent routine.</p>
+  </div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:14px;">
+    Social media can feel like a lot, but it gets much easier once you focus on the basics. We will help you pick the right platforms, set up a solid profile, and post consistently without overthinking it.
+  </p>
+
+  <div class="stat-grid">
+    <div class="stat-box"><span class="stat-num">7</span><div class="stat-label">Step-by-step lessons</div></div>
+    <div class="stat-box"><span class="stat-num">4</span><div class="stat-label">Key takeaways</div></div>
+    <div class="stat-box"><span class="stat-num">5</span><div class="stat-label">Quiz questions</div></div>
+    <div class="stat-box"><span class="stat-num">1</span><div class="stat-label">Printable cheat sheet</div></div>
+  </div>
+
+  <p style="font-size:14px; color:var(--soft-ink); line-height:1.75; margin-bottom:14px;">By the end of this lesson, you will be able to:</p>
+  <ul class="checklist">
+    <li>Search for and claim any existing business profiles in your name</li>
+    <li>Set up a proper Business Account on Instagram, Facebook, and Google</li>
+    <li>Write a bio that is clear, specific, and makes people want to learn more</li>
+    <li>Choose and upload a professional profile photo</li>
+    <li>Link all your platforms together into a unified digital presence</li>
+    <li>Build and follow a simple 3-posts-per-week content calendar</li>
+    <li>Use free scheduling tools so posting never feels last-minute</li>
+  </ul>
+</div>
+
+<!-- ══════════════════ HOW TO USE ══════════════════ -->
+<div class="section" id="how-to-use">
+  <div class="section-title"><span class="num">GUIDE</span> How to Use This Curriculum</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    This guide is designed to be worked through at your own pace. You can read it straight through in one sitting or return to individual sections whenever you need them. Here is how to get the most out of it.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">1</div>
+      <div>
+        <div class="pillar-name">Read each step, then act on it before moving on</div>
+        <div class="pillar-tag">Action + knowledge together builds confidence faster</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Each of the seven steps is meant to be completed, not just read. After you finish a section, try to complete that step on your actual accounts before moving to the next one. Even five minutes of hands-on practice will make everything stick.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">2</div>
+      <div>
+        <div class="pillar-name">Start with just two platforms</div>
+        <div class="pillar-tag">You do not need to be everywhere at once</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">We cover three major platforms in this lesson - Instagram, Facebook, and Google Business. You do not need to set up all three at once. Start with the two where your customers are most likely to spend time, and add the third when you feel ready.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">3</div>
+      <div>
+        <div class="pillar-name">Download the content calendar template</div>
+        <div class="pillar-tag">A free planning tool to keep you consistent</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Step 6 of this lesson walks you through using a simple weekly content calendar. Your Voice the Companies student team can provide a free downloadable template. Filling it in for just two weeks in advance removes the daily stress of figuring out what to post.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">4</div>
+      <div>
+        <div class="pillar-name">Use the cheat sheet and knowledge check at the end</div>
+        <div class="pillar-tag">Reinforce what you've learned with a quick review</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">The final two sections of this guide include a five-question knowledge check and a printable one-page reference sheet. Print the cheat sheet and keep it near your phone or computer - it covers all seven steps in condensed form so you always have a quick reference on hand.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ WHY SOCIAL MEDIA ══════════════════ -->
+<div class="topic-banner" id="why">
+  <div class="topic-tag">Background</div>
+  <h2>Why Social Media <span>Matters for Your Business</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">CONTEXT</span> The Big Picture</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Before we get into the steps, it helps to understand why social media is worth your time. These numbers come from across the industry and reflect how today's customers actually make decisions about where to spend their money.
+  </p>
+
+  <div class="stat-grid">
+    <div class="stat-box"><span class="stat-num">5B+</span><div class="stat-label">People use social media worldwide as of 2024</div></div>
+    <div class="stat-box"><span class="stat-num">76%</span><div class="stat-label">Of consumers have purchased something after seeing it on social media</div></div>
+    <div class="stat-box"><span class="stat-num">88%</span><div class="stat-label">Of people who search Google for a local business visit or call within 24 hours</div></div>
+    <div class="stat-box"><span class="stat-num">3×</span><div class="stat-label">More engagement on business pages that post consistently vs. sporadically</div></div>
+  </div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Your potential customers are already on these platforms every day. When they need a product or service you offer, they search - and businesses with active, complete profiles consistently get chosen over those without them. Setting up these accounts is not just a marketing exercise: it is table stakes for being found.
+  </p>
+
+  <div class="platform-row">
+    <div class="platform-card">
+      <span class="platform-icon">📸</span>
+      <div class="platform-name">Instagram</div>
+      <div class="platform-type">Visual Discovery</div>
+      <p>Best for showing your products, behind-the-scenes moments, and building a visual identity. Ideal if your business has a strong visual component - food, fashion, retail, beauty, and more.</p>
+    </div>
+    <div class="platform-card">
+      <span class="platform-icon">👥</span>
+      <div class="platform-name">Facebook</div>
+      <div class="platform-type">Community & Reach</div>
+      <p>The largest platform by users. Ideal for sharing updates, running events, collecting reviews, and reaching a broad local audience. Facebook Business Pages are also linked to Instagram ads.</p>
+    </div>
+    <div class="platform-card">
+      <span class="platform-icon">📍</span>
+      <div class="platform-name">Google Business</div>
+      <div class="platform-type">Local Search</div>
+      <p>Not just social media - but essential. When someone searches "near me," your Google Business profile is what they see first. It drives directions, calls, and walk-in traffic more than any other platform.</p>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <strong>A word of encouragement:</strong> You do not need thousands of followers to see results from social media. Consistent, authentic posts to a small, engaged local audience will outperform sporadic posts to a large but disengaged one every time. This lesson will show you how.
+  </div>
+</div>
+
+<!-- ══════════════════ STEP 1 ══════════════════ -->
+<div class="topic-banner" id="step1">
+  <div class="topic-tag">Step 1 of 7</div>
+  <h2>Search &amp; <span>Claim Your Profiles</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 01</span> Your business may already exist online - find out now</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    This is one of the most important things in this entire lesson, and most business owners skip it entirely. Before you create anything new, <strong>search for your business</strong> on each platform. Customers, former employees, or the platforms themselves may have already created a listing for you - and you may not even know it exists.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">📸</div>
+      <div>
+        <div class="pillar-name">Searching on Instagram</div>
+        <div class="pillar-tag">Look for your business name in the search bar</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">How to Search</div>
+        <p>Open Instagram and tap the magnifying glass icon. Type your business name and look through the results. Check both Accounts and Places tabs. If you find a listing you didn't create, note the username.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">If You Find an Unofficial Account</div>
+        <p>If another account is using your business name without your permission, tap the three dots on the profile and select "Report." Choose "It's pretending to be me or my business." Instagram's support team will review the claim.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">👥</div>
+      <div>
+        <div class="pillar-name">Searching on Facebook</div>
+        <div class="pillar-tag">A Page may have been auto-created for your business</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">How to Search</div>
+        <p>Go to Facebook.com and type your business name in the search bar. Filter results to show only Pages. If a page for your business exists but you didn't create it, it may be an "Unofficial Page" that Facebook auto-generated from check-ins.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">Claiming an Unofficial Facebook Page</div>
+        <p>Scroll to the bottom of the unofficial page and look for the option "Is this your business?" or "Claim this Page." You will be asked to verify ownership through your business email, phone number, or official documents. Once verified, you gain full control.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">📍</div>
+      <div>
+        <div class="pillar-name">Searching on Google Business</div>
+        <div class="pillar-tag">This one is especially important - Google creates listings automatically</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">How to Search</div>
+        <p>Go to Google.com and type your business name and city. Look at the right-hand side of the results - a Google Business card may already appear. If you see one, look for "Own this business?" or "Claim this business" at the bottom.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">Why This Matters So Much</div>
+        <p>Google auto-creates Business profiles from public data sources. These unclaimed profiles may have incorrect hours, phone numbers, or even outdated photos. Claiming yours gives you control and dramatically improves how your business appears in local search results.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <strong>Our recommendation:</strong> Complete this search step right now, before moving on. Open Google, Instagram, and Facebook in three separate tabs and search your business name on each one. It takes five minutes and can save you from a lot of confusion later.
+  </div>
+</div>
+
+<!-- ══════════════════ STEP 2 ══════════════════ -->
+<div class="topic-banner" id="step2">
+  <div class="topic-tag">Step 2 of 7</div>
+  <h2>Set Up a <span>Business Account</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 02</span> Always use a Business Account, not a personal one</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    There is an important difference between a personal account and a Business Account on each platform. Business Accounts come with features that personal accounts do not - including analytics, contact buttons, ad tools, and the ability to schedule posts. If you already have a personal account for your business, this step explains how to upgrade it.
+  </p>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Account Type</th>
+        <th>Key Business Features</th>
+        <th>How to Set Up</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Instagram</strong></td>
+        <td>Instagram Business Account</td>
+        <td>Insights dashboard, contact button, category label, ad access, scheduling via Meta Business Suite</td>
+        <td>Go to Settings → Account → Switch to Professional Account → Select Business</td>
+      </tr>
+      <tr>
+        <td><strong>Facebook</strong></td>
+        <td>Facebook Page (not Profile)</td>
+        <td>Page Insights, reviews, events, appointment booking, linked to Instagram ads</td>
+        <td>facebook.com/pages/create - choose Business or Brand</td>
+      </tr>
+      <tr>
+        <td><strong>Google</strong></td>
+        <td>Google Business Profile</td>
+        <td>Appears in Maps and Search, shows hours/reviews/photos, Q&amp;A section, free for all businesses</td>
+        <td>business.google.com - Sign in with a Google account and follow the setup wizard</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box">
+    <h5>⚠ Do Not Use a Personal Account for Your Business</h5>
+    <p>Personal Instagram profiles and personal Facebook profiles are designed for individuals, not businesses. They lack the tools you need, they can look unprofessional to customers, and they may be restricted from using advertising features. If you've been using a personal profile for your business, switch it to a Business Account right away - you will not lose your existing posts or followers.</p>
+    <div class="safe-note">
+      <strong>Good news:</strong> Switching to a Business Account on Instagram or Facebook is free and completely reversible. Your content, followers, and history stay exactly the same.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ STEP 3 ══════════════════ -->
+<div class="topic-banner" id="step3">
+  <div class="topic-tag">Step 3 of 7</div>
+  <h2>Write Your <span>Bio</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 03</span> Your bio is your digital handshake - make it count</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Your bio is one of the very first things a potential customer reads about you. On Instagram, you have 150 characters. On Facebook, slightly more. On Google, you have a short description field. Every word matters. A great bio answers three questions immediately: <strong>Who are you? What do you do? How do I reach you?</strong>
+  </p>
+
+  <div class="before-after">
+    <div class="ba-card">
+      <div class="ba-head before">❌ &nbsp; Before - Weak Bio</div>
+      <div class="ba-body">
+        <em>"Welcome to our page! We sell products and services for all your needs. Follow us for updates!"</em>
+        <br><br>
+        <strong style="color:#b06020; font-size:12px;">What's wrong:</strong> Vague, no location, no specifics, no call to action. A customer reading this has no idea what you actually do or where you are.
+      </div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-head after">✓ &nbsp; After - Strong Bio</div>
+      <div class="ba-body">
+        <em>"Family-owned Caribbean bakery in Newark, NJ 🍞 Custom cakes, fresh bread, daily specials. Order online or call us!"</em>
+        <br><br>
+        <strong style="color:var(--sage-deep); font-size:12px;">Why it works:</strong> Specific business type, location, what you sell, how to take action. A reader knows immediately if this is the right place for them.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num success">TEMPLATE</span> Fill-In-the-Blank Bio Formula</div>
+
+  <p style="font-size:14px; color:var(--soft-ink); margin-bottom:14px;">Use this template to write your bio. Keep the total under 150 characters for Instagram.</p>
+
+  <div class="bio-template">
+    <span class="bio-label">Your Bio Template</span>
+    <span class="fill">[Type of Business]</span> in <span class="fill">[Your City, State]</span>
+    <br>
+    <span class="fill">[What you offer - 2 or 3 specific things]</span>
+    <br>
+    <span class="fill">[Call to action: Order online / Call us / Visit us / DM to book]</span>
+  </div>
+
+  <p style="font-size:13.5px; color:var(--muted); font-style:italic; margin-top:8px;">Example: "Afro-Caribbean hair salon in Trenton, NJ · Natural styles, braids &amp; locs · Book your appointment below 💚"</p>
+
+  <div class="note-box" style="margin-top:18px;">
+    <strong>Pro tip:</strong> Use the exact same bio (or a very similar one) across all three platforms. Consistency helps customers recognize your brand immediately, regardless of which platform they find you on first.
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">TIPS</span> Bio Best Practices</div>
+  <ul class="guide-list">
+    <li><strong>Be specific about your location.</strong> <em>"Newark, NJ"</em> is better than just "New Jersey." Local search works better with specific city names.</li>
+    <li><strong>Include your strongest offering.</strong> Don't list everything you do - pick your top two or three products or services.</li>
+    <li><strong>End with a call to action.</strong> Tell people what to do next: "Order below," "DM to book," "Link in bio," or "Call us."</li>
+    <li><strong>Use an emoji or two sparingly.</strong> A single relevant emoji can make your bio easier to scan, but don't overdo it.</li>
+    <li><strong>Avoid jargon.</strong> Write for a customer who has never heard of you before, not for someone who already knows your industry.</li>
+  </ul>
+</div>
+
+<!-- ══════════════════ STEP 4 ══════════════════ -->
+<div class="topic-banner" id="step4">
+  <div class="topic-tag">Step 4 of 7</div>
+  <h2>Add a <span>Profile Photo</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 04</span> A strong profile photo builds immediate trust</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Your profile photo appears everywhere your business does - in search results, in comments, in messages, and at the top of your page. It should be professional, recognizable, and consistent across all platforms. Here is what works best for each situation.
+  </p>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>If You Have…</th>
+        <th>Use This as Your Photo</th>
+        <th>Tips</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>A logo</strong></td>
+        <td>Your logo on a white or solid background</td>
+        <td>Make sure it is readable at small sizes. Avoid thin text. Use a PNG file for crisp edges.</td>
+      </tr>
+      <tr>
+        <td><strong>A storefront or physical location</strong></td>
+        <td>A clean, well-lit exterior or interior photo</td>
+        <td>Take it on a bright day. Remove clutter from the frame. Crop tightly to show your signage.</td>
+      </tr>
+      <tr>
+        <td><strong>A service or solo business</strong></td>
+        <td>A clear, friendly headshot of yourself</td>
+        <td>Good lighting, neutral background, and a genuine smile. You are your brand - let people see you.</td>
+      </tr>
+      <tr>
+        <td><strong>No photo yet</strong></td>
+        <td>A simple text-based placeholder with your business initials</td>
+        <td>Something is better than a blank default icon. Ask your VTC team to help you create a quick branded placeholder.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note-box">
+    <strong>Important:</strong> Use the <em>exact same profile photo</em> on Instagram, Facebook, and Google Business. This consistency is what makes your brand feel professional and trustworthy even before a customer reads a single word.
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">SPECS</span> Photo Technical Requirements</div>
+  <ul class="guide-list">
+    <li><strong>File type:</strong> <em>JPG or PNG.</em> Use PNG for logos to preserve sharp edges.</li>
+    <li><strong>Recommended size:</strong> <em>At least 400 × 400 pixels.</em> Instagram displays it as a circle, so center your subject.</li>
+    <li><strong>File size:</strong> <em>Under 5 MB.</em> Larger files will be compressed by the platforms anyway.</li>
+    <li><strong>Avoid:</strong> <em>Blurry, dark, or heavily filtered photos.</em> Customers should be able to immediately recognize what your business is.</li>
+  </ul>
+</div>
+
+<!-- ══════════════════ STEP 5 ══════════════════ -->
+<div class="topic-banner" id="step5">
+  <div class="topic-tag">Step 5 of 7</div>
+  <h2>Link All Platforms <span>Together</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 05</span> Connect your digital presence into one cohesive ecosystem</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Having three separate accounts is helpful. Having three accounts that all point to each other - and to your website - is significantly more powerful. When platforms are linked, a customer who finds you anywhere can immediately get to the rest of your presence. This also helps search engines understand that all of these profiles belong to the same business.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">A</div>
+      <div>
+        <div class="pillar-name">Link Instagram to Facebook</div>
+        <div class="pillar-tag">These two platforms work best as a connected pair</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <p>Go to your Instagram Business Account settings and select "Linked Accounts." Connect your Facebook Page from there. Once linked, you can share posts to both platforms simultaneously and manage both from Meta Business Suite (a free tool we'll cover in Step 7).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">B</div>
+      <div>
+        <div class="pillar-name">Add Your Website URL to All Profiles</div>
+        <div class="pillar-tag">Always give people a direct path to your website</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <p>Every platform has a field for your website URL. Fill it in everywhere: Instagram bio link, Facebook Page "About" section, and Google Business Profile "Website" field. This is where customers go when they are ready to take action - do not make them search for it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">C</div>
+      <div>
+        <div class="pillar-name">Add Social Links to Your Website</div>
+        <div class="pillar-tag">Two-way connections strengthen your digital presence</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <p>Once your accounts are set up, ask your Voice the Companies student team to add your Instagram and Facebook icons to your website footer or header. This creates a two-way connection: social media → website, and website → social media. This mutual linking also improves how your business appears in Google searches.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">D</div>
+      <div>
+        <div class="pillar-name">Make Sure Your Contact Info Matches Everywhere</div>
+        <div class="pillar-tag">Inconsistent info confuses both customers and search engines</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <p>Your phone number, address, and business hours should be identical across your website, Instagram, Facebook, and Google Business. If one platform shows Monday–Saturday 9am–6pm and another shows Monday–Friday 10am–5pm, customers will not know which one to trust - and many will simply choose a competitor instead.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ STEP 6 ══════════════════ -->
+<div class="topic-banner" id="step6">
+  <div class="topic-tag">Step 6 of 7</div>
+  <h2>Build a Simple <span>Content Calendar</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 06</span> Start with just 3 posts per week - consistency beats volume every time</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    The biggest mistake small business owners make on social media is trying to post every day for two weeks and then burning out and going silent for a month. Sporadic posting tells the algorithm - and your customers - that you are unreliable. Three posts a week, every week, is dramatically more effective than an inconsistent burst of daily posts.
+  </p>
+
+  <div class="tip-box">
+    <p>Think of your social media like a conversation, not a broadcast. You wouldn't start a conversation with someone, talk nonstop for two weeks, and then disappear for a month. Show up consistently, and your audience will grow steadily and reliably.</p>
+    <div class="tip-note">▸ Voice the Companies Program Guidance</div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">SAMPLE</span> Your First Week - A Sample Content Calendar</div>
+  <p style="font-size:14px; color:var(--soft-ink); margin-bottom:14px;">Post on Monday, Wednesday, and Friday. Rest on the other days. Here is an example of what a first week might look like for any business type.</p>
+
+  <div class="cal-grid">
+    <div class="cal-head">Mon</div>
+    <div class="cal-head">Tue</div>
+    <div class="cal-head">Wed</div>
+    <div class="cal-head">Thu</div>
+    <div class="cal-head">Fri</div>
+    <div class="cal-head">Sat</div>
+    <div class="cal-head">Sun</div>
+
+    <div class="cal-cell post">
+      <div class="post-label">Post</div>
+      <div class="post-idea">Introduce yourself or your team. Who are you and why did you start this business?</div>
+    </div>
+    <div class="cal-cell rest">Rest day</div>
+    <div class="cal-cell post">
+      <div class="post-label">Post</div>
+      <div class="post-idea">Show your most popular product or service with a clear photo and a one-sentence description.</div>
+    </div>
+    <div class="cal-cell rest">Rest day</div>
+    <div class="cal-cell post">
+      <div class="post-label">Post</div>
+      <div class="post-idea">Share a customer review or testimonial. Ask permission first if using their name.</div>
+    </div>
+    <div class="cal-cell rest">Rest day</div>
+    <div class="cal-cell rest">Rest day</div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">IDEAS</span> 12 Content Ideas to Fill Your Calendar</div>
+  <p style="font-size:14px; color:var(--soft-ink); margin-bottom:14px;">Rotate through these ideas week to week. You never need to come up with something brand new from scratch.</p>
+
+  <ul class="guide-list">
+    <li><strong>Introduce yourself or your story.</strong> <em>People buy from people they trust.</em> Share why you started your business.</li>
+    <li><strong>Feature a product or service.</strong> <em>One thing at a time.</em> Clear photo, short description, and price if relevant.</li>
+    <li><strong>Share a customer review or testimonial.</strong> <em>Word-of-mouth, amplified.</em> Screenshot a review or write it out as a graphic.</li>
+    <li><strong>Behind the scenes.</strong> <em>Show your process.</em> A quick photo or video of how you make, prepare, or deliver what you offer.</li>
+    <li><strong>Answer a common question.</strong> <em>Educational content builds authority.</em> What do customers ask you all the time?</li>
+    <li><strong>Share a tip or piece of advice</strong> related to your industry. <em>Generous, helpful content attracts loyal followers.</em></li>
+    <li><strong>Announce a special, sale, or event.</strong> <em>Give people a reason to act now.</em></li>
+    <li><strong>Repost a community event or partner business.</strong> <em>Community goodwill is real and reciprocated.</em></li>
+    <li><strong>Show a before and after.</strong> <em>Transformation stories are among the most-shared types of content on social media.</em></li>
+    <li><strong>Celebrate a milestone.</strong> <em>One year in business, 100 customers, first big order - share it.</em></li>
+    <li><strong>Ask your audience a question.</strong> <em>Engagement goes up when you invite people to respond.</em></li>
+    <li><strong>Seasonal or holiday content.</strong> <em>Tie your posts to events your customers are already thinking about.</em></li>
+  </ul>
+
+  <div class="note-box" style="margin-top:18px;">
+    <strong>Your free template:</strong> Ask your Voice the Companies student team for the downloadable content calendar template. It has space to plan four weeks of content at a time and includes prompt suggestions for each post type listed above.
+  </div>
+</div>
+
+<!-- ══════════════════ STEP 7 ══════════════════ -->
+<div class="topic-banner" id="step7">
+  <div class="topic-tag">Step 7 of 7</div>
+  <h2>Schedule Posts <span>in Advance</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 07</span> Use free tools so you're never scrambling to post at the last minute</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Posting in real time is stressful. On a busy Monday morning, the last thing you want to think about is what to put on Instagram. Scheduling tools let you prepare your posts for the entire week on Sunday afternoon - and then forget about it. The posts go out automatically while you focus on running your business.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">🛠</div>
+      <div>
+        <div class="pillar-name">Meta Business Suite (Free)</div>
+        <div class="pillar-tag">business.facebook.com - manages both Facebook and Instagram together</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">What It Does</div>
+        <p>Meta Business Suite is a free tool from Meta (the company behind Facebook and Instagram) that lets you manage both platforms from one place. You can create posts, schedule them for future dates and times, respond to messages and comments, and view analytics - all without switching back and forth between apps.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">How to Access It</div>
+        <p>Go to business.facebook.com and sign in with your Facebook account. Your connected Instagram Business Account will also appear there. From the left menu, select "Planner" or "Create Post" and toggle on the scheduling option before you publish.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">Our Recommendation</div>
+        <p>Spend 30–60 minutes every Sunday preparing and scheduling your three posts for the coming week. Set them for Monday, Wednesday, and Friday mornings between 9–11am - this is typically when engagement is highest for most small businesses.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">🛠</div>
+      <div>
+        <div class="pillar-name">Google Business - Post from the App</div>
+        <div class="pillar-tag">The Google Business app lets you post updates directly to your listing</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">Google Posts</div>
+        <p>Google Business Profiles support a feature called "Posts" - short updates that appear directly in your search listing when someone finds you on Google. Use them to announce specials, share new products, or post events. They disappear after 7 days, so aim to add a new one each week.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">How to Create a Google Post</div>
+        <p>Download the "Google Business Profile" app on your phone, sign in with the account linked to your profile, and tap "Create Post." You can add a photo, a short description, and a button (like "Order Now" or "Learn More"). It takes less than two minutes.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <h5>⚠ A Common Mistake to Avoid</h5>
+    <p>Do not connect every platform to a single auto-posting tool and share the exact same post everywhere at the exact same time with the exact same caption. Each platform has a different audience and a different format. A great Instagram caption with hashtags looks out of place on Google Business. Adapt your content slightly for each platform, even if the photo is the same.</p>
+    <div class="safe-note">
+      <strong>Simple rule:</strong> Same photo, slightly different caption. Instagram gets hashtags. Facebook gets a full sentence or two. Google Business gets a short announcement-style description.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ KEY TAKEAWAYS ══════════════════ -->
+<div class="topic-banner" id="takeaways">
+  <div class="topic-tag">Summary</div>
+  <h2>Key <span>Takeaways</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num success">SUMMARY</span> The Four Things That Matter Most</div>
+
+  <div class="takeaway-grid">
+    <div class="takeaway-card">
+      <div class="takeaway-num">01</div>
+      <div class="takeaway-title">Consistency matters more than volume.</div>
+      <p>Three posts a week, every week, will outperform ten posts in one week followed by silence. The algorithm rewards regularity, and so do your customers. Pick a schedule you can realistically maintain and stick to it.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">02</div>
+      <div class="takeaway-title">Your bio is your first impression - make it specific and clear.</div>
+      <p>A vague bio loses potential customers in seconds. Use the bio formula: who you are, where you are, what you offer, and what to do next. Keep it under 150 characters on Instagram, and use the same language everywhere.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">03</div>
+      <div class="takeaway-title">Google Business is often overlooked but drives significant local foot traffic.</div>
+      <p>Most small business owners focus on Instagram and forget that Google is where customers go right before they make a decision. A complete, active Google Business Profile with photos and weekly posts can be one of the most powerful things you do for local visibility.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">04</div>
+      <div class="takeaway-title">You don't need to be on every platform. Start with two.</div>
+      <p>Spreading yourself across six platforms with low-quality, inconsistent content is worse than being excellent on two. Choose Instagram and Facebook to start - or Instagram and Google Business if your business is very location-focused. Add platforms only when you feel confident with the first two.</p>
+    </div>
+  </div>
+
+  <div class="tip-box" style="margin-top:8px;">
+    <p>You have completed Lesson 2 of the Voice the Companies Digital Literacy Curriculum. The next lesson will cover Email Communication Basics - how to write professional emails, manage your inbox, and use email as a business tool for customer relationships and follow-up.</p>
+    <div class="tip-note">▸ Next: Lesson 3 - Email Communication Basics</div>
+  </div>
+</div>
+
+<!-- ══════════════════ KNOWLEDGE CHECK ══════════════════ -->
+<div class="topic-banner" id="quiz" style="margin-top:44px;">
+  <div class="topic-tag">Wrap-Up</div>
+  <h2>Knowledge <span>Check</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">QUIZ</span> Five Quick Questions</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Answer these five questions to check your understanding. There are no grades here - this is just for you.
+  </p>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q1</span>
+    <div class="quiz-q-text">Why should you search for your business on Instagram, Facebook, and Google before creating new accounts?</div>
+    <ul class="quiz-choices">
+      <li>A) So you can find out how many followers you already have</li>
+      <li>B) Because your business may already have profiles that need to be claimed or corrected</li>
+      <li>C) To make sure no one else has a similar business name</li>
+      <li>D) It is not necessary - you should always start fresh</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q2</span>
+    <div class="quiz-q-text">What is the main advantage of a Business Account over a personal account on Instagram?</div>
+    <ul class="quiz-choices">
+      <li>A) Business Accounts get more followers automatically</li>
+      <li>B) Business Accounts can use a profile photo</li>
+      <li>C) Business Accounts include analytics, contact buttons, and scheduling tools</li>
+      <li>D) Business Accounts cost money but appear in more searches</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q3</span>
+    <div class="quiz-q-text">What are the three things an effective bio should answer immediately?</div>
+    <ul class="quiz-choices">
+      <li>A) When you opened, how many products you have, and your hours</li>
+      <li>B) Who you are, what you do, and how to reach you</li>
+      <li>C) Your revenue, your team size, and your founding year</li>
+      <li>D) Your Instagram handle, your Facebook link, and your address</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q4</span>
+    <div class="quiz-q-text">Which free tool lets you manage both Facebook and Instagram posts and schedule them in advance?</div>
+    <ul class="quiz-choices">
+      <li>A) Google Analytics</li>
+      <li>B) Canva Business</li>
+      <li>C) Meta Business Suite</li>
+      <li>D) Instagram Creator Studio (standalone app)</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q5</span>
+    <div class="quiz-q-text">Which posting schedule does this lesson recommend for a small business just getting started?</div>
+    <ul class="quiz-choices">
+      <li>A) Once a day, seven days a week</li>
+      <li>B) As many posts as possible in the first two weeks, then slow down</li>
+      <li>C) Three posts per week, consistently, on a fixed schedule</li>
+      <li>D) Only post when you have something special to announce</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ══════════════════ CHEAT SHEET ══════════════════ -->
+<div class="topic-banner" id="cheatsheet" style="margin-top:44px;">
+  <div class="topic-tag">Reference</div>
+  <h2>Printable <span>Cheat Sheet</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">REF</span> Social Media Fundamentals - Quick Reference</div>
+
+  <p style="font-size:14px; color:var(--muted); font-style:italic; margin-bottom:14px;">
+    Print this page and keep it near your phone or computer. Everything you learned in this lesson, condensed onto one reference sheet.
+  </p>
+
+  <div class="cheat-grid">
+
+    <div class="cheat-header">Steps 1 &amp; 2 - Claiming Profiles &amp; Account Setup</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Search Before You Create</dt>
+        <dd>Search your business name on Instagram, Facebook, and Google before making new accounts. Claim any existing profiles first.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Business vs. Personal</dt>
+        <dd>Always use a Business Account - never a personal profile. Switch existing personal accounts under Settings → Account.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Facebook Page Setup</dt>
+        <dd>facebook.com/pages/create → Choose Business or Brand → Fill in all fields completely.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Google Business Setup</dt>
+        <dd>business.google.com → Sign in → Follow the wizard → Verify your business by phone, postcard, or email.</dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Step 3 - Bio Formula</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Bio Template</dt>
+        <dd>[Type of Business] in [City, State] · [2–3 specific offerings] · [Call to action]</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Bio Rules</dt>
+        <dd>
+          <ul>
+            <li>Under 150 characters (Instagram)</li>
+            <li>Specific location, not just "online"</li>
+            <li>End with a clear call to action</li>
+            <li>Same bio on all platforms</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Step 4 - Profile Photo</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Best Photo Options</dt>
+        <dd>
+          <ul>
+            <li>Logo on white/solid background</li>
+            <li>Clean storefront or product photo</li>
+            <li>Professional headshot (solo business)</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Photo Specs</dt>
+        <dd>
+          <ul>
+            <li>At least 400×400 pixels</li>
+            <li>JPG or PNG file type</li>
+            <li>Under 5 MB</li>
+            <li>Same photo on all platforms</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Step 5 - Linking Platforms</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Link Instagram → Facebook</dt>
+        <dd>Instagram Settings → Linked Accounts → Facebook. Once connected, manage both from Meta Business Suite.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Consistency Check</dt>
+        <dd>Phone number, address, and hours must be identical across your website, Instagram, Facebook, and Google.</dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Steps 6 &amp; 7 - Content Calendar &amp; Scheduling</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Recommended Schedule</dt>
+        <dd>Post Monday, Wednesday, Friday. 9–11am gets highest engagement for most small businesses.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Scheduling Tool</dt>
+        <dd>Meta Business Suite (free) at business.facebook.com. Schedule the whole week on Sunday in one sitting.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Content Ideas Rotation</dt>
+        <dd>
+          <ul>
+            <li>Introduce yourself / your team</li>
+            <li>Feature a product or service</li>
+            <li>Share a customer review</li>
+            <li>Behind the scenes</li>
+            <li>Answer a common question</li>
+            <li>Announce a special or event</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Google Business Posts</dt>
+        <dd>Add a new Google Post each week via the Google Business Profile app. Posts expire after 7 days and boost local search visibility.</dd>
+      </dl>
+    </div>
+
+  </div>
+
+  <div class="meta-row" style="margin-top:20px;">
+    <div class="meta-cell"><strong>Organization</strong>Voice the Companies</div>
+    <div class="meta-cell"><strong>Curriculum</strong>Digital Literacy - Lesson 2 of 5</div>
+    <div class="meta-cell"><strong>Next Lesson</strong>Email Communication Basics</div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="doc-footer">
+  <span>Voice the Companies</span> &nbsp;·&nbsp; Digital Literacy Curriculum &nbsp;·&nbsp; Social Media Fundamentals &nbsp;·&nbsp; Lesson 2 of 5
+  <br/><br/>
+  This guide was prepared by the Voice the Companies student team for use by participating small business partners.
+  All rights reserved. For questions, contact your assigned student team or program coordinator.
+</div>
+
+<script>
+  (function () {
+    function initWorkbookTools() {
+      const slug = (window.location.pathname.split('/').pop() || 'lesson').replace('.html', '');
+      const progressKey = 'vtc_progress_' + slug;
+      const notesKey = 'vtc_notes_' + slug;
+
+      const stepList = document.getElementById('interactive-step-list');
+      const progressStatus = document.getElementById('interactive-progress-status');
+      const notesBox = document.getElementById('interactive-notes');
+
+      if (stepList && progressStatus) {
+        const stepLinks = Array.from(document.querySelectorAll('.toc a[href^="#step"]'));
+        const savedProgress = JSON.parse(window.localStorage.getItem(progressKey) || '[]');
+
+        stepLinks.forEach(function (link, index) {
+          const item = document.createElement('li');
+          item.className = 'progress-item';
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.id = 'progress-step-' + index;
+          checkbox.checked = Boolean(savedProgress[index]);
+
+          const label = document.createElement('label');
+          label.setAttribute('for', checkbox.id);
+          label.textContent = link.textContent.trim();
+
+          checkbox.addEventListener('change', function () {
+            const states = Array.from(stepList.querySelectorAll('input[type="checkbox"]')).map(function (node) {
+              return node.checked;
+            });
+            window.localStorage.setItem(progressKey, JSON.stringify(states));
+            updateProgress(states);
+          });
+
+          item.appendChild(checkbox);
+          item.appendChild(label);
+          stepList.appendChild(item);
+        });
+
+        function updateProgress(states) {
+          const done = states.filter(Boolean).length;
+          const total = states.length;
+          progressStatus.textContent = total
+            ? 'Progress: ' + done + '/' + total + ' steps completed'
+            : 'Progress tracker unavailable';
+        }
+
+        const initialStates = Array.from(stepList.querySelectorAll('input[type="checkbox"]')).map(function (node) {
+          return node.checked;
+        });
+        updateProgress(initialStates);
+      }
+
+      if (notesBox) {
+        notesBox.value = window.localStorage.getItem(notesKey) || '';
+        notesBox.addEventListener('input', function () {
+          window.localStorage.setItem(notesKey, notesBox.value);
+        });
+      }
+    }
+
+    function initInteractiveQuiz() {
+      const quizSection = document.querySelector('#quiz + .section');
+      if (!quizSection) return;
+
+      const questions = Array.from(quizSection.querySelectorAll('.quiz-q'));
+      if (!questions.length) return;
+
+      const answerMap = {
+        1: 'B',
+        2: 'C',
+        3: 'B',
+        4: 'C',
+        5: 'C'
+      };
+
+      const selections = {};
+
+      questions.forEach(function (question, qIndex) {
+        const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+        options.forEach(function (option, optIndex) {
+          const letter = String.fromCharCode(65 + optIndex);
+          option.dataset.letter = letter;
+          option.setAttribute('role', 'button');
+          option.setAttribute('tabindex', '0');
+
+          function choose() {
+            selections[qIndex + 1] = letter;
+            options.forEach(function (opt) {
+              opt.classList.remove('quiz-selected');
+            });
+            option.classList.add('quiz-selected');
+          }
+
+          option.addEventListener('click', choose);
+          option.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              choose();
+            }
+          });
+        });
+      });
+
+      const controls = document.createElement('div');
+      controls.className = 'quiz-controls';
+
+      const checkBtn = document.createElement('button');
+      checkBtn.className = 'quiz-btn';
+      checkBtn.type = 'button';
+      checkBtn.textContent = 'Check my answers';
+
+      const resetBtn = document.createElement('button');
+      resetBtn.className = 'quiz-btn secondary';
+      resetBtn.type = 'button';
+      resetBtn.textContent = 'Reset';
+
+      const result = document.createElement('div');
+      result.className = 'quiz-result';
+      result.setAttribute('aria-live', 'polite');
+
+      checkBtn.addEventListener('click', function () {
+        if (Object.keys(selections).length < questions.length) {
+          result.textContent = 'Answer all questions first, then check your score.';
+          return;
+        }
+
+        let score = 0;
+
+        questions.forEach(function (question, qIndex) {
+          const qNumber = qIndex + 1;
+          const correctLetter = answerMap[qNumber];
+          const selectedLetter = selections[qNumber];
+          const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+
+          options.forEach(function (option) {
+            option.classList.remove('quiz-correct', 'quiz-incorrect');
+            const letter = option.dataset.letter;
+            if (letter === correctLetter) {
+              option.classList.add('quiz-correct');
+            }
+            if (letter === selectedLetter && letter !== correctLetter) {
+              option.classList.add('quiz-incorrect');
+            }
+          });
+
+          if (selectedLetter === correctLetter) score += 1;
+        });
+
+        result.textContent = 'You scored ' + score + ' out of ' + questions.length + '.';
+      });
+
+      resetBtn.addEventListener('click', function () {
+        Object.keys(selections).forEach(function (key) {
+          delete selections[key];
+        });
+
+        questions.forEach(function (question) {
+          const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+          options.forEach(function (option) {
+            option.classList.remove('quiz-selected', 'quiz-correct', 'quiz-incorrect');
+          });
+        });
+
+        result.textContent = '';
+      });
+
+      controls.appendChild(checkBtn);
+      controls.appendChild(resetBtn);
+      quizSection.appendChild(controls);
+      quizSection.appendChild(result);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      initWorkbookTools();
+      initInteractiveQuiz();
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Creation Basics -- Voice the Companies Digital Literacy Curriculum</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --sage:        #B2C9AD;
+    --sage-dark:   #7a9e74;
+    --sage-deep:   #4a7044;
+    --sage-deeper: #2d4d2a;
+    --sage-light:  #eef4ec;
+    --sage-border: #9ebd98;
+    --ink:         #2E2E2E;
+    --soft-ink:    #4a4a4a;
+    --bg:          #f7faf6;
+    --paper:       #ffffff;
+    --rule:        #d4e0d1;
+    --muted:       #7a8c78;
+    --warn-bg:     #fff8f0;
+    --warn-border: #e0a060;
+    --tip-bg:      #f0faf0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* COVER */
+  .cover {
+    background: linear-gradient(150deg, #1e3a1a 0%, #2d4d2a 40%, #1a2e18 100%);
+    color: white;
+    padding: 70px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 50px,
+      rgba(255,255,255,0.012) 50px, rgba(255,255,255,0.012) 100px
+    );
+  }
+  .cover-logo {
+    width: 170px;
+    height: auto;
+    max-width: 60%;
+    margin-bottom: 22px;
+    filter: none;
+    position: relative; z-index: 1;
+  }
+  .cover-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.55); margin-bottom: 14px;
+    position: relative; z-index: 1;
+  }
+  .cover h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 50px; font-weight: 900; line-height: 1.05;
+    margin-bottom: 18px; position: relative; z-index: 1;
+  }
+  .cover h1 em { color: var(--sage); font-style: normal; }
+  .cover-sub {
+    font-size: 16px; color: rgba(255,255,255,0.78);
+    max-width: 500px; line-height: 1.65; position: relative; z-index: 1;
+  }
+  .cover-badges {
+    display: flex; gap: 10px; margin-top: 36px; flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .badge {
+    border: 1px solid rgba(178,201,173,0.4);
+    padding: 5px 14px; border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+  }
+  .cover-back-link {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 8px 14px;
+    border: 1px solid rgba(178,201,173,0.6);
+    border-radius: 999px;
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  }
+  .cover-back-link:hover {
+    background: rgba(178,201,173,0.22);
+    border-color: rgba(178,201,173,0.9);
+    color: #ffffff;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 40px 60px; }
+
+  /* TABLE OF CONTENTS */
+  .toc {
+    background: var(--paper);
+    border-left: 4px solid var(--sage);
+    margin: 44px 0;
+    padding: 32px 36px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .toc-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 20px; color: var(--ink);
+  }
+  .toc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .toc-section {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--sage-deep);
+    margin: 16px 0 7px;
+  }
+  .toc a {
+    display: block; font-size: 13.5px; color: var(--soft-ink);
+    text-decoration: none; padding: 3px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .toc a:hover { color: var(--sage-deep); }
+
+  /* TOPIC / SECTION BANNERS */
+  .topic-banner {
+    margin: 52px -40px 0;
+    padding: 38px 40px 30px;
+    background: var(--sage-deeper);
+    position: relative;
+  }
+  .topic-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); margin-bottom: 9px;
+  }
+  .topic-banner h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px; font-weight: 800; color: white;
+    line-height: 1.2;
+  }
+  .topic-banner h2 span { color: var(--sage); }
+
+  /* SECTION HEADERS */
+  .section {
+    margin-top: 44px;
+    padding-top: 28px;
+    border-top: 2px solid var(--rule);
+  }
+  .section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px; font-weight: 700;
+    color: var(--ink); margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; background: var(--sage-deep);
+    color: white; padding: 3px 10px; border-radius: 3px;
+    letter-spacing: 1px; white-space: nowrap;
+  }
+  .section-title .num.warn { background: #c0763a; }
+  .section-title .num.success { background: var(--sage-dark); }
+
+  /* GUIDE LIST */
+  ul.guide-list { list-style: none; padding: 0; }
+  ul.guide-list > li {
+    padding: 6px 0 6px 22px;
+    position: relative; font-size: 14.5px;
+    border-bottom: 1px dotted var(--rule);
+  }
+  ul.guide-list > li:last-child { border-bottom: none; }
+  ul.guide-list > li::before {
+    content: '\25B8';
+    position: absolute; left: 0; color: var(--sage-dark);
+    font-size: 11px; top: 9px;
+  }
+  ul.guide-list li strong { color: var(--ink); }
+  ul.guide-list li em { color: var(--sage-deep); font-style: normal; font-weight: 600; }
+  ul.sub-list { list-style: none; margin: 7px 0 5px 18px; }
+  ul.sub-list li {
+    font-size: 13.5px; padding: 2px 0 2px 16px;
+    position: relative; color: var(--soft-ink);
+  }
+  ul.sub-list li::before {
+    content: '\2013'; position: absolute; left: 0; color: var(--sage);
+  }
+
+  /* STAT GRID */
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; margin: 22px 0;
+  }
+  .stat-box {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--sage-dark);
+    padding: 16px; text-align: center;
+  }
+  .stat-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 26px; font-weight: 900;
+    color: var(--sage-deep); display: block;
+  }
+  .stat-label { font-size: 11.5px; color: var(--soft-ink); margin-top: 4px; line-height: 1.35; }
+
+  /* PILLARS / STEP CARDS */
+  .pillar {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    margin: 0 0 16px;
+  }
+  .pillar-header {
+    background: var(--sage-light);
+    border-bottom: 2px solid var(--sage-border);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .pillar-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px; font-weight: 900;
+    color: var(--sage-dark); line-height: 1; min-width: 36px;
+  }
+  .pillar-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .pillar-tag { font-size: 11px; color: var(--muted); margin-top: 2px; font-style: italic; }
+  .pillar-body { padding: 18px 22px; }
+  .pillar-section { margin-bottom: 14px; }
+  .pillar-section:last-child { margin-bottom: 0; }
+  .pillar-section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sage-deep); margin-bottom: 7px; font-weight: 700;
+  }
+  .pillar-section p { font-size: 14px; color: var(--soft-ink); line-height: 1.7; }
+  .pillar-section ul { padding-left: 18px; }
+  .pillar-section li { font-size: 13.5px; margin-bottom: 4px; color: var(--soft-ink); }
+
+  /* TABLE */
+  .guide-table {
+    width: 100%; border-collapse: collapse;
+    margin: 20px 0; font-size: 13.5px;
+  }
+  .guide-table th {
+    background: var(--sage-deep); color: white;
+    padding: 10px 14px; text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .guide-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .guide-table tr:nth-child(even) td { background: var(--sage-light); }
+  .guide-table td strong { color: var(--sage-deep); }
+
+  /* NOTE / CALLOUT BOX */
+  .note-box {
+    background: var(--sage-light);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 14px 18px; font-size: 13.5px;
+    margin: 16px 0; color: var(--soft-ink);
+    line-height: 1.7;
+  }
+  .note-box strong { color: var(--sage-deep); }
+
+  /* WARNING BOX */
+  .warn-box {
+    background: var(--warn-bg);
+    border: 1px solid #f0d0b0;
+    border-left: 4px solid var(--warn-border);
+    padding: 16px 20px; margin: 14px 0;
+  }
+  .warn-box h5 {
+    font-size: 13.5px; font-weight: 700;
+    color: #b06020; margin-bottom: 8px;
+    font-family: 'Poppins', sans-serif;
+  }
+  .warn-box p { font-size: 13.5px; color: var(--soft-ink); line-height: 1.65; }
+  .warn-box .safe-note {
+    background: var(--tip-bg);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 10px 14px; margin-top: 10px;
+    font-size: 13.5px; color: var(--soft-ink);
+  }
+  .warn-box .safe-note strong { color: var(--sage-deep); }
+
+  /* TIP / QUOTE BOX */
+  .tip-box {
+    background: linear-gradient(135deg, var(--sage-light) 0%, #f0f7ee 100%);
+    border: 1px solid var(--rule);
+    padding: 20px 26px; margin: 16px 0;
+    position: relative;
+  }
+  .tip-box::before {
+    content: '\201C';
+    font-family: 'Poppins', sans-serif;
+    font-size: 90px; color: rgba(74,112,68,0.08);
+    position: absolute; top: -14px; left: 12px;
+    line-height: 1;
+  }
+  .tip-box p { font-size: 14px; line-height: 1.75; padding-left: 16px; font-style: italic; color: var(--soft-ink); }
+  .tip-box .tip-note {
+    font-style: normal; font-size: 11.5px; color: var(--muted);
+    margin-top: 8px; padding-left: 16px;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px;
+  }
+
+  /* TAKEAWAY CARDS */
+  .takeaway-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0;
+  }
+  .takeaway-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-top: 3px solid var(--sage-dark);
+    padding: 18px 20px;
+  }
+  .takeaway-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px; font-weight: 900;
+    color: var(--sage); line-height: 1; margin-bottom: 8px;
+  }
+  .takeaway-title {
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .takeaway-card p { font-size: 13.5px; color: var(--soft-ink); line-height: 1.65; }
+
+  /* QUIZ */
+  .quiz-q {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 18px 22px; margin: 14px 0;
+  }
+  .quiz-q-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .quiz-q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; background: var(--sage-deep);
+    color: white; padding: 2px 8px; border-radius: 3px;
+    letter-spacing: 1px; margin-right: 8px;
+    display: inline-block; margin-bottom: 10px;
+  }
+  .quiz-choices { list-style: none; padding: 0; }
+  .quiz-choices li {
+    font-size: 13.5px; color: var(--soft-ink);
+    padding: 5px 0 5px 22px; position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .quiz-choices li:last-child { border-bottom: none; }
+  .quiz-choices li::before {
+    content: '\25CB'; position: absolute; left: 0;
+    color: var(--sage); font-size: 12px; top: 6px;
+  }
+  /* INTERACTIVE WORKBOOK */
+  .interactive-panel {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 18px 20px;
+    margin: 24px 0 36px;
+  }
+  .interactive-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .interactive-sub {
+    font-size: 13px;
+    color: var(--soft-ink);
+    margin-bottom: 14px;
+  }
+  .progress-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .progress-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .progress-item label {
+    font-size: 13px;
+    color: var(--soft-ink);
+    cursor: pointer;
+  }
+  .progress-item input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--sage-deep);
+  }
+  .progress-status {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.4px;
+    margin-bottom: 12px;
+  }
+  .interactive-notes-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--sage-deep);
+    margin-bottom: 6px;
+  }
+  .interactive-notes {
+    width: 100%;
+    min-height: 92px;
+    border: 1px solid var(--rule);
+    background: #fff;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    resize: vertical;
+  }
+
+  .quiz-choices li {
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .quiz-choices li:hover {
+    background: #f5f9f4;
+  }
+  .quiz-choices li.quiz-selected {
+    background: #edf3eb;
+    border-color: var(--sage-border);
+  }
+  .quiz-choices li.quiz-selected::before {
+    content: '◉';
+    color: var(--sage-deep);
+  }
+  .quiz-choices li.quiz-correct {
+    background: #eaf6e7;
+    border-color: #8ab27f;
+  }
+  .quiz-choices li.quiz-correct::before {
+    content: '✓';
+    color: #3f7f33;
+    font-weight: 700;
+  }
+  .quiz-choices li.quiz-incorrect {
+    background: #fff1f0;
+    border-color: #d99891;
+  }
+  .quiz-choices li.quiz-incorrect::before {
+    content: '✕';
+    color: #b24b42;
+    font-weight: 700;
+  }
+  .quiz-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .quiz-btn {
+    background: var(--sage-deep);
+    color: #fff;
+    border: 1px solid var(--sage-deep);
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .quiz-btn.secondary {
+    background: #fff;
+    color: var(--sage-deep);
+  }
+  .quiz-result {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--soft-ink);
+  }
+  /* CHEAT SHEET */
+  .cheat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border: 1px solid var(--sage-border); margin: 20px 0;
+  }
+  .cheat-cell {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--sage-border);
+    border-right: 1px solid var(--sage-border);
+  }
+  .cheat-cell:nth-child(even) { border-right: none; }
+  .cheat-cell:nth-last-child(1),
+  .cheat-cell:nth-last-child(2) { border-bottom: none; }
+  .cheat-cell dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700; color: var(--sage-deep);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;
+  }
+  .cheat-cell dd { font-size: 13px; color: var(--soft-ink); line-height: 1.6; }
+  .cheat-cell dd ul { padding-left: 14px; margin-top: 4px; }
+  .cheat-cell dd li { margin-bottom: 2px; font-size: 12.5px; }
+  .cheat-header {
+    grid-column: 1 / -1;
+    background: var(--sage-deep); color: white;
+    padding: 9px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+    border-bottom: 1px solid var(--sage-border);
+  }
+
+  /* WELCOME BANNER */
+  .welcome-banner {
+    background: var(--sage-light);
+    border-left: 4px solid var(--sage-dark);
+    padding: 22px 28px; margin: 20px 0;
+  }
+  .welcome-banner p { font-size: 14.5px; color: var(--soft-ink); line-height: 1.75; }
+
+  /* CHECKLIST */
+  ul.checklist { list-style: none; padding: 0; margin: 14px 0; }
+  ul.checklist li {
+    font-size: 14px; color: var(--soft-ink);
+    padding: 6px 0 6px 26px; position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+  ul.checklist li:last-child { border-bottom: none; }
+  ul.checklist li::before {
+    content: '\2713'; position: absolute; left: 0;
+    color: var(--sage-dark); font-weight: 700; font-size: 13px; top: 7px;
+  }
+
+  /* BEFORE / AFTER */
+  .before-after {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;
+  }
+  .ba-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    overflow: hidden;
+  }
+  .ba-head {
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    font-weight: 700;
+  }
+  .ba-head.before { background: #fff4ee; color: #b06020; border-bottom: 2px solid #e0a060; }
+  .ba-head.after  { background: var(--sage-light); color: var(--sage-deep); border-bottom: 2px solid var(--sage-border); }
+  .ba-body { padding: 14px 16px; font-size: 13.5px; color: var(--soft-ink); line-height: 1.7; }
+  .ba-body em { font-style: italic; color: var(--muted); }
+
+  /* CAPTION TEMPLATE */
+  .caption-template {
+    background: var(--paper);
+    border: 2px dashed var(--sage-border);
+    padding: 22px 26px; margin: 18px 0;
+    font-size: 14.5px; color: var(--soft-ink); line-height: 2;
+  }
+  .caption-template .fill {
+    border-bottom: 2px solid var(--sage-dark);
+    display: inline-block; min-width: 160px;
+    color: var(--sage-deep); font-weight: 600;
+    font-style: italic;
+  }
+  .caption-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sage-deep); margin-bottom: 10px;
+    display: block;
+  }
+
+  /* BATCH TIMER STEPS */
+  .batch-grid {
+    display: grid; grid-template-columns: 80px 1fr; gap: 0;
+    border: 1px solid var(--sage-border); margin: 20px 0;
+  }
+  .batch-time {
+    background: var(--sage-deep); color: white;
+    padding: 14px 10px; text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px; font-weight: 700;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .batch-time:last-of-type { border-bottom: none; }
+  .batch-task {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--sage-border);
+    font-size: 14px; color: var(--soft-ink); line-height: 1.6;
+  }
+  .batch-task:last-child { border-bottom: none; }
+  .batch-task strong { color: var(--ink); display: block; margin-bottom: 3px; }
+
+  /* THIRDS DIAGRAM */
+  .thirds-diagram {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    width: 100%; max-width: 360px;
+    height: 240px;
+    border: 2px solid var(--sage-border);
+    margin: 20px auto;
+    background: var(--sage-light);
+    position: relative;
+  }
+  .thirds-cell {
+    border: 1px dashed var(--sage-border);
+    position: relative;
+  }
+  .thirds-dot {
+    width: 12px; height: 12px;
+    background: var(--sage-deep);
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+  .thirds-label {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    margin-top: 8px; letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* LIGHT TIME TABLE */
+  .light-row {
+    display: grid; grid-template-columns: 140px 1fr;
+    border: 1px solid var(--sage-border);
+    margin-bottom: 8px; overflow: hidden;
+  }
+  .light-time {
+    background: var(--sage-deep); color: white;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 1px;
+    display: flex; align-items: center;
+  }
+  .light-desc {
+    padding: 12px 16px;
+    font-size: 13.5px; color: var(--soft-ink);
+    background: var(--paper);
+    display: flex; align-items: center;
+    line-height: 1.5;
+  }
+  .light-row.good .light-time { background: var(--sage-dark); }
+  .light-row.ok .light-time   { background: var(--sage-deep); }
+  .light-row.avoid .light-time { background: #c0763a; }
+
+  /* DIVIDERS */
+  .divider { border: none; border-top: 1px solid var(--rule); margin: 32px 0; }
+
+  /* META ROW */
+  .meta-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px;
+  }
+  .meta-cell {
+    background: #f4f4f4; padding: 10px 14px; font-size: 12.5px; color: var(--soft-ink);
+  }
+  .meta-cell strong {
+    display: block; font-size: 9.5px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* FOOTER */
+  .doc-footer {
+    background: var(--ink); color: rgba(255,255,255,0.45);
+    text-align: center; padding: 28px 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 1px;
+    margin-top: 60px;
+  }
+  .doc-footer span { color: var(--sage); }
+
+  @media print {
+    .cover { padding: 40px; }
+    body { font-size: 13px; }
+    .topic-banner { margin: 40px 0 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <img class="cover-logo" src="../logo.png" alt="Voice the Companies logo" />
+  <div class="cover-label">Voice the Companies · Digital Literacy Curriculum · Lesson 3 of 5</div>
+  <h1>Content<br><em>Creation</em><br>Basics</h1>
+  <p class="cover-sub">Learn how to take great photos with your smartphone, write short captions that sound like you, and use the free design tool Canva to create simple, professional-looking graphics - no design experience needed.</p>
+  <div class="cover-badges">
+    <div class="badge">7 Steps</div>
+    <div class="badge">4 Key Takeaways</div>
+    <div class="badge">Knowledge Check</div>
+    <div class="badge">Printable Cheat Sheet</div>
+    <div class="badge">No Design Experience Required</div>
+  </div>
+  <a class="cover-back-link" href="/digital-literacy">Back to Digital Literacy</a>
+</div>
+
+<div class="container">
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <div class="toc-title">Table of Contents</div>
+  <div class="toc-cols">
+    <div>
+      <div class="toc-section">Getting Started</div>
+      <a href="#welcome">Welcome and What You Will Learn</a>
+      <a href="#why">Why Content Creation Matters</a>
+      <a href="#how-to-use">How to Use This Guide</a>
+      <div class="toc-section">The Seven Steps</div>
+      <a href="#step1">Step 1 -- Clean Your Lens and Prepare to Shoot</a>
+      <a href="#step2">Step 2 -- Use Natural Light</a>
+      <a href="#step3">Step 3 -- Rule of Thirds</a>
+      <a href="#step4">Step 4 -- Take 10 Photos and Choose the Best One</a>
+    </div>
+    <div>
+      <div class="toc-section">&nbsp;</div>
+      <a href="#step5">Step 5 -- Set Up and Use Canva</a>
+      <a href="#step6">Step 6 -- Write Captions with a Hook and a Call to Action</a>
+      <a href="#step7">Step 7 -- Build a Brand Asset Folder</a>
+      <a href="#batch">Batch Creation Workflow</a>
+      <div class="toc-section">Wrap-Up</div>
+      <a href="#takeaways">Key Takeaways</a>
+      <a href="#quiz">Knowledge Check</a>
+      <a href="#cheatsheet">Printable Cheat Sheet</a>
+    </div>
+  </div>
+</div>
+
+<div class="interactive-panel" id="workbook-tools">
+  <div class="interactive-title">Interactive Workbook</div>
+  <p class="interactive-sub">Track your progress and keep notes while you work through this lesson.</p>
+  <ul class="progress-list" id="interactive-step-list"></ul>
+  <p class="progress-status" id="interactive-progress-status"></p>
+  <label class="interactive-notes-label" for="interactive-notes">My Notes</label>
+  <textarea class="interactive-notes" id="interactive-notes" placeholder="Write reminders, questions, or actions you want to take..."></textarea>
+</div>
+
+<!-- WELCOME -->
+<div class="topic-banner" id="welcome">
+  <div class="topic-tag">Voice the Companies · Digital Literacy Curriculum · Lesson 3</div>
+  <h2>Welcome to <span>Content Creation Basics</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">INTRO</span> A Note Before You Begin</div>
+
+  <div class="welcome-banner">
+    <p>Welcome back. You already set up your website and social profiles. Now it is time for the part people actually see every day: your content. Good photos and clear captions make a big difference, and you do not need expensive gear to do it. A clean phone lens, good light, and a simple system are enough.</p>
+  </div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:14px;">
+    Content creation can feel overwhelming at first, especially when you are busy running a business. This lesson is built to make it practical. By the end, you will have a repeatable workflow for photos, captions, and graphics that looks polished and feels like your brand.
+  </p>
+
+  <div class="stat-grid">
+    <div class="stat-box"><span class="stat-num">7</span><div class="stat-label">Step-by-step lessons in this guide</div></div>
+    <div class="stat-box"><span class="stat-num">30</span><div class="stat-label">Minutes to batch-create a full week of content</div></div>
+    <div class="stat-box"><span class="stat-num">5</span><div class="stat-label">Quiz questions to test your understanding</div></div>
+    <div class="stat-box"><span class="stat-num">1</span><div class="stat-label">Printable cheat sheet to keep nearby</div></div>
+  </div>
+
+  <p style="font-size:14px; color:var(--soft-ink); line-height:1.75; margin-bottom:14px;">By the end of this lesson, you will be able to:</p>
+  <ul class="checklist">
+    <li>Take noticeably better photos using only your smartphone and natural light</li>
+    <li>Apply the rule of thirds to make your photos look more professional</li>
+    <li>Choose the strongest photo from a batch by knowing what to look for</li>
+    <li>Create a free Canva account and use social media post templates</li>
+    <li>Write captions that open with a strong hook and close with a call to action</li>
+    <li>Build an organized brand asset folder on your phone</li>
+    <li>Batch-create a full week of posts in a single 30-minute session</li>
+  </ul>
+</div>
+
+<!-- WHY CONTENT CREATION MATTERS -->
+<div class="topic-banner" id="why">
+  <div class="topic-tag">Background</div>
+  <h2>Why Content Creation <span>Matters for Your Business</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">CONTEXT</span> The Big Picture</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Before we dive into the steps, it helps to understand why the quality of your photos and captions matters as much as it does. Customers make decisions about businesses faster than ever, and much of that decision happens visually.
+  </p>
+
+  <div class="stat-grid">
+    <div class="stat-box"><span class="stat-num">94%</span><div class="stat-label">More views for content with strong visuals compared to text-only posts</div></div>
+    <div class="stat-box"><span class="stat-num">93%</span><div class="stat-label">Of consumers say visual appearance is the top factor in a purchasing decision</div></div>
+    <div class="stat-box"><span class="stat-num">2.3x</span><div class="stat-label">More engagement on posts that include a clear call to action in the caption</div></div>
+    <div class="stat-box"><span class="stat-num">80%</span><div class="stat-label">Of small business social media photos are taken on a smartphone</div></div>
+  </div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    The most successful small business social media accounts are not the ones with the fanciest cameras or the biggest budgets. They are the ones that post consistently, photograph their work in good light, write captions in a real human voice, and give customers a clear next step. All of that is teachable, and this lesson teaches it.
+  </p>
+
+  <div class="tip-box">
+    <p>Your customers are not comparing your photos to a professional photography studio. They are comparing your presence to competitors in your category. Consistent, well-lit, authentic content will put you ahead of most of them.</p>
+    <div class="tip-note">&#9658; Voice the Companies Program Guidance</div>
+  </div>
+</div>
+
+<!-- HOW TO USE THIS GUIDE -->
+<div class="section" id="how-to-use">
+  <div class="section-title"><span class="num">GUIDE</span> How to Use This Curriculum</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    This guide is designed to be worked through section by section, at your own pace. You can complete it in one sitting or return to specific steps as you need them. Here is how to get the most out of it.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">1</div>
+      <div>
+        <div class="pillar-name">Try each step on your own phone before moving on</div>
+        <div class="pillar-tag">Hands-on practice is faster than reading alone</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Steps 1 through 4 are all about photography. If you can, read each section with your phone nearby and try the technique immediately after reading it. Even one practice photo per step will make a big difference in how quickly these habits stick.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">2</div>
+      <div>
+        <div class="pillar-name">Open Canva alongside this guide for Step 5</div>
+        <div class="pillar-tag">canva.com -- free account, no credit card required</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">When you reach Step 5, we recommend opening Canva in a browser tab on your computer or downloading the Canva app on your phone and following along in real time. The step-by-step instructions in this guide are written so you can complete them as you read.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">3</div>
+      <div>
+        <div class="pillar-name">End with the batch session</div>
+        <div class="pillar-tag">The final workflow ties everything together</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">After completing all seven steps, there is a batch creation workflow section that shows you how to combine everything you have learned into a single 30-minute session. That is the goal of this entire lesson: a repeatable, efficient content creation habit.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">4</div>
+      <div>
+        <div class="pillar-name">Print the cheat sheet and keep it accessible</div>
+        <div class="pillar-tag">Everything condensed onto one reference page</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">The final section of this guide is a printable cheat sheet that covers all seven steps in compact form. Print it and keep it near your workspace so you can reference it quickly during your weekly content sessions without reopening the full guide.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 1 -->
+<div class="topic-banner" id="step1">
+  <div class="topic-tag">Step 1 of 7</div>
+  <h2>Clean Your Lens and <span>Prepare to Shoot</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 01</span> The simplest upgrade most business owners never make</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Before you think about lighting, composition, or editing, there is one step that costs nothing, takes five seconds, and makes a visible improvement in almost every photo: cleaning your phone lens. Phone lenses collect fingerprints, dust, and smudges throughout the day. Shooting through a dirty lens produces photos that look soft, hazy, and unprofessional even in perfect light.
+  </p>
+
+  <div class="note-box">
+    <strong>Try it right now:</strong> Look at your phone camera lens. There is almost certainly a smudge or fingerprint on it. Wipe it gently with the edge of a clean shirt or a microfiber cloth, then take a photo. The difference is immediate and significant.
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">CHECKLIST</span> Pre-Shoot Checklist</div>
+  <p style="font-size:14px; color:var(--soft-ink); margin-bottom:14px;">Run through this checklist before every content photo session. It takes less than two minutes and removes the most common causes of poor-quality smartphone photos.</p>
+
+  <ul class="checklist">
+    <li>Wipe the lens with a clean microfiber cloth or the edge of a soft shirt</li>
+    <li>Check that your battery is above 20% so the camera does not throttle performance</li>
+    <li>Clear some space on your phone so photos save quickly and without interruption</li>
+    <li>Turn off any filters or beauty modes that are on by default in your camera app</li>
+    <li>Tap your subject on the screen before shooting to lock focus on what matters most</li>
+    <li>Make sure your phone is in the right orientation (portrait for people, landscape for spaces)</li>
+    <li>Turn off flash -- natural light always looks better than phone flash</li>
+  </ul>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">TIPS</span> Setting Up Your Subject</div>
+  <ul class="guide-list">
+    <li><strong>Clear the background.</strong> <em>A cluttered background distracts from your subject.</em> Take 30 seconds to move anything out of frame that does not belong in the photo.</li>
+    <li><strong>Get close to your subject.</strong> <em>Phone cameras struggle with distant subjects.</em> Step closer rather than zooming in. Digital zoom reduces image quality significantly.</li>
+    <li><strong>Check your camera grid lines.</strong> <em>Most phone cameras have a grid option in settings.</em> Turn it on -- it makes the rule of thirds (Step 3) much easier to apply.</li>
+    <li><strong>Shoot in your camera app, not Instagram directly.</strong> <em>The native camera app captures higher resolution files.</em> You can always upload to Instagram afterward.</li>
+  </ul>
+</div>
+
+<!-- STEP 2 -->
+<div class="topic-banner" id="step2">
+  <div class="topic-tag">Step 2 of 7</div>
+  <h2>Use <span>Natural Light</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 02</span> Lighting is the single biggest factor in photo quality</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Professional photographers will tell you that great photography is really great lighting. This is as true for smartphone photos as it is for studio shoots. The good news is that the best light available to most small business owners costs nothing at all: it is daylight, and it comes through your windows every morning.
+  </p>
+
+  <div class="light-row good">
+    <div class="light-time">Morning<br>7am to 10am</div>
+    <div class="light-desc"><strong style="color:var(--sage-deep); margin-right:6px;">Best.</strong> Soft, warm, directional light that flatters almost any subject. Shadows are gentle and colors look natural. This is the ideal time to photograph food, products, and people.</div>
+  </div>
+  <div class="light-row good">
+    <div class="light-time">Afternoon<br>10am to 2pm</div>
+    <div class="light-desc"><strong style="color:var(--sage-deep); margin-right:6px;">Good.</strong> Bright and even light works well indoors near windows. Outdoors can be harsh with strong shadows, so position your subject in open shade (under an awning or tree) rather than in direct sun.</div>
+  </div>
+  <div class="light-row ok">
+    <div class="light-time">Late Afternoon<br>2pm to 5pm</div>
+    <div class="light-desc"><strong style="color:var(--sage-deep); margin-right:6px;">Decent.</strong> Light starts to warm up and become more directional again. Still usable, especially indoors. Watch for long shadows when shooting outside.</div>
+  </div>
+  <div class="light-row avoid">
+    <div class="light-time">Overhead Flash<br>Any time</div>
+    <div class="light-desc"><strong style="color:#b06020; margin-right:6px;">Avoid.</strong> Phone flash creates flat, harsh lighting with unflattering shadows, red-eye on people, and washed-out colors on products. Turn it off and find a window instead.</div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">TECHNIQUE</span> How to Use Window Light</div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">A</div>
+      <div>
+        <div class="pillar-name">Face your subject toward the window</div>
+        <div class="pillar-tag">The light source should be in front of your subject, not behind it</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Place your product, food, or person so they are facing the window directly. The light will fall evenly across the front of your subject. If you shoot with the window behind your subject, you will get a silhouette with a dark, underexposed subject.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">B</div>
+      <div>
+        <div class="pillar-name">Use a white piece of paper or foam board to bounce light</div>
+        <div class="pillar-tag">A free tool that fills in dark shadows on one side</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Place a large piece of white paper, a white foam board, or even a white wall on the opposite side of your subject from the window. This reflects some of the window light back onto the shadowy side of your subject, producing softer, more even light with no equipment cost.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">C</div>
+      <div>
+        <div class="pillar-name">Use a sheer curtain on bright days to diffuse harsh sunlight</div>
+        <div class="pillar-tag">Direct sun through a window creates harsh shadows</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">On very sunny days, direct sunlight through a window can be too harsh and create sharp, unflattering shadows. Hang a sheer white curtain, a white sheet, or even tape tracing paper over the window. This diffuses the light into a softer, more even glow that works beautifully for products and food photography.</p>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <h5>&#9888; The Mixed Lighting Trap</h5>
+    <p>One of the most common mistakes in smartphone photography is mixing light sources. If you are shooting near a window but also have a yellow overhead light on, your photos will have an unpleasant, uneven color cast that is difficult to fix in editing. When shooting with window light, turn off all artificial lights in the room and rely solely on the natural light from outside.</p>
+    <div class="safe-note">
+      <strong>Quick fix:</strong> Before every photo session, walk to your shooting spot and look around. If you see an overhead light or a lamp on in the same frame or space, turn it off. Window light only.
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="topic-banner" id="step3">
+  <div class="topic-tag">Step 3 of 7</div>
+  <h2>Follow the <span>Rule of Thirds</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 03</span> One composition technique that makes photos look instantly more professional</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    The rule of thirds is one of the most fundamental principles in photography and visual design. It is simple, fast to apply, and makes an immediate difference in how professional your photos feel. Most people instinctively center their subject in every photo. The rule of thirds says: do not. Place your subject slightly off-center instead, and the image becomes more dynamic, more interesting, and more visually balanced.
+  </p>
+
+  <div class="section-title" style="margin-top:0;"><span class="num">VISUAL</span> How the Grid Works</div>
+
+  <p style="font-size:14px; color:var(--soft-ink); margin-bottom:12px;">Imagine dividing your photo into nine equal rectangles using two horizontal lines and two vertical lines, like a tic-tac-toe grid. The four points where those lines cross are called the power points. Placing your main subject on or near one of those four points creates a naturally balanced, pleasing composition.</p>
+
+  <div class="thirds-diagram">
+    <!-- intersections -->
+    <div class="thirds-cell"></div>
+    <div class="thirds-cell"></div>
+    <div class="thirds-cell"></div>
+    <div class="thirds-cell"></div>
+    <div class="thirds-cell"></div>
+    <div class="thirds-cell"></div>
+    <div class="thirds-cell"></div>
+    <div class="thirds-cell"></div>
+    <div class="thirds-cell"></div>
+    <!-- power point dots positioned at intersections -->
+    <div class="thirds-dot" style="top: 33.3%; left: 33.3%; position:absolute;"></div>
+    <div class="thirds-dot" style="top: 33.3%; left: 66.6%; position:absolute;"></div>
+    <div class="thirds-dot" style="top: 66.6%; left: 33.3%; position:absolute;"></div>
+    <div class="thirds-dot" style="top: 66.6%; left: 66.6%; position:absolute;"></div>
+  </div>
+  <div class="thirds-label">The four dots mark the "power points" -- place your subject on or near any one of them</div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">EXAMPLES</span> Applying the Rule by Business Type</div>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Business Type</th>
+        <th>What to Place on a Power Point</th>
+        <th>What to Leave in the Remaining Space</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Food or Bakery</strong></td>
+        <td>The hero item (a cake, a dish, a drink) placed on a lower-right or lower-left point</td>
+        <td>A blurred background, a table surface, or a complementary prop like a napkin or fork</td>
+      </tr>
+      <tr>
+        <td><strong>Retail or Products</strong></td>
+        <td>The product on any power point, especially upper third for a floating effect</td>
+        <td>Clean background, a lifestyle prop, or a surface texture like wood or marble</td>
+      </tr>
+      <tr>
+        <td><strong>Services or People</strong></td>
+        <td>The person's eye or face placed on an upper-left or upper-right power point</td>
+        <td>Your workspace, storefront, or a blurred environment that gives context</td>
+      </tr>
+      <tr>
+        <td><strong>Storefronts or Spaces</strong></td>
+        <td>A strong vertical element like a door, a window, or a sign on a left or right vertical line</td>
+        <td>The surrounding space, street, or sky that gives the image depth and context</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note-box">
+    <strong>Enable grid lines on your phone:</strong> On iPhone, go to Settings, then Camera, and toggle on Grid. On Android, open the Camera app, go to Settings, and look for a Grid Lines option. Once the grid is on, you will see a live rule-of-thirds overlay directly on your camera screen while you shoot.
+  </div>
+</div>
+
+<!-- STEP 4 -->
+<div class="topic-banner" id="step4">
+  <div class="topic-tag">Step 4 of 7</div>
+  <h2>Take 10 Photos and <span>Choose the Best One</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 04</span> Volume leads to quality -- every professional photographer shoots this way</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    One of the most important shifts you can make in how you approach smartphone photography is this: never expect your first photo to be the best one. Professional photographers take dozens or hundreds of shots to get the perfect image. You are going to take ten, and then choose the one that works. This single habit will improve the quality of your posts more than any filter or editing app.
+  </p>
+
+  <div class="tip-box">
+    <p>Think of your first three photos as warmup shots. You are finding the angle, adjusting the light, and checking the composition. Photos four through ten are where the real options start to appear. The photo you choose is almost never one of the first three.</p>
+    <div class="tip-note">&#9658; Voice the Companies Photography Guidance</div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">TECHNIQUE</span> How to Shoot a Batch of 10</div>
+
+  <ul class="guide-list">
+    <li><strong>Shoot from multiple angles.</strong> <em>Three photos straight on, three from slightly above, two from the side, two from close up.</em> The best angle is rarely obvious until you see the options side by side.</li>
+    <li><strong>Change one thing between shots.</strong> <em>Move the subject slightly, adjust your position, or try a tighter crop.</em> Small changes produce noticeably different results.</li>
+    <li><strong>Shoot in burst mode for moving subjects.</strong> <em>Hold down the shutter button on most phones to capture multiple frames quickly.</em> This is ideal for photographing people in action, food being poured, or anything that moves.</li>
+    <li><strong>Take one wide shot and one close-up of every subject.</strong> <em>Wide shots provide context; close-ups show detail.</em> You will often discover the close-up version is more compelling than you expected.</li>
+  </ul>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">SELECTION</span> What to Look for When Choosing Your Best Photo</div>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>What to Look For</th>
+        <th>Green Light -- Use It</th>
+        <th>Red Flag -- Skip It</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Focus</strong></td>
+        <td>Your main subject is sharp and crisp at the edges</td>
+        <td>Any blurriness on the subject, even slight. A blurry background is fine and often desirable.</td>
+      </tr>
+      <tr>
+        <td><strong>Exposure</strong></td>
+        <td>Even brightness, no blown-out white areas, no black shadow areas with no detail</td>
+        <td>Parts of the image that are so bright they are completely white, or so dark you cannot see them</td>
+      </tr>
+      <tr>
+        <td><strong>Composition</strong></td>
+        <td>Subject is well-placed, background is clean, nothing awkward is cut off at the edge</td>
+        <td>Important parts of the subject cut off by the frame, or a distracting object in the background</td>
+      </tr>
+      <tr>
+        <td><strong>Authenticity</strong></td>
+        <td>The image looks natural and feels like your brand</td>
+        <td>Overly staged or stiff. Customers respond to images that feel real.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note-box">
+    <strong>A helpful habit:</strong> After each photo session, review your ten photos immediately while the light and setup are still fresh. If none of them are quite right, you still have time to shoot ten more before you move on. Reviewing on the spot is much better than reviewing later and wishing you had taken one more shot.
+  </div>
+</div>
+
+<!-- STEP 5 -->
+<div class="topic-banner" id="step5">
+  <div class="topic-tag">Step 5 of 7</div>
+  <h2>Set Up and <span>Use Canva</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 05</span> A free design tool that gives small businesses a professional look</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Canva is a free, browser-based design tool that is used by millions of small businesses, nonprofits, schools, and organizations around the world. It requires no design knowledge, no software to install, and no payment. The free tier includes thousands of templates, a simple drag-and-drop editor, and the ability to download finished graphics directly to your phone or computer.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">1</div>
+      <div>
+        <div class="pillar-name">Create a free account at canva.com</div>
+        <div class="pillar-tag">No credit card required -- the free tier is genuinely complete</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">How to Sign Up</div>
+        <p>Go to canva.com in any browser. Click "Sign up" and choose to register with your Google account, your Apple account, or your email address. Using Google or Apple is fastest since you will not need to remember a new password. Once you are in, you will land on the Canva home screen.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">Free vs. Canva Pro</div>
+        <p>Canva offers a paid tier called Canva Pro with additional features. You do not need it. The free tier includes everything covered in this lesson. If Canva prompts you to upgrade, simply click "Stay on Free" or close the prompt. Your Voice the Companies student team can confirm which features you actually need for your business.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">2</div>
+      <div>
+        <div class="pillar-name">Navigate to Social Media Post templates</div>
+        <div class="pillar-tag">Pre-sized, pre-designed templates that match every platform</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">Finding the Right Template Size</div>
+        <p>From the Canva home screen, click the search bar and type "Instagram Post" or "Facebook Post." Canva will show you templates that are already sized correctly for each platform. You can also type your business category, such as "bakery post," "salon post," or "restaurant post" to find industry-specific templates.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">Choosing a Template</div>
+        <p>Browse the free templates (look for ones without a crown icon, which indicates a paid element). Click any template to open it in the editor. From there, you can replace the sample photo, change the text, and adjust colors to match your brand. Nothing is permanent -- every element can be changed.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">3</div>
+      <div>
+        <div class="pillar-name">Upload your own photos and set up brand colors</div>
+        <div class="pillar-tag">Your brand assets turn Canva into a custom design tool</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">Uploading Photos</div>
+        <p>In the Canva editor, click "Uploads" in the left panel. You can drag and drop photos from your computer, or click the upload button to browse your files. Once uploaded, click any photo to drag it onto your design. You can resize and reposition it freely.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">Saving Your Brand Colors</div>
+        <p>On the free plan, you can manually enter your brand color codes whenever you click a color field. If you know your brand's hex color codes (for example, #2d4d2a), type them directly into the color picker. This ensures your graphics always match your logo and other materials. Your VTC student team can help you identify your hex color codes if you are not sure what they are.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">FEATURES</span> Most Useful Free Canva Features for Small Businesses</div>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>What It Does</th>
+        <th>Where to Find It</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Templates</strong></td>
+        <td>Pre-designed layouts sized correctly for every social media platform</td>
+        <td>Home screen search bar -- type your platform or business type</td>
+      </tr>
+      <tr>
+        <td><strong>Uploads</strong></td>
+        <td>Add your own photos, logos, and graphics to any design</td>
+        <td>Left panel inside the editor, labeled "Uploads"</td>
+      </tr>
+      <tr>
+        <td><strong>Text Tool</strong></td>
+        <td>Add, edit, resize, and recolor any text on your design</td>
+        <td>Click any existing text in a template, or click "Text" in the left panel to add new text</td>
+      </tr>
+      <tr>
+        <td><strong>Background Remover</strong></td>
+        <td>Removes the background from any photo with one click</td>
+        <td>Select a photo, click "Edit Image," then "Background Remover" -- note: this is a Pro feature</td>
+      </tr>
+      <tr>
+        <td><strong>Download</strong></td>
+        <td>Export your finished design as a PNG, JPG, or PDF</td>
+        <td>Top-right corner of the editor -- click "Share," then "Download"</td>
+      </tr>
+      <tr>
+        <td><strong>Folders</strong></td>
+        <td>Organize your designs by week, campaign, or post type</td>
+        <td>Home screen, left panel under "Projects"</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box">
+    <h5>&#9888; Watch for Paid Elements in Templates</h5>
+    <p>Canva's free templates sometimes include individual elements (photos, illustrations, or fonts) that require Canva Pro to use. These are marked with a small crown icon. If you try to download a design and Canva asks you to upgrade, look for any element in your design with a crown icon and replace or remove it. Free photo alternatives are available under the "Photos" tab on the left panel inside the editor.</p>
+    <div class="safe-note">
+      <strong>Quick check:</strong> Before downloading, scan your design for crown icons on any photos or graphics. Replacing a paid element with a free one takes about 30 seconds and costs nothing.
+    </div>
+  </div>
+</div>
+
+<!-- STEP 6 -->
+<div class="topic-banner" id="step6">
+  <div class="topic-tag">Step 6 of 7</div>
+  <h2>Write Captions with a Hook and <span>a Call to Action</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 06</span> Your caption voice should sound like your business, not a corporation</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    A great photo gets people to stop scrolling. A great caption gets people to take action. The two work together, and neither is complete without the other. The most effective captions for small businesses have two things in common: they open with a hook that grabs attention, and they close with a clear call to action that tells people exactly what to do next.
+  </p>
+
+  <div class="section-title" style="margin-top:0;"><span class="num">STRUCTURE</span> The Three-Part Caption Formula</div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">1</div>
+      <div>
+        <div class="pillar-name">The Hook</div>
+        <div class="pillar-tag">The first line -- the only thing visible before someone taps "more"</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <p>The hook is the first one or two lines of your caption. On Instagram and Facebook, everything beyond the first one to two lines is hidden behind a "more" button. Your hook must be compelling enough that people actually tap it. The three most reliable types of hooks are a question, a surprising fact, and a bold statement.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">Hook Examples</div>
+        <ul>
+          <li>Question: "What does a fresh start smell like? Come find out."</li>
+          <li>Surprising fact: "Most people don't realize we also offer same-day pickup."</li>
+          <li>Bold statement: "This is the best thing we have ever made."</li>
+          <li>Direct address: "Attention Newark neighbors -- we have something for you."</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">2</div>
+      <div>
+        <div class="pillar-name">The Body</div>
+        <div class="pillar-tag">One to three sentences that add context or tell a short story</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <p>After the hook, give people just enough information to understand what you are offering and why it matters to them. Keep it short. Two or three sentences is ideal for most posts. Write the way you actually talk, not the way you think a "professional business" should sound. Customers connect with real voices, not corporate-speak.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">3</div>
+      <div>
+        <div class="pillar-name">The Call to Action</div>
+        <div class="pillar-tag">Tell people exactly what to do next -- do not leave it open-ended</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">Effective Calls to Action</div>
+        <ul>
+          <li>"Order online -- link in bio."</li>
+          <li>"Call us at [number] to reserve yours."</li>
+          <li>"DM us to book your appointment this week."</li>
+          <li>"Tag a friend who would love this."</li>
+          <li>"Stop by today -- we are open until 7pm."</li>
+          <li>"Save this post for the next time you need us."</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">BEFORE / AFTER</span> Caption Examples</div>
+
+  <div class="before-after">
+    <div class="ba-card">
+      <div class="ba-head before">&#10007; &nbsp; Before -- Weak Caption</div>
+      <div class="ba-body">
+        <em>"New arrivals just dropped. Check them out. Let us know what you think in the comments."</em>
+        <br><br>
+        <strong style="color:#b06020; font-size:12px;">What is missing:</strong> No hook, no specifics about what arrived, no reason to care, and the call to action is weak. A customer has no urgency or information to act on.
+      </div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-head after">&#10003; &nbsp; After -- Strong Caption</div>
+      <div class="ba-body">
+        <em>"We made 24 of these. That is it. Our new mango habanero glaze just hit the case and it will not last the week. Come in before Friday or regret it. We are open Tuesday through Saturday, 9am to 6pm -- 142 Broad Street, Newark."</em>
+        <br><br>
+        <strong style="color:var(--sage-deep); font-size:12px;">Why it works:</strong> Specific quantity creates urgency, flavor detail creates desire, deadline creates action, and hours and address remove all friction.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">TEMPLATE</span> Fill-In-the-Blank Caption Builder</div>
+
+  <div class="caption-template">
+    <span class="caption-label">Your Caption Template</span>
+    <span class="fill">[Hook: a question, fact, or bold statement]</span>
+    <br>
+    <span class="fill">[1 to 2 sentences: what you are offering and why it matters]</span>
+    <br>
+    <span class="fill">[Call to action: exactly what to do next]</span>
+    <br>
+    <span style="font-size:13px; color:var(--muted);">Optional: relevant hashtags on a separate line at the end</span>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">DO AND DON'T</span> Caption Habits That Build or Hurt Your Brand</div>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Do This</th>
+        <th>Avoid This</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Write the way you actually speak to customers in person</td>
+        <td>Using formal or corporate language that does not sound like you</td>
+      </tr>
+      <tr>
+        <td>Use specific details: flavors, prices, dates, locations, quantities</td>
+        <td>Being vague. "Great deals available" tells a customer nothing.</td>
+      </tr>
+      <tr>
+        <td>Include a clear single call to action at the end</td>
+        <td>Giving three different calls to action at once -- customers need one clear next step</td>
+      </tr>
+      <tr>
+        <td>Use five to ten relevant, specific hashtags on a separate line</td>
+        <td>Using 30 generic hashtags like #love #instagood #business that do not describe your audience</td>
+      </tr>
+      <tr>
+        <td>Read your caption out loud before posting -- it should sound natural</td>
+        <td>Posting without proofreading. One typo in a caption is fine; consistent errors reduce trust.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- STEP 7 -->
+<div class="topic-banner" id="step7">
+  <div class="topic-tag">Step 7 of 7</div>
+  <h2>Build a <span>Brand Asset Folder</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 07</span> Consistency in your visual brand builds trust before customers even read your content</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    When a customer sees your posts week after week and they always have a similar look, a consistent color palette, and the same logo, something important happens: your business starts to feel established and trustworthy, even if you are a small operation. Brand consistency is one of the easiest ways to look more professional, and it starts with a simple folder on your phone where all your approved brand assets live in one place.
+  </p>
+
+  <div class="section-title"><span class="num">SETUP</span> What to Keep in Your Brand Asset Folder</div>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Asset</th>
+        <th>What It Is</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Primary Logo</strong></td>
+        <td>Your full logo on a transparent or white background</td>
+        <td>PNG format with a transparent background is most versatile. Ask your VTC team for this file if you do not have it.</td>
+      </tr>
+      <tr>
+        <td><strong>Secondary Logo</strong></td>
+        <td>A simplified version of your logo for small spaces, such as a monogram or icon only</td>
+        <td>Useful for profile photos, watermarks on posts, and Canva designs where the full logo is too large</td>
+      </tr>
+      <tr>
+        <td><strong>Brand Colors</strong></td>
+        <td>A text note or screenshot with your exact hex color codes</td>
+        <td>Example: Primary green #4a7044, secondary light green #B2C9AD, charcoal #2E2E2E. Enter these into Canva for consistent colors every time.</td>
+      </tr>
+      <tr>
+        <td><strong>Approved Fonts</strong></td>
+        <td>The names of the one or two fonts that represent your brand</td>
+        <td>Keep a note in the folder with the exact font names so you can select them consistently in Canva</td>
+      </tr>
+      <tr>
+        <td><strong>Approved Photos</strong></td>
+        <td>A small selection of your best photos approved for use on social media</td>
+        <td>Keep 10 to 15 strong photos in the folder at all times, refreshed weekly after your batch session</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">HOW TO</span> Creating the Folder on Your Phone</div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">📱</div>
+      <div>
+        <div class="pillar-name">On an iPhone</div>
+        <div class="pillar-tag">Using the Files app or Photos albums</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Open the Files app and create a new folder called "Brand Assets [Your Business Name]." Save your logo files, color notes, and font notes here. In the Photos app, create a new Album called "Approved Photos" and add your best shots to it each week after your batch session. This way your creative assets and approved photos are always one tap away when you open Canva.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">📱</div>
+      <div>
+        <div class="pillar-name">On an Android Phone</div>
+        <div class="pillar-tag">Using the My Files app or Google Drive</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Open My Files (Samsung) or Files by Google and create a new folder called "Brand Assets." Save logo files and notes there. In your Gallery app, create a new Album called "Approved Photos" and move your best weekly photos into it. Alternatively, create a shared Google Drive folder that your VTC student team can also access to add updated assets when they are ready.</p>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <strong>One important rule:</strong> The only photos that go into your Approved Photos album are ones you have already reviewed and selected as your best shots. Do not pull photos directly from your camera roll into a post without first checking them against the selection criteria from Step 4. Your brand asset folder is a curated collection, not a dump folder.
+  </div>
+</div>
+
+<!-- BATCH CREATION WORKFLOW -->
+<div class="topic-banner" id="batch">
+  <div class="topic-tag">Bonus Workflow</div>
+  <h2>The 30-Minute <span>Batch Creation Session</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num success">WORKFLOW</span> Make a full week of posts in one focused sitting</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    The single most time-efficient habit in content creation is batching. Instead of figuring out what to post each morning, you set aside one 30-minute session per week to create everything at once. By the time you sit down for your batch session, you already know your posting schedule (Monday, Wednesday, Friday from Lesson 2), you have your content calendar template, and you have your brand asset folder ready. The only work left is to create.
+  </p>
+
+  <div class="tip-box">
+    <p>Batching your content creation is like meal prepping for the week. A little organization on Sunday saves you from making stressful decisions every single morning. The posts are ready. All you do is hit publish -- or let your scheduling tool do it for you.</p>
+    <div class="tip-note">&#9658; Voice the Companies Program Guidance</div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">SCHEDULE</span> Your 30-Minute Batch Session Breakdown</div>
+
+  <div class="batch-grid">
+    <div class="batch-time">Min<br>1-5</div>
+    <div class="batch-task">
+      <strong>Review your content calendar</strong>
+      Look at your plan for the upcoming week. Confirm which three post types you are creating -- for example, a product feature, a customer review, and a behind-the-scenes shot. Pull up your approved photos album so your images are ready.
+    </div>
+
+    <div class="batch-time">Min<br>6-15</div>
+    <div class="batch-task">
+      <strong>Photograph anything that needs a fresh image</strong>
+      If your content plan calls for a new product shot or an update photo, shoot it now. Follow Steps 1 through 4: clean lens, find your window light, apply the rule of thirds, take ten shots, and select the best one. This part of the session is quick once you have the habits down.
+    </div>
+
+    <div class="batch-time">Min<br>16-22</div>
+    <div class="batch-task">
+      <strong>Create three graphics in Canva</strong>
+      Open Canva, choose a template for each of your three posts, upload your selected photos, and swap in your text. Use your saved brand colors and fonts. Do not spend too long on each one -- simple and consistent beats elaborate and inconsistent. Aim for about two minutes per graphic.
+    </div>
+
+    <div class="batch-time">Min<br>23-27</div>
+    <div class="batch-task">
+      <strong>Write three captions using the three-part formula</strong>
+      Hook, body, call to action. Write all three captions at once while you are in a focused writing mindset. Read each one out loud to make sure it sounds like you. Add your hashtags on a separate line at the end of each caption.
+    </div>
+
+    <div class="batch-time">Min<br>28-30</div>
+    <div class="batch-task">
+      <strong>Schedule all three posts in Meta Business Suite</strong>
+      Go to business.facebook.com, create three posts, upload your Canva graphics, paste your captions, and schedule them for Monday, Wednesday, and Friday mornings. Your week is done. Close the laptop and get back to running your business.
+    </div>
+  </div>
+
+  <div class="note-box" style="margin-top:18px;">
+    <strong>Getting faster over time:</strong> The first batch session will probably take closer to 45 minutes while you get familiar with the routine. By the third or fourth week, most business owners can complete everything in 25 minutes or less. The templates, the folder, and the workflow all get faster with repetition.
+  </div>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="topic-banner" id="takeaways">
+  <div class="topic-tag">Summary</div>
+  <h2>Key <span>Takeaways</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num success">SUMMARY</span> The Four Things That Matter Most</div>
+
+  <div class="takeaway-grid">
+    <div class="takeaway-card">
+      <div class="takeaway-num">01</div>
+      <div class="takeaway-title">Good lighting is the single most impactful improvement you can make to your photos.</div>
+      <p>No filter, no editing app, and no expensive equipment will compensate for bad lighting. Find a bright window, turn off overhead artificial lights, face your subject toward the light source, and watch your photos improve immediately. This costs nothing and works every time.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">02</div>
+      <div class="takeaway-title">Your caption voice should sound like your business, not a big corporation.</div>
+      <p>Customers follow and engage with small businesses because they feel personal and real. Write the way you talk. Use the three-part formula (hook, body, call to action) as a structure, but fill it with your own voice. Read every caption out loud before you post it. If it sounds stiff, rewrite it until it sounds like you.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">03</div>
+      <div class="takeaway-title">Canva's free tier has everything most small businesses need.</div>
+      <p>You do not need Canva Pro, a graphic designer, or any prior design knowledge to create professional-looking social media graphics. The free account includes thousands of templates, unlimited uploads, and full download capabilities. Start there and stay there until you have a clear reason to upgrade.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">04</div>
+      <div class="takeaway-title">Batch your content: make a full week of posts in one 30-minute session.</div>
+      <p>The businesses that post most consistently are the ones that stopped trying to figure out what to post each morning. Set aside one weekly session, follow the 30-minute workflow in this guide, and schedule everything in advance. Consistency will become the easiest part of your social media presence.</p>
+    </div>
+  </div>
+
+  <div class="tip-box" style="margin-top:8px;">
+    <p>You have completed Lesson 3 of the Voice the Companies Digital Literacy Curriculum. The next lesson covers Customer Communication Basics -- how to write professional emails, respond to reviews, and use messaging tools to build stronger relationships with the customers who already love your business.</p>
+    <div class="tip-note">&#9658; Next: Lesson 4 -- Customer Communication Basics</div>
+  </div>
+</div>
+
+<!-- KNOWLEDGE CHECK -->
+<div class="topic-banner" id="quiz" style="margin-top:44px;">
+  <div class="topic-tag">Wrap-Up</div>
+  <h2>Knowledge <span>Check</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">QUIZ</span> Five Quick Questions</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Answer these five questions to check your understanding. There are no grades here - this is just for you.
+  </p>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q1</span>
+    <div class="quiz-q-text">What is the first thing you should do before every smartphone photo session, regardless of the subject?</div>
+    <ul class="quiz-choices">
+      <li>A) Open Instagram to check recent posts for inspiration</li>
+      <li>B) Set up a ring light or artificial lighting source</li>
+      <li>C) Clean your phone camera lens</li>
+      <li>D) Switch to portrait mode in your camera settings</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q2</span>
+    <div class="quiz-q-text">When using natural light for business photography, which of the following setups produces the best results?</div>
+    <ul class="quiz-choices">
+      <li>A) Subject positioned with a window behind them, facing away from the light</li>
+      <li>B) Subject facing the window, with all artificial lights in the room turned off</li>
+      <li>C) Phone flash turned on to supplement low window light</li>
+      <li>D) Overhead fluorescent lights and a side window used together</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q3</span>
+    <div class="quiz-q-text">What does the rule of thirds suggest you do with your main subject when framing a photo?</div>
+    <ul class="quiz-choices">
+      <li>A) Always center the subject perfectly in the middle of the frame</li>
+      <li>B) Place the subject in the bottom third of the frame only</li>
+      <li>C) Place the subject on or near one of the four power points created by a three-by-three grid</li>
+      <li>D) Fill the entire frame with the subject and eliminate all background</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q4</span>
+    <div class="quiz-q-text">What are the two required elements of an effective social media caption for a small business?</div>
+    <ul class="quiz-choices">
+      <li>A) A list of all products available and the business address</li>
+      <li>B) A hook that grabs attention and a call to action that tells people what to do next</li>
+      <li>C) A minimum of 30 hashtags and a tagged location</li>
+      <li>D) A formal introduction paragraph and a thank-you at the end</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q5</span>
+    <div class="quiz-q-text">What is the primary advantage of batch-creating your social media content once per week?</div>
+    <ul class="quiz-choices">
+      <li>A) It allows you to post more frequently than three times per week</li>
+      <li>B) It removes the daily pressure of deciding what to post and keeps you consistently on schedule</li>
+      <li>C) It automatically improves the quality of your photos and captions</li>
+      <li>D) It is required by Meta Business Suite in order to use the scheduling feature</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- CHEAT SHEET -->
+<div class="topic-banner" id="cheatsheet" style="margin-top:44px;">
+  <div class="topic-tag">Reference</div>
+  <h2>Printable <span>Cheat Sheet</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">REF</span> Content Creation Basics -- Quick Reference</div>
+
+  <p style="font-size:14px; color:var(--muted); font-style:italic; margin-bottom:14px;">
+    Print this page and keep it near your workspace. Everything from this lesson, condensed into one reference sheet.
+  </p>
+
+  <div class="cheat-grid">
+
+    <div class="cheat-header">Steps 1 and 2 -- Phone Photography Preparation</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Pre-Shoot Checklist</dt>
+        <dd>
+          <ul>
+            <li>Wipe the camera lens first</li>
+            <li>Turn off flash</li>
+            <li>Tap screen to lock focus</li>
+            <li>Clear the background</li>
+            <li>Turn off overhead artificial lights</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Natural Light Setup</dt>
+        <dd>
+          <ul>
+            <li>Subject faces the window</li>
+            <li>All artificial lights off</li>
+            <li>White card opposite window to fill shadows</li>
+            <li>Sheer curtain to diffuse harsh direct sun</li>
+            <li>Best times: 7am to 10am, or indoors all day</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Steps 3 and 4 -- Composition and Selection</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Rule of Thirds</dt>
+        <dd>Enable grid in camera settings. Place your subject on or near one of the four intersection points. Do not always center the subject.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Choosing the Best Photo</dt>
+        <dd>
+          <ul>
+            <li>Take 10 photos per subject, not 1</li>
+            <li>Check: focus, exposure, composition, authenticity</li>
+            <li>Review immediately after shooting</li>
+            <li>Never use your first photo automatically</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Step 5 -- Canva</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Getting Started</dt>
+        <dd>Sign up free at canva.com. Search for "Instagram Post" or your business type. Use free templates (no crown icon). Upload your own photos under "Uploads."</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Key Free Features</dt>
+        <dd>
+          <ul>
+            <li>Templates sized per platform</li>
+            <li>Photo uploads</li>
+            <li>Text and color editing</li>
+            <li>PNG and JPG download</li>
+            <li>Design folders under Projects</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Step 6 -- Caption Formula</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Three-Part Formula</dt>
+        <dd>
+          1. Hook: question, fact, or bold statement<br>
+          2. Body: 1 to 2 sentences with specific detail<br>
+          3. Call to action: one clear next step
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Caption Rules</dt>
+        <dd>
+          <ul>
+            <li>Sound like yourself, not a corporation</li>
+            <li>Be specific: flavors, prices, dates, places</li>
+            <li>One call to action only</li>
+            <li>5 to 10 relevant hashtags on a separate line</li>
+            <li>Read out loud before posting</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Step 7 and Batch Workflow</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Brand Asset Folder Contents</dt>
+        <dd>
+          <ul>
+            <li>Primary logo (PNG, transparent background)</li>
+            <li>Secondary or simplified logo</li>
+            <li>Hex color codes for all brand colors</li>
+            <li>Approved font names</li>
+            <li>10 to 15 approved photos, refreshed weekly</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>30-Minute Batch Session</dt>
+        <dd>
+          Min 1-5: Review content calendar<br>
+          Min 6-15: Shoot any needed photos<br>
+          Min 16-22: Create 3 Canva graphics<br>
+          Min 23-27: Write 3 captions<br>
+          Min 28-30: Schedule in Meta Business Suite
+        </dd>
+      </dl>
+    </div>
+
+  </div>
+
+  <div class="meta-row" style="margin-top:20px;">
+    <div class="meta-cell"><strong>Organization</strong>Voice the Companies</div>
+    <div class="meta-cell"><strong>Curriculum</strong>Digital Literacy -- Lesson 3 of 5</div>
+    <div class="meta-cell"><strong>Next Lesson</strong>Customer Communication Basics</div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="doc-footer">
+  <span>Voice the Companies</span> &nbsp;·&nbsp; Digital Literacy Curriculum &nbsp;·&nbsp; Content Creation Basics &nbsp;·&nbsp; Lesson 3 of 5
+  <br/><br/>
+  This guide was prepared by the Voice the Companies student team for use by participating small business partners.
+  All rights reserved. For questions, contact your assigned student team or program coordinator.
+</div>
+
+<script>
+  (function () {
+    function initWorkbookTools() {
+      const slug = (window.location.pathname.split('/').pop() || 'lesson').replace('.html', '');
+      const progressKey = 'vtc_progress_' + slug;
+      const notesKey = 'vtc_notes_' + slug;
+
+      const stepList = document.getElementById('interactive-step-list');
+      const progressStatus = document.getElementById('interactive-progress-status');
+      const notesBox = document.getElementById('interactive-notes');
+
+      if (stepList && progressStatus) {
+        const stepLinks = Array.from(document.querySelectorAll('.toc a[href^="#step"]'));
+        const savedProgress = JSON.parse(window.localStorage.getItem(progressKey) || '[]');
+
+        stepLinks.forEach(function (link, index) {
+          const item = document.createElement('li');
+          item.className = 'progress-item';
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.id = 'progress-step-' + index;
+          checkbox.checked = Boolean(savedProgress[index]);
+
+          const label = document.createElement('label');
+          label.setAttribute('for', checkbox.id);
+          label.textContent = link.textContent.trim();
+
+          checkbox.addEventListener('change', function () {
+            const states = Array.from(stepList.querySelectorAll('input[type="checkbox"]')).map(function (node) {
+              return node.checked;
+            });
+            window.localStorage.setItem(progressKey, JSON.stringify(states));
+            updateProgress(states);
+          });
+
+          item.appendChild(checkbox);
+          item.appendChild(label);
+          stepList.appendChild(item);
+        });
+
+        function updateProgress(states) {
+          const done = states.filter(Boolean).length;
+          const total = states.length;
+          progressStatus.textContent = total
+            ? 'Progress: ' + done + '/' + total + ' steps completed'
+            : 'Progress tracker unavailable';
+        }
+
+        const initialStates = Array.from(stepList.querySelectorAll('input[type="checkbox"]')).map(function (node) {
+          return node.checked;
+        });
+        updateProgress(initialStates);
+      }
+
+      if (notesBox) {
+        notesBox.value = window.localStorage.getItem(notesKey) || '';
+        notesBox.addEventListener('input', function () {
+          window.localStorage.setItem(notesKey, notesBox.value);
+        });
+      }
+    }
+
+    function initInteractiveQuiz() {
+      const quizSection = document.querySelector('#quiz + .section');
+      if (!quizSection) return;
+
+      const questions = Array.from(quizSection.querySelectorAll('.quiz-q'));
+      if (!questions.length) return;
+
+      const answerMap = {
+        1: 'C',
+        2: 'B',
+        3: 'C',
+        4: 'B',
+        5: 'B'
+      };
+
+      const selections = {};
+
+      questions.forEach(function (question, qIndex) {
+        const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+        options.forEach(function (option, optIndex) {
+          const letter = String.fromCharCode(65 + optIndex);
+          option.dataset.letter = letter;
+          option.setAttribute('role', 'button');
+          option.setAttribute('tabindex', '0');
+
+          function choose() {
+            selections[qIndex + 1] = letter;
+            options.forEach(function (opt) {
+              opt.classList.remove('quiz-selected');
+            });
+            option.classList.add('quiz-selected');
+          }
+
+          option.addEventListener('click', choose);
+          option.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              choose();
+            }
+          });
+        });
+      });
+
+      const controls = document.createElement('div');
+      controls.className = 'quiz-controls';
+
+      const checkBtn = document.createElement('button');
+      checkBtn.className = 'quiz-btn';
+      checkBtn.type = 'button';
+      checkBtn.textContent = 'Check my answers';
+
+      const resetBtn = document.createElement('button');
+      resetBtn.className = 'quiz-btn secondary';
+      resetBtn.type = 'button';
+      resetBtn.textContent = 'Reset';
+
+      const result = document.createElement('div');
+      result.className = 'quiz-result';
+      result.setAttribute('aria-live', 'polite');
+
+      checkBtn.addEventListener('click', function () {
+        if (Object.keys(selections).length < questions.length) {
+          result.textContent = 'Answer all questions first, then check your score.';
+          return;
+        }
+
+        let score = 0;
+
+        questions.forEach(function (question, qIndex) {
+          const qNumber = qIndex + 1;
+          const correctLetter = answerMap[qNumber];
+          const selectedLetter = selections[qNumber];
+          const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+
+          options.forEach(function (option) {
+            option.classList.remove('quiz-correct', 'quiz-incorrect');
+            const letter = option.dataset.letter;
+            if (letter === correctLetter) {
+              option.classList.add('quiz-correct');
+            }
+            if (letter === selectedLetter && letter !== correctLetter) {
+              option.classList.add('quiz-incorrect');
+            }
+          });
+
+          if (selectedLetter === correctLetter) score += 1;
+        });
+
+        result.textContent = 'You scored ' + score + ' out of ' + questions.length + '.';
+      });
+
+      resetBtn.addEventListener('click', function () {
+        Object.keys(selections).forEach(function (key) {
+          delete selections[key];
+        });
+
+        questions.forEach(function (question) {
+          const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+          options.forEach(function (option) {
+            option.classList.remove('quiz-selected', 'quiz-correct', 'quiz-incorrect');
+          });
+        });
+
+        result.textContent = '';
+      });
+
+      controls.appendChild(checkBtn);
+      controls.appendChild(resetBtn);
+      quizSection.appendChild(controls);
+      quizSection.appendChild(result);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      initWorkbookTools();
+      initInteractiveQuiz();
+    });
+  })();
+</script>
+
+</body>
+</html>
