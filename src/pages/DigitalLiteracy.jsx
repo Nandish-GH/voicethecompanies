@@ -30,6 +30,7 @@ const lessons = [
       "Backing up before big changes gives you a safety net.",
     ],
     guide: "Website Basics Cheat Sheet",
+    guidePath: "/digital-literacy/website-ownership-basics.html",
     quiz: [
       {
         question: "What is a domain name?",
@@ -86,6 +87,7 @@ const lessons = [
       "You don't need to be on every platform. Start with the two where your customers spend time.",
     ],
     guide: "Social Media Setup Checklist",
+    guidePath: "/digital-literacy/social-media-fundamentals.html",
     quiz: [
       {
         question: "What type of account should a business set up on Instagram?",
@@ -137,6 +139,7 @@ const lessons = [
       "Batch your content creation: make a week's worth of posts in one 30-minute session.",
     ],
     guide: "Content Creation Quick-Start Guide",
+    guidePath: "/digital-literacy/content-creation-basics.html",
     quiz: [
       {
         question: "What is the most important factor in taking a good photo?",
@@ -449,7 +452,18 @@ function LessonCard({ lesson, index }) {
                   <p className="text-sm font-semibold text-[#2D2D2D]">{lesson.guide}</p>
                   <p className="text-xs text-[#6B6B6B] mt-0.5">Printable reference guide for this lesson</p>
                 </div>
-                <span className="text-xs text-[#6B6B6B] italic">Coming soon</span>
+                {lesson.guidePath ? (
+                  <a
+                    href={lesson.guidePath}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-3 py-2 rounded-lg bg-white text-[#2D2D2D] text-xs font-semibold border border-[#D4E4D0] hover:bg-[#f5f7f4] transition-colors"
+                  >
+                    Open Guide
+                  </a>
+                ) : (
+                  <span className="text-xs text-[#6B6B6B] italic">Coming soon</span>
+                )}
               </div>
 
               {/* Quiz */}
