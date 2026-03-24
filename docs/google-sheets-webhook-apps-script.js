@@ -2,6 +2,17 @@
 Google Apps Script webhook for Voice the Companies submissions.
 Deploy as a Web App and use the URL as VITE_SUBMISSIONS_WEBHOOK_URL.
 
+Troubleshooting:
+- Use the Web App URL ending in /exec (not /dev).
+- Any of these env vars are accepted by the frontend:
+  VITE_SUBMISSIONS_WEBHOOK_URL
+  VITE_GOOGLE_SHEETS_WEBHOOK_URL
+  VITE_GOOGLE_SHEET_WEBHOOK_URL
+  VITE_GOOGLE_APPS_SCRIPT_WEBHOOK_URL
+  VITE_APPS_SCRIPT_WEBHOOK_URL
+- You can also set/override the webhook in-browser once by opening:
+  ?submissions_webhook_url=<your-web-app-exec-url>
+
 This script creates and routes rows into exactly 4 tabs:
 - Owners
 - Students

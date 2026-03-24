@@ -4,18 +4,100 @@ const EMAIL_LOG_KEY = `${STORAGE_PREFIX}email_log`;
 const SCHEDULED_EMAILS_KEY = `${STORAGE_PREFIX}scheduled_emails`;
 const FORM_SUBMIT_COOLDOWN_UNTIL_KEY = `${STORAGE_PREFIX}formsubmit_cooldown_until`;
 const SUBMISSIONS_WEBHOOK_KEY = `${STORAGE_PREFIX}submissions_webhook_url`;
+const LEGACY_SUBMISSIONS_WEBHOOK_KEYS = [
+  `${STORAGE_PREFIX}google_sheets_webhook_url`,
+  `${STORAGE_PREFIX}google_apps_script_webhook_url`,
+  'submissions_webhook_url',
+  'google_sheets_webhook_url',
+];
 const FORM_SUBMIT_BASE_URL = 'https://formsubmit.co/ajax';
 const DEFAULT_SUBMISSIONS_WEBHOOK_URL = '';
 const DEFAULT_FORM_SUBMIT_RELAY_TOKEN = '';
+let warnedMissingWebhook = false;
+let warnedDevWebhook = false;
+
+function getEnvValue(...keys) {
+  if (typeof import.meta === 'undefined' || !import.meta?.env) return '';
+  for (const key of keys) {
+    const value = import.meta.env[key];
+    if (typeof value === 'string' && value.trim()) {
+      return value.trim();
+    }
+  }
+  return '';
+}
+
+function normalizeWebhookUrl(url) {
+  const trimmed = String(url || '').trim();
+  if (!trimmed) return '';
+
+  // Apps Script webhooks must use /exec for anonymous web app calls.
+  if (/\/dev(?:\?.*)?$/i.test(trimmed)) {
+    if (!warnedDevWebhook) {
+      warnedDevWebhook = true;
+      console.warn('[VTC] Webhook URL ended with /dev; auto-switching to /exec for public form submissions.');
+    }
+    return trimmed.replace(/\/dev(\?.*)?$/i, '/exec$1');
+  }
+
+  return trimmed;
+}
+
+function findStoredWebhookUrl() {
+  if (!isBrowser) return '';
+
+  const primary = normalizeWebhookUrl(window.localStorage.getItem(SUBMISSIONS_WEBHOOK_KEY) || '');
+  if (primary) return primary;
+
+  for (const key of LEGACY_SUBMISSIONS_WEBHOOK_KEYS) {
+    const legacyValue = normalizeWebhookUrl(window.localStorage.getItem(key) || '');
+    if (legacyValue) {
+      window.localStorage.setItem(SUBMISSIONS_WEBHOOK_KEY, legacyValue);
+      return legacyValue;
+    }
+  }
+
+  return '';
+}
+
+function bootstrapWebhookUrlFromQuery() {
+  if (!isBrowser) return;
+  const params = new URLSearchParams(window.location.search);
+  const queryValue =
+    params.get('submissions_webhook_url') ||
+    params.get('submissionsWebhookUrl') ||
+    params.get('vtcWebhookUrl');
+
+  if (!queryValue) return;
+
+  const normalized = normalizeWebhookUrl(queryValue);
+  const clearRequested = /^(clear|reset|none)$/i.test(queryValue.trim());
+
+  if (clearRequested) {
+    window.localStorage.removeItem(SUBMISSIONS_WEBHOOK_KEY);
+    return;
+  }
+
+  if (normalized) {
+    window.localStorage.setItem(SUBMISSIONS_WEBHOOK_KEY, normalized);
+  }
+}
+
 const FORM_SUBMIT_RELAY_TO =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_FORMSUBMIT_RELAY_TO) ||
   '';
 const FORM_SUBMIT_RELAY_TOKEN =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_FORMSUBMIT_RELAY_TOKEN) ||
   DEFAULT_FORM_SUBMIT_RELAY_TOKEN;
-const SUBMISSIONS_WEBHOOK_URL =
-  (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUBMISSIONS_WEBHOOK_URL) ||
-  DEFAULT_SUBMISSIONS_WEBHOOK_URL;
+const SUBMISSIONS_WEBHOOK_URL = normalizeWebhookUrl(
+  getEnvValue(
+    'VITE_SUBMISSIONS_WEBHOOK_URL',
+    'VITE_GOOGLE_SHEETS_WEBHOOK_URL',
+    'VITE_GOOGLE_SHEET_WEBHOOK_URL',
+    'VITE_GOOGLE_APPS_SCRIPT_WEBHOOK_URL',
+    'VITE_APPS_SCRIPT_WEBHOOK_URL'
+  ) || DEFAULT_SUBMISSIONS_WEBHOOK_URL
+);
 const PROFIT_BASELINE_FORM_URL =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_PROFIT_BASELINE_FORM_URL) || '';
 const PROFIT_FOLLOWUP_FORM_URL =
@@ -123,7 +205,8 @@ function ensureSeedData() {
 
 function getSubmissionsWebhookUrl() {
   if (!isBrowser) return SUBMISSIONS_WEBHOOK_URL;
-  return window.localStorage.getItem(SUBMISSIONS_WEBHOOK_KEY) || SUBMISSIONS_WEBHOOK_URL;
+  const stored = findStoredWebhookUrl();
+  return stored || SUBMISSIONS_WEBHOOK_URL;
 }
 
 function queueScheduledEmail(emailTask) {
@@ -145,7 +228,15 @@ function formatProfitFormBody({ ownerName, businessName, formUrl, isFollowUp }) 
 
 async function mirrorSubmission(entityName, record) {
   const webhookUrl = getSubmissionsWebhookUrl();
-  if (!webhookUrl) return;
+  if (!webhookUrl) {
+    if (!warnedMissingWebhook) {
+      warnedMissingWebhook = true;
+      console.warn(
+        '[VTC] No submissions webhook configured. Set VITE_SUBMISSIONS_WEBHOOK_URL (or alias) or pass ?submissions_webhook_url=<apps-script-exec-url> once.'
+      );
+    }
+    return;
+  }
 
   try {
     const payload = JSON.stringify({
@@ -367,6 +458,7 @@ function startScheduledEmailWorker() {
 }
 
 ensureSeedData();
+bootstrapWebhookUrlFromQuery();
 startScheduledEmailWorker();
 
 export const localClient = {
