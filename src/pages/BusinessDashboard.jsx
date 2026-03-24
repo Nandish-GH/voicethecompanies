@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
   Globe, Users, TrendingUp, Star, MapPin, BarChart2,
-  LogIn, Lock, ChevronRight
+  Lock, ChevronRight
 } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -124,13 +124,12 @@ export default function BusinessDashboard() {
           <p className="text-[#6B6B6B] mb-8 leading-relaxed">
             This dashboard is for participating business owners. Please log in with the email address associated with your program account to view your statistics.
           </p>
-          <button
-            onClick={() => localClient.auth.redirectToLogin(createPageUrl("BusinessDashboard"))}
+          <Link
+            to={createPageUrl("GetInvolved")}
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#B2C9AD] hover:bg-[#8FAF88] text-white font-semibold rounded-xl transition-colors shadow-lg shadow-[#B2C9AD]/25"
           >
-            <LogIn className="w-4 h-4" aria-hidden="true" />
-            Log In to View Your Dashboard
-          </button>
+            Request Dashboard Access
+          </Link>
           <p className="mt-6 text-xs text-[#6B6B6B]">
             Don't have an account yet?{" "}
             <Link to={createPageUrl("GetInvolved")} className="text-[#8FAF88] hover:underline font-medium">

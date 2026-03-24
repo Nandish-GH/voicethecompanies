@@ -5,12 +5,11 @@ const SCHEDULED_EMAILS_KEY = `${STORAGE_PREFIX}scheduled_emails`;
 const FORM_SUBMIT_COOLDOWN_UNTIL_KEY = `${STORAGE_PREFIX}formsubmit_cooldown_until`;
 const SUBMISSIONS_WEBHOOK_KEY = `${STORAGE_PREFIX}submissions_webhook_url`;
 const FORM_SUBMIT_BASE_URL = 'https://formsubmit.co/ajax';
-const DEFAULT_SUBMISSIONS_WEBHOOK_URL =
-  'https://script.google.com/macros/s/AKfycbypMUt_t88wVFg6ID6e1AhOQbuQ4mfaiqXhnGQk7WwdmGG67N1KDHhjas5tzDL5cCXP/exec';
-const DEFAULT_FORM_SUBMIT_RELAY_TOKEN = '75a71653f574fd04c7ea1f7e4f116f93';
+const DEFAULT_SUBMISSIONS_WEBHOOK_URL = '';
+const DEFAULT_FORM_SUBMIT_RELAY_TOKEN = '';
 const FORM_SUBMIT_RELAY_TO =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_FORMSUBMIT_RELAY_TO) ||
-  '2009nandish@gmail.com';
+  '';
 const FORM_SUBMIT_RELAY_TOKEN =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_FORMSUBMIT_RELAY_TOKEN) ||
   DEFAULT_FORM_SUBMIT_RELAY_TOKEN;
@@ -57,73 +56,6 @@ const SHEET_TAB_HINT_BY_ENTITY = {
   WorkshopInterest: 'Workshops',
   BusinessStats: 'BeforeVsAfter',
 };
-
-const demoUser = {
-  id: 'local-user-1',
-  full_name: 'Local Business Owner',
-  email: 'voicethecompanies@gmail.com',
-};
-
-const initialBusinessStats = [
-  {
-    id: 'stats-1',
-    business_name: 'Voice the Companies Demo',
-    owner_email: demoUser.email,
-    period_label: 'Month 1',
-    website_sessions: 120,
-    unique_visitors: 88,
-    social_followers: 45,
-    social_reach: 280,
-    google_profile_views: 92,
-    google_direction_requests: 8,
-    confidence_website: 3,
-    confidence_social: 3,
-    confidence_analytics: 2,
-    notes: 'Baseline numbers after launch.',
-    created_date: '2026-01-15T00:00:00.000Z',
-    updated_date: '2026-01-15T00:00:00.000Z',
-  },
-  {
-    id: 'stats-2',
-    business_name: 'Voice the Companies Demo',
-    owner_email: demoUser.email,
-    period_label: 'Month 3',
-    website_sessions: 210,
-    unique_visitors: 151,
-    social_followers: 102,
-    social_reach: 610,
-    google_profile_views: 164,
-    google_direction_requests: 19,
-    confidence_website: 4,
-    confidence_social: 4,
-    confidence_analytics: 3,
-    notes: 'Steady growth after social posting routine.',
-    created_date: '2026-03-01T00:00:00.000Z',
-    updated_date: '2026-03-01T00:00:00.000Z',
-  },
-];
-
-const initialTestimonials = [
-  {
-    id: 'testimonial-1',
-    author_name: 'Maria Santos',
-    role: 'business_owner',
-    business_name: 'Santos Bakery',
-    quote: 'Our student team gave us a website we can actually maintain ourselves.',
-    featured: true,
-    created_date: '2026-02-01T00:00:00.000Z',
-    updated_date: '2026-02-01T00:00:00.000Z',
-  },
-  {
-    id: 'testimonial-2',
-    author_name: 'James Chen',
-    role: 'student',
-    quote: 'Working on a real project taught me skills that classes never covered.',
-    featured: true,
-    created_date: '2026-02-05T00:00:00.000Z',
-    updated_date: '2026-02-05T00:00:00.000Z',
-  },
-];
 
 const isBrowser = typeof window !== 'undefined';
 
@@ -180,16 +112,12 @@ function sortItems(items, sort) {
 function ensureSeedData() {
   if (!isBrowser) return;
 
-  if (!window.localStorage.getItem(ACTIVE_USER_KEY)) {
-    window.localStorage.setItem(ACTIVE_USER_KEY, JSON.stringify(demoUser));
-  }
-
   if (!window.localStorage.getItem(ENTITY_STORAGE_KEYS.BusinessStats)) {
-    writeList(ENTITY_STORAGE_KEYS.BusinessStats, initialBusinessStats);
+    writeList(ENTITY_STORAGE_KEYS.BusinessStats, []);
   }
 
   if (!window.localStorage.getItem(ENTITY_STORAGE_KEYS.Testimonial)) {
-    writeList(ENTITY_STORAGE_KEYS.Testimonial, initialTestimonials);
+    writeList(ENTITY_STORAGE_KEYS.Testimonial, []);
   }
 }
 
@@ -213,17 +141,6 @@ function formatProfitFormBody({ ownerName, businessName, formUrl, isFollowUp }) 
   }
 
   return `Hi ${greetingName},\n\nThanks for submitting your business request${subjectContext}.\n\nPlease complete your optional baseline form here:\n${formUrl || 'Please reply to this email with your current numbers.'}\n\nThis gives us your starting point so we can compare before/after outcomes later.\n\nThank you,\nVoice the Companies`;
-}
-
-function isDemoOrUnsupportedRecipient(email) {
-  if (!email) return true;
-  const normalized = String(email).trim().toLowerCase();
-  if (!normalized.includes('@')) return true;
-  return (
-    normalized.endsWith('@example.com') ||
-    normalized.endsWith('.example') ||
-    normalized.endsWith('@test.com')
-  );
 }
 
 async function mirrorSubmission(entityName, record) {
@@ -302,9 +219,9 @@ function createEntityApi(entityName) {
 }
 
 function getActiveUser() {
-  if (!isBrowser) return demoUser;
-  const user = parseJson(window.localStorage.getItem(ACTIVE_USER_KEY), demoUser);
-  return user || demoUser;
+  if (!isBrowser) return null;
+  const user = parseJson(window.localStorage.getItem(ACTIVE_USER_KEY), null);
+  return user || null;
 }
 
 async function sendEmailWithFormSubmit(payload) {
@@ -322,7 +239,11 @@ async function sendEmailWithFormSubmit(payload) {
 
   const relayRecipient = String(FORM_SUBMIT_RELAY_TO || '').trim();
   if (!relayRecipient) {
-    throw new Error('Missing FormSubmit relay recipient');
+    return {
+      success: false,
+      skipped: true,
+      reason: 'FormSubmit relay not configured',
+    };
   }
 
   const intendedRecipient = String(payload.to || '').trim();
@@ -451,15 +372,13 @@ startScheduledEmailWorker();
 export const localClient = {
   auth: {
     async isAuthenticated() {
-      return true;
+      return Boolean(getActiveUser());
     },
     async me() {
       return getActiveUser();
     },
     redirectToLogin(returnTo = '/') {
       if (!isBrowser) return;
-      const user = getActiveUser();
-      window.localStorage.setItem(ACTIVE_USER_KEY, JSON.stringify(user));
       if (!returnTo) return;
       window.location.href = returnTo;
     },
@@ -485,8 +404,9 @@ export const localClient = {
           log.push({ ...payload, sent_at: nowIso() });
           writeList(EMAIL_LOG_KEY, log);
           const delivery = await sendEmailWithFormSubmit(payload);
+          const success = Boolean(delivery?.success);
           return {
-            success: true,
+            success,
             delivery,
             external_automation_enabled: USE_EXTERNAL_PROFIT_AUTOMATION,
           };
@@ -498,85 +418,6 @@ export const localClient = {
           success: true,
           skipped: true,
           reason: 'Handled by Google Apps Script sheet automation',
-        };
-
-        if (!to) {
-          throw new Error('Missing recipient email for profit journey emails');
-        }
-
-        if (isDemoOrUnsupportedRecipient(to)) {
-          return {
-            success: true,
-            skipped: true,
-            reason: 'Demo or unsupported recipient for FormSubmit relay',
-          };
-        }
-
-        const baselineSubject = `Action Requested: Optional Profit Baseline Form${businessName ? ` (${businessName})` : ''}`;
-        const baselineBody = formatProfitFormBody({
-          ownerName,
-          businessName,
-          formUrl: PROFIT_BASELINE_FORM_URL,
-          isFollowUp: false,
-        });
-
-        if (PROFIT_BASELINE_DELAY_MS <= 0) {
-          await sendEmailWithFormSubmit({
-            to,
-            subject: baselineSubject,
-            body: baselineBody,
-          });
-        } else {
-          queueScheduledEmail({
-            id: randomId('scheduled-email'),
-            send_at_ms: Date.now() + PROFIT_BASELINE_DELAY_MS,
-            payload: {
-              to,
-              subject: baselineSubject,
-              body: baselineBody,
-            },
-          });
-        }
-
-        if (USE_EXTERNAL_PROFIT_AUTOMATION) {
-          return {
-            success: true,
-            baseline_sent_by_app: true,
-            followup_skipped: true,
-            reason: 'Follow-up handled by external Google Sheets automation',
-          };
-        }
-
-        const followupSubject = `Profit Follow-Up Form${businessName ? `: ${businessName}` : ''}`;
-        const followupBody = formatProfitFormBody({
-          ownerName,
-          businessName,
-          formUrl: PROFIT_FOLLOWUP_FORM_URL || PROFIT_BASELINE_FORM_URL,
-          isFollowUp: true,
-        });
-
-        if (PROFIT_FOLLOWUP_DELAY_MS <= 0) {
-          await sendEmailWithFormSubmit({
-            to,
-            subject: followupSubject,
-            body: followupBody,
-          });
-        } else {
-          queueScheduledEmail({
-            id: randomId('scheduled-email'),
-            send_at_ms: Date.now() + PROFIT_FOLLOWUP_DELAY_MS,
-            payload: {
-              to,
-              subject: followupSubject,
-              body: followupBody,
-            },
-          });
-        }
-
-        return {
-          success: true,
-          baseline_delay_minutes: PROFIT_BASELINE_DELAY_MINUTES,
-          followup_delay_minutes: PROFIT_FOLLOWUP_DELAY_MINUTES,
         };
       },
       async UploadFile() {

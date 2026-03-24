@@ -110,6 +110,8 @@ const SeoManager = () => {
 };
 
 const DebugActivityLogger = () => {
+  if (!import.meta.env.DEV) return null;
+
   const location = useLocation();
 
   useEffect(() => {

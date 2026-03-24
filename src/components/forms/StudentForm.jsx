@@ -26,29 +26,6 @@ const interestOptions = [
   { value: "social_media", label: "Social Media" },
 ];
 
-const demoFirstNames = ["Jordan", "Taylor", "Avery", "Riley", "Cameron", "Skyler", "Morgan"];
-const demoLastNames = ["Lee", "Patel", "Nguyen", "Garcia", "Johnson", "Kim", "Brown"];
-const demoSchools = [
-  "Riverside High School",
-  "Central STEM Academy",
-  "Lincoln Preparatory",
-  "Eastview College",
-  "North Valley University",
-];
-const demoExperience = [
-  "Built small websites for school clubs and helped with social media graphics.",
-  "Volunteered at community events and managed event signup forms.",
-  "Created short videos and posts for student organizations.",
-  "Worked on a coding class project using React and Firebase.",
-];
-const demoWhyInterested = [
-  "I want hands-on experience helping local businesses and learning from mentors.",
-  "I am excited to grow my digital skills while making an impact in my community.",
-  "I want to practice teamwork on real-world projects before college applications.",
-  "I am interested in design and entrepreneurship and want practical project work.",
-];
-const DEMO_EMAIL = "voicethecompanies@gmail.com";
-
 export default function StudentForm() {
   const [form, setForm] = useState({
     full_name: "", email: "", phone: "", school: "",
@@ -57,46 +34,27 @@ export default function StudentForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [submitWarning, setSubmitWarning] = useState("");
 
   const handleChange = (field, value) => {
     setForm(prev => ({ ...prev, [field]: value }));
-  };
-
-  const randomItem = (items) => items[Math.floor(Math.random() * items.length)];
-  const randomDigits = (length) =>
-    Array.from({ length }, () => Math.floor(Math.random() * 10)).join("");
-
-  const fillDemoData = () => {
-    const firstName = randomItem(demoFirstNames);
-    const lastName = randomItem(demoLastNames);
-    const grade = randomItem(gradeOptions).value;
-    const interest = randomItem(interestOptions).value;
-    const school = randomItem(demoSchools);
-
-    setForm({
-      full_name: `${firstName} ${lastName}`,
-      email: DEMO_EMAIL,
-      phone: `(555) ${randomDigits(3)}-${randomDigits(4)}`,
-      school,
-      grade_level: grade,
-      interests: interest,
-      experience: randomItem(demoExperience),
-      why_interested: randomItem(demoWhyInterested),
-    });
-    setSubmitError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     setSubmitError("");
+    setSubmitWarning("");
     try {
       await localClient.entities.StudentApplication.create(form);
-      await localClient.integrations.Core.SendEmail({
-        to: "2009nandish@gmail.com",
+      const emailResult = await localClient.integrations.Core.SendEmail({
+        to: "voicethecompanies@gmail.com",
         subject: `New Student Application: ${form.full_name}`,
         body: `A new student application was submitted.\n\nName: ${form.full_name}\nEmail: ${form.email}\nPhone: ${form.phone}\nSchool: ${form.school}\nGrade: ${form.grade_level}\nInterest: ${form.interests}\n\nExperience:\n${form.experience}\n\nWhy Interested:\n${form.why_interested}`,
       });
+      if (!emailResult?.success) {
+        setSubmitWarning("Your application was received, but email notifications are temporarily unavailable. Please also email voicethecompanies@gmail.com.");
+      }
       setSubmitted(true);
     } catch (error) {
       setSubmitError(error?.message || "Unable to send email right now. Please try again.");
@@ -113,6 +71,7 @@ export default function StudentForm() {
         </div>
         <h3 className="text-xl font-bold text-[#2D2D2D] mb-2">Application Submitted!</h3>
         <p className="text-[#6B6B6B]">Thank you for your interest. We'll be in touch soon.</p>
+        {submitWarning && <p className="text-sm text-amber-700 mt-3">{submitWarning}</p>}
       </div>
     );
   }
@@ -168,15 +127,6 @@ export default function StudentForm() {
         <Textarea id="student-why" value={form.why_interested} onChange={(e) => handleChange("why_interested", e.target.value)} placeholder="Tell us why you'd like to join" rows={3} />
       </div>
       {submitError && <p className="text-sm text-red-600">{submitError}</p>}
-      <Button
-        type="button"
-        variant="outline"
-        onClick={fillDemoData}
-        disabled={submitting}
-        className="w-full"
-      >
-        Fill Demo Data
-      </Button>
       <Button
         type="submit"
         disabled={submitting}

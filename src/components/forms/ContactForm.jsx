@@ -7,24 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CheckCircle2, Loader2 } from "lucide-react";
 
-const demoNames = ["Taylor Morgan", "Jordan Lee", "Riley Chen", "Casey Patel", "Avery Nguyen"];
-const demoInquiryTypes = ["general", "partnership", "mentorship", "donation", "media"];
-const demoSubjects = [
-  "Partnership inquiry",
-  "Mentorship opportunities",
-  "Local business support request",
-  "Press and media question",
-  "Community collaboration",
-];
-const demoMessages = [
-  "I would like to discuss a local mentorship partnership for this summer.",
-  "Our organization wants to collaborate on digital literacy workshops.",
-  "Can we set up a short call to talk about support options for small businesses?",
-  "I am interested in learning how we can sponsor student project teams.",
-  "Please share next steps for getting involved as a community partner.",
-];
-const DEMO_EMAIL = "voicethecompanies@gmail.com";
-
 export default function ContactForm() {
   const [form, setForm] = useState({
     name: "", email: "", subject: "", message: "", inquiry_type: "general",
@@ -32,37 +14,27 @@ export default function ContactForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [submitWarning, setSubmitWarning] = useState("");
 
   const handleChange = (field, value) => {
     setForm(prev => ({ ...prev, [field]: value }));
-  };
-
-  const randomItem = (items) => items[Math.floor(Math.random() * items.length)];
-
-  const fillDemoData = () => {
-    const name = randomItem(demoNames);
-
-    setForm({
-      name,
-      email: DEMO_EMAIL,
-      subject: randomItem(demoSubjects),
-      message: randomItem(demoMessages),
-      inquiry_type: randomItem(demoInquiryTypes),
-    });
-    setSubmitError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     setSubmitError("");
+    setSubmitWarning("");
     try {
       await localClient.entities.ContactInquiry.create(form);
-      await localClient.integrations.Core.SendEmail({
-        to: "2009nandish@gmail.com",
+      const emailResult = await localClient.integrations.Core.SendEmail({
+        to: "voicethecompanies@gmail.com",
         subject: `New Contact Inquiry: ${form.subject || "General Inquiry"}`,
         body: `A new contact inquiry was submitted.\n\nName: ${form.name}\nEmail: ${form.email}\nInquiry Type: ${form.inquiry_type}\nSubject: ${form.subject}\n\nMessage:\n${form.message}`,
       });
+      if (!emailResult?.success) {
+        setSubmitWarning("Your message was received, but email notifications are temporarily unavailable. Please also email voicethecompanies@gmail.com.");
+      }
       setSubmitted(true);
     } catch (error) {
       setSubmitError(error?.message || "Unable to send email right now. Please try again.");
@@ -79,6 +51,7 @@ export default function ContactForm() {
         </div>
         <h3 className="text-xl font-bold text-[#2D2D2D] mb-2">Message Sent!</h3>
         <p className="text-[#6B6B6B]">We appreciate you reaching out. We'll respond within 2 business days.</p>
+        {submitWarning && <p className="text-sm text-amber-700 mt-3">{submitWarning}</p>}
       </div>
     );
   }
@@ -119,15 +92,6 @@ export default function ContactForm() {
         <Textarea id="contact-message" required value={form.message} onChange={(e) => handleChange("message", e.target.value)} placeholder="How can we help?" rows={5} />
       </div>
       {submitError && <p className="text-sm text-red-600">{submitError}</p>}
-      <Button
-        type="button"
-        variant="outline"
-        onClick={fillDemoData}
-        disabled={submitting}
-        className="w-full"
-      >
-        Fill Demo Data
-      </Button>
       <Button
         type="submit"
         disabled={submitting}

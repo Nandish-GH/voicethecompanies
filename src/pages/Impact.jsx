@@ -5,51 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import { localClient } from "@/api/localClient";
 import CTABanner from "../components/shared/CTABanner";
 
-
-const sampleTestimonials = [
-  {
-    quote: "Our student team didn't just build us a website. They taught us how to use it. I can now update our menu and specials myself every week.",
-    author_name: "Maria Santos",
-    role: "business_owner",
-    business_name: "Santos Bakery",
-  },
-  {
-    quote: "I learned more in three months of this program than in two semesters of classes. Managing a real project with real deadlines changed my perspective completely.",
-    author_name: "James Chen",
-    role: "student",
-  },
-  {
-    quote: "For the first time, people are finding us online. Our Google reviews have gone from 3 to over 40, and new customers mention our website every week.",
-    author_name: "David Okafor",
-    role: "business_owner",
-    business_name: "Okafor Auto Repair",
-  },
-  {
-    quote: "Being a project manager on a student team gave me confidence I didn't know I had. I'm now pursuing a career in product management because of this experience.",
-    author_name: "Priya Sharma",
-    role: "student",
-  },
-  {
-    quote: "The follow-up workshops were incredibly valuable. Six months later, I'm still getting support and learning new things about social media marketing.",
-    author_name: "Linda Washington",
-    role: "business_owner",
-    business_name: "Linda's Flower Shop",
-  },
-  {
-    quote: "Working with a real business owner taught me how to communicate design decisions. It's a skill I use every day now in my design internship.",
-    author_name: "Alex Rivera",
-    role: "student",
-  },
-];
-
 export default function Impact() {
   const { data: testimonials } = useQuery({
     queryKey: ["testimonials"],
     queryFn: () => localClient.entities.Testimonial.list(),
     initialData: [],
   });
-
-  const allTestimonials = testimonials.length > 0 ? testimonials : sampleTestimonials;
 
   return (
     <div>
@@ -101,38 +62,45 @@ export default function Impact() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {allTestimonials.map((t, index) => (
-              <motion.blockquote
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
-                className="bg-white rounded-2xl p-8 border border-gray-100 hover:border-[#D4E4D0] transition-all duration-300 hover:shadow-lg flex flex-col"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <Quote className="w-6 h-6 text-[#D4E4D0] flex-shrink-0" aria-hidden="true" />
-                  <span className={`text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full ${
-                    t.role === "student"
-                      ? "bg-blue-50 text-blue-600"
-                      : "bg-amber-50 text-amber-700"
-                  }`}>
-                    {t.role === "student" ? "Student" : "Business Owner"}
-                  </span>
-                </div>
-                <p className="text-[#4A4A4A] text-sm leading-relaxed flex-1">
-                  "{t.quote}"
-                </p>
-                <footer className="mt-6 pt-5 border-t border-gray-100">
-                  <p className="font-semibold text-[#2D2D2D] text-sm">{t.author_name}</p>
-                  {t.business_name && (
-                    <p className="text-xs text-[#6B6B6B] mt-0.5">{t.business_name}</p>
-                  )}
-                </footer>
-              </motion.blockquote>
-            ))}
-          </div>
+          {testimonials.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {testimonials.map((t, index) => (
+                <motion.blockquote
+                  key={t.id || index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }}
+                  className="bg-white rounded-2xl p-8 border border-gray-100 hover:border-[#D4E4D0] transition-all duration-300 hover:shadow-lg flex flex-col"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <Quote className="w-6 h-6 text-[#D4E4D0] flex-shrink-0" aria-hidden="true" />
+                    <span className={`text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full ${
+                      t.role === "student"
+                        ? "bg-blue-50 text-blue-600"
+                        : "bg-amber-50 text-amber-700"
+                    }`}>
+                      {t.role === "student" ? "Student" : "Business Owner"}
+                    </span>
+                  </div>
+                  <p className="text-[#4A4A4A] text-sm leading-relaxed flex-1">
+                    "{t.quote}"
+                  </p>
+                  <footer className="mt-6 pt-5 border-t border-gray-100">
+                    <p className="font-semibold text-[#2D2D2D] text-sm">{t.author_name}</p>
+                    {t.business_name && (
+                      <p className="text-xs text-[#6B6B6B] mt-0.5">{t.business_name}</p>
+                    )}
+                  </footer>
+                </motion.blockquote>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl p-8 border border-gray-100 text-center max-w-3xl mx-auto">
+              <p className="text-sm font-semibold text-[#2D2D2D]">Testimonials will be published as verified results are reported.</p>
+              <p className="text-sm text-[#6B6B6B] mt-2">We prioritize transparency and only publish stories connected to completed program outcomes.</p>
+            </div>
+          )}
         </div>
       </section>
 
