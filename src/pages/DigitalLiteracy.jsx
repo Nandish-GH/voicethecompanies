@@ -196,6 +196,7 @@ const lessons = [
       "Analytics are most useful when compared month-over-month, not day-to-day.",
     ],
     guide: "Analytics Glossary & Reference Card",
+    guidePath: "/digital-literacy/VTC_WebsiteAnalytics.html",
     quiz: [
       {
         question: "What does 'bounce rate' measure?",
@@ -252,6 +253,7 @@ const lessons = [
       "A backup is only useful if it's recent. Automate it.",
     ],
     guide: "Security Checklist & Maintenance Calendar",
+    guidePath: "/digital-literacy/VTC_DigitalSecurityMaintenance.html",
     quiz: [
       {
         question: "What is two-factor authentication (2FA)?",

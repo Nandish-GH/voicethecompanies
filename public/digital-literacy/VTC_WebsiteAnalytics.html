@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding Website Analytics - Voice the Companies Digital Literacy Curriculum</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --sage:        #B2C9AD;
+    --sage-dark:   #7a9e74;
+    --sage-deep:   #4a7044;
+    --sage-deeper: #2d4d2a;
+    --sage-light:  #eef4ec;
+    --sage-border: #9ebd98;
+    --ink:         #2E2E2E;
+    --soft-ink:    #4a4a4a;
+    --bg:          #f7faf6;
+    --paper:       #ffffff;
+    --rule:        #d4e0d1;
+    --muted:       #7a8c78;
+    --warn-bg:     #fff8f0;
+    --warn-border: #e0a060;
+    --tip-bg:      #f0faf0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* COVER */
+  .cover {
+    background: linear-gradient(150deg, #1e3a1a 0%, #2d4d2a 40%, #1a2e18 100%);
+    color: white;
+    padding: 70px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 50px,
+      rgba(255,255,255,0.012) 50px, rgba(255,255,255,0.012) 100px
+    );
+  }
+  .cover-logo {
+    width: 170px;
+    height: auto;
+    max-width: 60%;
+    margin-bottom: 22px;
+    filter: none;
+    position: relative; z-index: 1;
+  }
+  .cover-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.55); margin-bottom: 14px;
+    position: relative; z-index: 1;
+  }
+  .cover h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 50px; font-weight: 900; line-height: 1.05;
+    margin-bottom: 18px; position: relative; z-index: 1;
+  }
+  .cover h1 em { color: var(--sage); font-style: normal; }
+  .cover-sub {
+    font-size: 16px; color: rgba(255,255,255,0.78);
+    max-width: 500px; line-height: 1.65; position: relative; z-index: 1;
+  }
+  .cover-badges {
+    display: flex; gap: 10px; margin-top: 36px; flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .badge {
+    border: 1px solid rgba(178,201,173,0.4);
+    padding: 5px 14px; border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+  }
+  .cover-back-link {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 8px 14px;
+    border: 1px solid rgba(178,201,173,0.6);
+    border-radius: 999px;
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  }
+  .cover-back-link:hover {
+    background: rgba(178,201,173,0.22);
+    border-color: rgba(178,201,173,0.9);
+    color: #ffffff;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 40px 60px; }
+
+  /* TABLE OF CONTENTS */
+  .toc {
+    background: var(--paper);
+    border-left: 4px solid var(--sage);
+    margin: 44px 0;
+    padding: 32px 36px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .toc-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 20px; color: var(--ink);
+  }
+  .toc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .toc-section {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--sage-deep);
+    margin: 16px 0 7px;
+  }
+  .toc a {
+    display: block; font-size: 13.5px; color: var(--soft-ink);
+    text-decoration: none; padding: 3px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .toc a:hover { color: var(--sage-deep); }
+
+  /* TOPIC / SECTION BANNERS */
+  .topic-banner {
+    margin: 52px -40px 0;
+    padding: 38px 40px 30px;
+    background: var(--sage-deeper);
+    position: relative;
+  }
+  .topic-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); margin-bottom: 9px;
+  }
+  .topic-banner h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px; font-weight: 800; color: white;
+    line-height: 1.2;
+  }
+  .topic-banner h2 span { color: var(--sage); }
+
+  /* SECTION HEADERS */
+  .section {
+    margin-top: 44px;
+    padding-top: 28px;
+    border-top: 2px solid var(--rule);
+  }
+  .section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px; font-weight: 700;
+    color: var(--ink); margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; background: var(--sage-deep);
+    color: white; padding: 3px 10px; border-radius: 3px;
+    letter-spacing: 1px; white-space: nowrap;
+  }
+  .section-title .num.warn { background: #c0763a; }
+  .section-title .num.success { background: var(--sage-dark); }
+
+  /* GUIDE LIST */
+  ul.guide-list { list-style: none; padding: 0; }
+  ul.guide-list > li {
+    padding: 6px 0 6px 22px;
+    position: relative; font-size: 14.5px;
+    border-bottom: 1px dotted var(--rule);
+  }
+  ul.guide-list > li:last-child { border-bottom: none; }
+  ul.guide-list > li::before {
+    content: '\25B8';
+    position: absolute; left: 0; color: var(--sage-dark);
+    font-size: 11px; top: 9px;
+  }
+  ul.guide-list li strong { color: var(--ink); }
+  ul.guide-list li em { color: var(--sage-deep); font-style: normal; font-weight: 600; }
+  ul.sub-list { list-style: none; margin: 7px 0 5px 18px; }
+  ul.sub-list li {
+    font-size: 13.5px; padding: 2px 0 2px 16px;
+    position: relative; color: var(--soft-ink);
+  }
+  ul.sub-list li::before {
+    content: '\2013'; position: absolute; left: 0; color: var(--sage);
+  }
+
+  /* STAT GRID */
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; margin: 22px 0;
+  }
+  .stat-box {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--sage-dark);
+    padding: 16px; text-align: center;
+  }
+  .stat-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 26px; font-weight: 900;
+    color: var(--sage-deep); display: block;
+  }
+  .stat-label { font-size: 11.5px; color: var(--soft-ink); margin-top: 4px; line-height: 1.35; }
+
+  /* PILLARS / STEP CARDS */
+  .pillar {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    margin: 0 0 16px;
+  }
+  .pillar-header {
+    background: var(--sage-light);
+    border-bottom: 2px solid var(--sage-border);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .pillar-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px; font-weight: 900;
+    color: var(--sage-dark); line-height: 1; min-width: 36px;
+  }
+  .pillar-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .pillar-tag { font-size: 11px; color: var(--muted); margin-top: 2px; font-style: italic; }
+  .pillar-body { padding: 18px 22px; }
+  .pillar-section { margin-bottom: 14px; }
+  .pillar-section:last-child { margin-bottom: 0; }
+  .pillar-section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sage-deep); margin-bottom: 7px; font-weight: 700;
+  }
+  .pillar-section p { font-size: 14px; color: var(--soft-ink); line-height: 1.7; }
+  .pillar-section ul { padding-left: 18px; }
+  .pillar-section li { font-size: 13.5px; margin-bottom: 4px; color: var(--soft-ink); }
+
+  /* TABLE */
+  .guide-table {
+    width: 100%; border-collapse: collapse;
+    margin: 20px 0; font-size: 13.5px;
+  }
+  .guide-table th {
+    background: var(--sage-deep); color: white;
+    padding: 10px 14px; text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .guide-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .guide-table tr:nth-child(even) td { background: var(--sage-light); }
+  .guide-table td strong { color: var(--sage-deep); }
+
+  /* NOTE / CALLOUT BOX */
+  .note-box {
+    background: var(--sage-light);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 14px 18px; font-size: 13.5px;
+    margin: 16px 0; color: var(--soft-ink);
+    line-height: 1.7;
+  }
+  .note-box strong { color: var(--sage-deep); }
+
+  /* WARNING BOX */
+  .warn-box {
+    background: var(--warn-bg);
+    border: 1px solid #f0d0b0;
+    border-left: 4px solid var(--warn-border);
+    padding: 16px 20px; margin: 14px 0;
+  }
+  .warn-box h5 {
+    font-size: 13.5px; font-weight: 700;
+    color: #b06020; margin-bottom: 8px;
+    font-family: 'Poppins', sans-serif;
+  }
+  .warn-box p { font-size: 13.5px; color: var(--soft-ink); line-height: 1.65; }
+  .warn-box .safe-note {
+    background: var(--tip-bg);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 10px 14px; margin-top: 10px;
+    font-size: 13.5px; color: var(--soft-ink);
+  }
+  .warn-box .safe-note strong { color: var(--sage-deep); }
+
+  /* TIP / QUOTE BOX */
+  .tip-box {
+    background: linear-gradient(135deg, var(--sage-light) 0%, #f0f7ee 100%);
+    border: 1px solid var(--rule);
+    padding: 20px 26px; margin: 16px 0;
+    position: relative;
+  }
+  .tip-box::before {
+    content: '\201C';
+    font-family: 'Poppins', sans-serif;
+    font-size: 90px; color: rgba(74,112,68,0.08);
+    position: absolute; top: -14px; left: 12px;
+    line-height: 1;
+  }
+  .tip-box p { font-size: 14px; line-height: 1.75; padding-left: 16px; font-style: italic; color: var(--soft-ink); }
+  .tip-box .tip-note {
+    font-style: normal; font-size: 11.5px; color: var(--muted);
+    margin-top: 8px; padding-left: 16px;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px;
+  }
+
+  /* TAKEAWAY CARDS */
+  .takeaway-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0;
+  }
+  .takeaway-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-top: 3px solid var(--sage-dark);
+    padding: 18px 20px;
+  }
+  .takeaway-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px; font-weight: 900;
+    color: var(--sage); line-height: 1; margin-bottom: 8px;
+  }
+  .takeaway-title {
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .takeaway-card p { font-size: 13.5px; color: var(--soft-ink); line-height: 1.65; }
+
+  /* QUIZ */
+  .quiz-q {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 18px 22px; margin: 14px 0;
+  }
+  .quiz-q-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .quiz-q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; background: var(--sage-deep);
+    color: white; padding: 2px 8px; border-radius: 3px;
+    letter-spacing: 1px; margin-right: 8px;
+    display: inline-block; margin-bottom: 10px;
+  }
+  .quiz-choices { list-style: none; padding: 0; }
+  .quiz-choices li {
+    font-size: 13.5px; color: var(--soft-ink);
+    padding: 5px 0 5px 22px; position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .quiz-choices li:last-child { border-bottom: none; }
+  .quiz-choices li::before {
+    content: '\25CB'; position: absolute; left: 0;
+    color: var(--sage); font-size: 12px; top: 6px;
+  }
+  .answer-key {
+    background: var(--sage-light);
+    border: 1px solid var(--sage-border);
+    padding: 12px 18px; margin-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--sage-deeper);
+    letter-spacing: 0.5px;
+  }
+  .interactive-panel {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 18px 20px;
+    margin: 24px 0 36px;
+  }
+  .interactive-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .interactive-sub {
+    font-size: 13px;
+    color: var(--soft-ink);
+    margin-bottom: 14px;
+  }
+  .progress-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .progress-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .progress-item label {
+    font-size: 13px;
+    color: var(--soft-ink);
+    cursor: pointer;
+  }
+  .progress-item input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--sage-deep);
+  }
+  .progress-status {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.4px;
+    margin-bottom: 12px;
+  }
+  .interactive-notes-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--sage-deep);
+    margin-bottom: 6px;
+  }
+  .interactive-notes {
+    width: 100%;
+    min-height: 92px;
+    border: 1px solid var(--rule);
+    background: #fff;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    resize: vertical;
+  }
+  .quiz-choices li {
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .quiz-choices li:hover {
+    background: #f5f9f4;
+  }
+  .quiz-choices li.quiz-selected {
+    background: #edf3eb;
+    border-color: var(--sage-border);
+  }
+  .quiz-choices li.quiz-selected::before {
+    content: '◉';
+    color: var(--sage-deep);
+  }
+  .quiz-choices li.quiz-correct {
+    background: #eaf6e7;
+    border-color: #8ab27f;
+  }
+  .quiz-choices li.quiz-correct::before {
+    content: '✓';
+    color: #3f7f33;
+    font-weight: 700;
+  }
+  .quiz-choices li.quiz-incorrect {
+    background: #fff1f0;
+    border-color: #d99891;
+  }
+  .quiz-choices li.quiz-incorrect::before {
+    content: '✕';
+    color: #b24b42;
+    font-weight: 700;
+  }
+  .quiz-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .quiz-btn {
+    background: var(--sage-deep);
+    color: #fff;
+    border: 1px solid var(--sage-deep);
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .quiz-btn.secondary {
+    background: #fff;
+    color: var(--sage-deep);
+  }
+  .quiz-result {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--soft-ink);
+  }
+
+  /* CHEAT SHEET */
+  .cheat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border: 1px solid var(--sage-border); margin: 20px 0;
+  }
+  .cheat-cell {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--sage-border);
+    border-right: 1px solid var(--sage-border);
+  }
+  .cheat-cell:nth-child(even) { border-right: none; }
+  .cheat-cell:nth-last-child(1),
+  .cheat-cell:nth-last-child(2) { border-bottom: none; }
+  .cheat-cell dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700; color: var(--sage-deep);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;
+  }
+  .cheat-cell dd { font-size: 13px; color: var(--soft-ink); line-height: 1.6; }
+  .cheat-cell dd ul { padding-left: 14px; margin-top: 4px; }
+  .cheat-cell dd li { margin-bottom: 2px; font-size: 12.5px; }
+  .cheat-header {
+    grid-column: 1 / -1;
+    background: var(--sage-deep); color: white;
+    padding: 9px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+    border-bottom: 1px solid var(--sage-border);
+  }
+
+  /* WELCOME BANNER */
+  .welcome-banner {
+    background: var(--sage-light);
+    border-left: 4px solid var(--sage-dark);
+    padding: 22px 28px; margin: 20px 0;
+  }
+  .welcome-banner p { font-size: 14.5px; color: var(--soft-ink); line-height: 1.75; }
+
+  /* CHECKLIST */
+  ul.checklist { list-style: none; padding: 0; margin: 14px 0; }
+  ul.checklist li {
+    font-size: 14px; color: var(--soft-ink);
+    padding: 6px 0 6px 26px; position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+  ul.checklist li:last-child { border-bottom: none; }
+  ul.checklist li::before {
+    content: '\2713'; position: absolute; left: 0;
+    color: var(--sage-dark); font-weight: 700; font-size: 13px; top: 7px;
+  }
+
+  /* BEFORE / AFTER */
+  .before-after {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;
+  }
+  .ba-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    overflow: hidden;
+  }
+  .ba-head {
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    font-weight: 700;
+  }
+  .ba-head.before { background: #fff4ee; color: #b06020; border-bottom: 2px solid #e0a060; }
+  .ba-head.after  { background: var(--sage-light); color: var(--sage-deep); border-bottom: 2px solid var(--sage-border); }
+  .ba-body { padding: 14px 16px; font-size: 13.5px; color: var(--soft-ink); line-height: 1.7; }
+  .ba-body em { font-style: italic; color: var(--muted); }
+
+  /* MONTHLY REVIEW WORKFLOW (adapted from batch grid) */
+  .review-grid {
+    display: grid; grid-template-columns: 90px 1fr; gap: 0;
+    border: 1px solid var(--sage-border); margin: 20px 0;
+  }
+  .review-time {
+    background: var(--sage-deep); color: white;
+    padding: 14px 10px; text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px; font-weight: 700;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    line-height: 1.3;
+  }
+  .review-time:last-of-type { border-bottom: none; }
+  .review-task {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--sage-border);
+    font-size: 14px; color: var(--soft-ink); line-height: 1.6;
+  }
+  .review-task:last-child { border-bottom: none; }
+  .review-task strong { color: var(--ink); display: block; margin-bottom: 3px; }
+
+  /* METRIC DEFINITION CARD */
+  .metric-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    margin: 0 0 14px;
+    overflow: hidden;
+  }
+  .metric-card-head {
+    background: var(--sage-deep); color: white;
+    padding: 10px 18px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .metric-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+  .metric-card-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px; font-weight: 700; color: white;
+  }
+  .metric-card-body {
+    padding: 16px 18px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px;
+  }
+  .metric-card-body p { font-size: 13.5px; color: var(--soft-ink); line-height: 1.7; }
+  .metric-card-section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sage-deep); margin-bottom: 5px; font-weight: 700;
+  }
+
+  /* DIVIDERS */
+  .divider { border: none; border-top: 1px solid var(--rule); margin: 32px 0; }
+
+  /* META ROW */
+  .meta-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px;
+  }
+  .meta-cell {
+    background: #f4f4f4; padding: 10px 14px; font-size: 12.5px; color: var(--soft-ink);
+  }
+  .meta-cell strong {
+    display: block; font-size: 9.5px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* FOOTER */
+  .doc-footer {
+    background: var(--ink); color: rgba(255,255,255,0.45);
+    text-align: center; padding: 28px 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 1px;
+    margin-top: 60px;
+  }
+  .doc-footer span { color: var(--sage); }
+
+  @media print {
+    .cover { padding: 40px; }
+    body { font-size: 13px; }
+    .topic-banner { margin: 40px 0 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <img class="cover-logo" src="../logo.png" alt="Voice the Companies logo" />
+  <div class="cover-label">Voice the Companies · Digital Literacy Curriculum · Lesson 4 of 5</div>
+  <h1>Understanding<br><em>Website</em><br>Analytics</h1>
+  <p class="cover-sub">Learn how to read your website and social media data, understand what metrics like sessions, bounce rate, and reach actually mean, and use that information to make simple, confident improvements.</p>
+  <div class="cover-badges">
+    <div class="badge">7 Steps</div>
+    <div class="badge">4 Key Takeaways</div>
+    <div class="badge">Knowledge Check</div>
+    <div class="badge">Printable Cheat Sheet</div>
+    <div class="badge">No Technical Background Required</div>
+  </div>
+  <a class="cover-back-link" href="/digital-literacy">Back to Digital Literacy</a>
+</div>
+
+<div class="container">
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <div class="toc-title">Table of Contents</div>
+  <div class="toc-cols">
+    <div>
+      <div class="toc-section">Getting Started</div>
+      <a href="#welcome">Welcome and What You Will Learn</a>
+      <a href="#why">Why Analytics Matter for Your Business</a>
+      <a href="#how-to-use">How to Use This Guide</a>
+      <div class="toc-section">The Seven Steps</div>
+      <a href="#step1">Step 1 - Log Into Your Analytics Dashboard</a>
+      <a href="#step2">Step 2 - Find Sessions and Visits</a>
+      <a href="#step3">Step 3 - Find Unique Visitors</a>
+      <a href="#step4">Step 4 - Understand Bounce Rate</a>
+    </div>
+    <div>
+      <div class="toc-section">&nbsp;</div>
+      <a href="#step5">Step 5 - Check Average Time on Page</a>
+      <a href="#step6">Step 6 - Read Reach vs. Engagement on Social Media</a>
+      <a href="#step7">Step 7 - Build a Monthly Review Habit</a>
+      <a href="#glossary">Quick Metrics Glossary</a>
+      <div class="toc-section">Wrap-Up</div>
+      <a href="#takeaways">Key Takeaways</a>
+      <a href="#quiz">Knowledge Check</a>
+      <a href="#cheatsheet">Printable Cheat Sheet</a>
+    </div>
+  </div>
+</div>
+
+<div class="interactive-panel" id="workbook-tools">
+  <div class="interactive-title">Interactive Workbook</div>
+  <p class="interactive-sub">Track your progress and keep notes while you work through this lesson.</p>
+  <ul class="progress-list" id="interactive-step-list"></ul>
+  <p class="progress-status" id="interactive-progress-status"></p>
+  <label class="interactive-notes-label" for="interactive-notes">My Notes</label>
+  <textarea class="interactive-notes" id="interactive-notes" placeholder="Write reminders, questions, or actions you want to take..."></textarea>
+</div>
+
+<!-- WELCOME -->
+<div class="topic-banner" id="welcome">
+  <div class="topic-tag">Voice the Companies · Digital Literacy Curriculum · Lesson 4</div>
+  <h2>Welcome to <span>Understanding Website Analytics</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">INTRO</span> A Note Before You Begin</div>
+
+  <div class="welcome-banner">
+    <p>Welcome back. If you have been working through this curriculum, you now have a website you can manage, social media profiles that represent your business well, and the content creation skills to keep them active. This lesson is about the next step: understanding whether any of it is working. Analytics are the tool that answers that question. They can feel intimidating at first because they involve numbers and unfamiliar terminology. But analytics are not about math. They are about listening to your customers without having to ask them anything directly.</p>
+  </div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:14px;">
+    Every time someone visits your website, clicks a link, or watches your post, that activity gets recorded. Analytics tools turn that recorded data into readable reports. This lesson will teach you exactly what those reports mean, which numbers actually matter for a small business, and how to use them to make one small improvement per month.
+  </p>
+
+  <div class="stat-grid">
+    <div class="stat-box"><span class="stat-num">7</span><div class="stat-label">Step-by-step lessons in this guide</div></div>
+    <div class="stat-box"><span class="stat-num">15</span><div class="stat-label">Minutes per month is all a basic review takes</div></div>
+    <div class="stat-box"><span class="stat-num">5</span><div class="stat-label">Quiz questions to test your understanding</div></div>
+    <div class="stat-box"><span class="stat-num">1</span><div class="stat-label">Printable cheat sheet to keep nearby</div></div>
+  </div>
+
+  <p style="font-size:14px; color:var(--soft-ink); line-height:1.75; margin-bottom:14px;">By the end of this lesson, you will be able to:</p>
+  <ul class="checklist">
+    <li>Log into Google Analytics and your platform's built-in stats dashboard</li>
+    <li>Explain the difference between sessions and unique visitors</li>
+    <li>Read and interpret your bounce rate without overreacting to it</li>
+    <li>Use average time on page to judge whether your content is holding attention</li>
+    <li>Tell the difference between reach and engagement on social media</li>
+    <li>Build a 15-minute monthly review habit that keeps you informed without overwhelming you</li>
+    <li>Make one data-informed improvement to your site or social media each month</li>
+  </ul>
+</div>
+
+<!-- WHY ANALYTICS MATTER -->
+<div class="topic-banner" id="why">
+  <div class="topic-tag">Background</div>
+  <h2>Why Analytics <span>Matter for Your Business</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">CONTEXT</span> The Big Picture</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Running a business without looking at your analytics is like keeping a store open without ever counting how many people walked in. You might have a general feeling of how things are going, but you are missing information that could help you make better decisions every single week.
+  </p>
+
+  <div class="stat-grid">
+    <div class="stat-box"><span class="stat-num">61%</span><div class="stat-label">Of small businesses say they do not regularly review their website performance data</div></div>
+    <div class="stat-box"><span class="stat-num">3x</span><div class="stat-label">More likely to see month-over-month growth when businesses review analytics regularly</div></div>
+    <div class="stat-box"><span class="stat-num">Free</span><div class="stat-label">Google Analytics, the most powerful website data tool available, costs nothing</div></div>
+    <div class="stat-box"><span class="stat-num">15 min</span><div class="stat-label">Is all it takes per month to run a basic analytics review and identify one improvement</div></div>
+  </div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    The goal of this lesson is not to turn you into a data analyst. It is to give you enough knowledge to ask and answer one simple question each month: compared to last month, is my online presence growing, holding steady, or declining? That one question, answered regularly, is more valuable than any advanced report.
+  </p>
+
+  <div class="tip-box">
+    <p>Analytics are most useful as a trend tool, not a snapshot. A single good or bad day tells you very little. A pattern over three or four months tells you something worth acting on.</p>
+    <div class="tip-note">&#9658; Voice the Companies Program Guidance</div>
+  </div>
+</div>
+
+<!-- HOW TO USE THIS GUIDE -->
+<div class="section" id="how-to-use">
+  <div class="section-title"><span class="num">GUIDE</span> How to Use This Curriculum</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    This guide is designed to be worked through section by section, at your own pace. You can complete it in one sitting or return to specific steps whenever you need a refresher. Here is how to get the most out of it.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">1</div>
+      <div>
+        <div class="pillar-name">Open your analytics dashboard alongside this guide</div>
+        <div class="pillar-tag">Following along in real time speeds up learning considerably</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">As you read each step, have your actual analytics dashboard open in a separate browser tab. Finding the exact metrics on your own screen as you read about them is the fastest way to build comfort and confidence with these tools.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">2</div>
+      <div>
+        <div class="pillar-name">Do not worry if your numbers look small</div>
+        <div class="pillar-tag">Every business starts somewhere, and trends matter more than totals</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">If your website is new or your social media presence is just getting started, your numbers will be small. That is completely normal and expected. The value of analytics is not in the size of the numbers on day one. It is in watching those numbers grow over time.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">3</div>
+      <div>
+        <div class="pillar-name">Focus on the monthly review workflow in Step 7</div>
+        <div class="pillar-tag">The habit is more important than any individual metric</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Steps 1 through 6 build your understanding of individual metrics. Step 7 ties everything together into a 15-minute monthly review routine. That routine is the most important thing to take away from this lesson.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">4</div>
+      <div>
+        <div class="pillar-name">Use the Quick Metrics Glossary as a reference</div>
+        <div class="pillar-tag">Every term used in this guide is defined in plain language</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Between Step 7 and the Key Takeaways section, there is a Quick Metrics Glossary that defines every analytics term covered in this guide in plain, non-technical language. Refer back to it whenever you encounter an unfamiliar word in your own dashboard.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 1 -->
+<div class="topic-banner" id="step1">
+  <div class="topic-tag">Step 1 of 7</div>
+  <h2>Log Into Your <span>Analytics Dashboard</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 01</span> Getting to your data for the first time</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Before you can read your data, you need to know where to find it. Depending on your website platform, you may use Google Analytics, your platform's built-in stats tool, or both. Here is how to access each one.
+  </p>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Where to Find Analytics</th>
+        <th>What It Shows</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Google Analytics</strong></td>
+        <td><code style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--sage-deep);">analytics.google.com</code> - Sign in with your Google account and select your property.</td>
+        <td>Full website traffic data: sessions, visitors, page views, time on page, bounce rate, and more.</td>
+      </tr>
+      <tr>
+        <td><strong>Squarespace</strong></td>
+        <td>Dashboard, then click Analytics in the left sidebar.</td>
+        <td>Built-in traffic overview including visits, unique visitors, and popular pages.</td>
+      </tr>
+      <tr>
+        <td><strong>Wix</strong></td>
+        <td>Dashboard, then click Analytics and Reports in the left sidebar.</td>
+        <td>Traffic overview, visitor behavior, and site performance summaries.</td>
+      </tr>
+      <tr>
+        <td><strong>WordPress</strong></td>
+        <td>If Google Analytics is connected, use analytics.google.com. Otherwise, check the Jetpack plugin stats under Dashboard, then Jetpack.</td>
+        <td>Depends on setup, but generally covers page views, visitors, and referral sources.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note-box">
+    <strong>First time using Google Analytics?</strong> If your student team connected Google Analytics to your site during your project, you already have data waiting. If it was never connected, reach out to your Voice the Companies student team and ask them to set it up. It is a one-time process that takes about 15 minutes.
+  </div>
+
+  <ul class="guide-list" style="margin-top:16px;">
+    <li><strong>Google Analytics vs. platform stats:</strong> Google Analytics is more detailed and works across any platform. Built-in platform stats are simpler but are a perfectly good starting point for most small businesses.</li>
+    <li><strong>Set your date range:</strong> When you first open any analytics tool, set the date range to the last 30 days. This gives you a current snapshot that is recent enough to be useful but wide enough to show a pattern.</li>
+    <li><em>Tip:</em> Bookmark your analytics dashboard directly so you can return to it in one click each month during your review.</li>
+  </ul>
+</div>
+
+<!-- STEP 2 -->
+<div class="topic-banner" id="step2">
+  <div class="topic-tag">Step 2 of 7</div>
+  <h2>Sessions <span>and Visits</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 02</span> How many times people visited your site</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Sessions, also called Visits on some platforms, is the most basic and important number in your analytics. It tells you how many times your website was opened and used within a given period. Understanding exactly what this number counts will help you read it accurately.
+  </p>
+
+  <div class="metric-card">
+    <div class="metric-card-head">
+      <div>
+        <div class="metric-card-label">Metric Definition</div>
+        <div class="metric-card-name">Sessions / Visits</div>
+      </div>
+    </div>
+    <div class="metric-card-body">
+      <div>
+        <div class="metric-card-section-title">What it counts</div>
+        <p>A session is one continuous visit to your website. It starts when someone arrives on any page of your site and ends when they leave or are inactive for 30 minutes. If the same person visits your site twice in one day, that counts as two sessions.</p>
+      </div>
+      <div>
+        <div class="metric-card-section-title">What to look for</div>
+        <p>Compare your sessions month-over-month. Is the number going up, staying flat, or declining? A growing sessions number means more people are finding and returning to your site. A declining number is a prompt to investigate why.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <p>A new business with 80 sessions per month that grows to 120 sessions the next month is showing stronger momentum than an established business with 500 sessions per month that stays flat for six months in a row. Growth rate matters as much as the total number.</p>
+    <div class="tip-note">&#9658; Voice the Companies Program Guidance</div>
+  </div>
+
+  <div class="before-after" style="margin-top:20px;">
+    <div class="ba-card">
+      <div class="ba-head before">Unhelpful Reading</div>
+      <div class="ba-body">"I only got 45 sessions this month. That is a bad number." <em>-- Sessions totals without context tell you very little.</em></div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-head after">Useful Reading</div>
+      <div class="ba-body">"I got 45 sessions this month versus 30 last month. That is a 50% increase. Something I did worked, and I want to figure out what."</div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="topic-banner" id="step3">
+  <div class="topic-tag">Step 3 of 7</div>
+  <h2>Unique <span>Visitors</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 03</span> How many individual people came to your site</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Sessions and unique visitors are related but different numbers, and confusing them is one of the most common mistakes new analytics users make. Once you understand the distinction, both numbers become far more useful.
+  </p>
+
+  <div class="metric-card">
+    <div class="metric-card-head">
+      <div>
+        <div class="metric-card-label">Metric Definition</div>
+        <div class="metric-card-name">Unique Visitors</div>
+      </div>
+    </div>
+    <div class="metric-card-body">
+      <div>
+        <div class="metric-card-section-title">What it counts</div>
+        <p>Unique visitors counts the number of individual people who visited your site, regardless of how many times they visited. If one person visits your site five times in a month, they count as one unique visitor but five sessions.</p>
+      </div>
+      <div>
+        <div class="metric-card-section-title">What to look for</div>
+        <p>Compare unique visitors to sessions. If sessions are much higher than unique visitors, it means a smaller group of people is visiting repeatedly, which is a sign of strong loyalty. If sessions and unique visitors are nearly the same, most of your visitors are coming only once.</p>
+      </div>
+    </div>
+  </div>
+
+  <table class="guide-table" style="margin-top:20px;">
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th>Sessions</th>
+        <th>Unique Visitors</th>
+        <th>What It Tells You</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>High repeat visits</strong></td>
+        <td>200</td>
+        <td>60</td>
+        <td>A loyal core audience visits frequently. Good for community or service businesses.</td>
+      </tr>
+      <tr>
+        <td><strong>Mostly new visitors</strong></td>
+        <td>200</td>
+        <td>185</td>
+        <td>Lots of new people are finding you, but few are returning. Focus on giving them a reason to come back.</td>
+      </tr>
+      <tr>
+        <td><strong>Balanced</strong></td>
+        <td>200</td>
+        <td>110</td>
+        <td>A healthy mix of new discovery and returning interest. A common pattern for growing small businesses.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note-box">
+    <strong>A note on accuracy:</strong> Analytics tools track visitors using browser cookies, which means some visitors may be counted as new each time they clear their cookies or use a different device. Unique visitor numbers are always estimates, not exact counts. Use them as directional guidance rather than precise figures.
+  </div>
+</div>
+
+<!-- STEP 4 -->
+<div class="topic-banner" id="step4">
+  <div class="topic-tag">Step 4 of 7</div>
+  <h2>Understanding <span>Bounce Rate</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num warn">STEP 04</span> What it means when people leave quickly</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Bounce rate is one of the most misunderstood metrics in analytics. Many business owners see a high bounce rate and immediately worry something is broken. In many cases, a high bounce rate is normal or even expected. This step explains what bounce rate actually means and how to interpret it correctly.
+  </p>
+
+  <div class="metric-card">
+    <div class="metric-card-head">
+      <div>
+        <div class="metric-card-label">Metric Definition</div>
+        <div class="metric-card-name">Bounce Rate</div>
+      </div>
+    </div>
+    <div class="metric-card-body">
+      <div>
+        <div class="metric-card-section-title">What it counts</div>
+        <p>Bounce rate is the percentage of visitors who land on a page of your site and leave without clicking on anything or visiting a second page. A 70% bounce rate means 70 out of 100 visitors left after viewing only the page they arrived on.</p>
+      </div>
+      <div>
+        <div class="metric-card-section-title">General benchmarks</div>
+        <p>For most small business websites, a bounce rate between 40% and 70% is considered typical. Above 80% on a key page like your homepage or Contact page is worth investigating. Below 30% is unusually low and often signals a tracking issue.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn-box" style="margin-top:20px;">
+    <h5>&#9888; High Bounce Rate Is Not Always a Problem</h5>
+    <p>Context determines whether your bounce rate is a concern. A visitor who arrives on your Contact page, finds your phone number, and calls you immediately counts as a bounce in Google Analytics. They got exactly what they needed, but the tool recorded it as a failure. Always ask yourself what a visitor was likely trying to do on that specific page before deciding a bounce rate is too high.</p>
+    <div class="safe-note">
+      <strong>When to investigate a high bounce rate:</strong> If your homepage, Services page, or any page that is supposed to guide visitors deeper into your site has a bounce rate above 75%, that is a sign your message or layout may not be connecting. Consider updating the opening headline, adding a clearer call to action button, or asking your student team to review the page.
+    </div>
+  </div>
+
+  <table class="guide-table" style="margin-top:20px;">
+    <thead>
+      <tr>
+        <th>Page Type</th>
+        <th>High Bounce Rate Concern?</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Homepage</strong></td>
+        <td style="color:#b06020; font-weight:600;">Worth investigating above 75%</td>
+        <td>Your homepage should draw people further in. A high bounce rate here suggests your message is not landing.</td>
+      </tr>
+      <tr>
+        <td><strong>Contact Page</strong></td>
+        <td style="color:var(--sage-deep); font-weight:600;">Often normal</td>
+        <td>People come to get your phone number or address and leave immediately after finding it. That is a success.</td>
+      </tr>
+      <tr>
+        <td><strong>Blog or Article Page</strong></td>
+        <td style="color:var(--sage-deep); font-weight:600;">Often normal</td>
+        <td>People read the article they came for and leave satisfied. Bounce rate on blog content is rarely meaningful.</td>
+      </tr>
+      <tr>
+        <td><strong>Services or Menu Page</strong></td>
+        <td style="color:#b06020; font-weight:600;">Worth investigating above 70%</td>
+        <td>This page should lead to either a booking, a purchase, or a contact form. High bounces here may indicate a design or clarity issue.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- STEP 5 -->
+<div class="topic-banner" id="step5">
+  <div class="topic-tag">Step 5 of 7</div>
+  <h2>Average Time <span>on Page</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 05</span> Whether people are actually reading your content</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Average time on page tells you how long visitors typically spend on a specific page before leaving or navigating elsewhere. It is one of the clearest signals you have about whether your content is holding attention or whether people are skimming and moving on.
+  </p>
+
+  <div class="metric-card">
+    <div class="metric-card-head">
+      <div>
+        <div class="metric-card-label">Metric Definition</div>
+        <div class="metric-card-name">Average Time on Page</div>
+      </div>
+    </div>
+    <div class="metric-card-body">
+      <div>
+        <div class="metric-card-section-title">What it counts</div>
+        <p>The average number of seconds or minutes visitors spend on a specific page. Google Analytics calculates this by measuring the time between a visitor's arrival on a page and their click to another page. Note: time on the last page before a visitor leaves the site is not counted, which means averages are often slightly underreported.</p>
+      </div>
+      <div>
+        <div class="metric-card-section-title">What is considered good</div>
+        <p>For a homepage or service page, an average time on page of 1 to 3 minutes is healthy. For a blog post or detailed information page, 3 to 5 minutes or more suggests people are genuinely reading. Under 30 seconds on any important page is a signal worth looking into.</p>
+      </div>
+    </div>
+  </div>
+
+  <ul class="guide-list" style="margin-top:20px;">
+    <li><strong>Short time on page on key pages</strong> may mean your content is too dense, your text is hard to read on mobile, or visitors are not finding what they expected when they arrived.</li>
+    <li><strong>Long time on page on information pages</strong> is a strong positive signal. It means your content is valuable and your visitors are engaged enough to keep reading.</li>
+    <li><strong>Improve time on page</strong> by breaking long blocks of text into shorter paragraphs, adding subheadings so content is easy to scan, including a relevant image or two, and making sure your page loads quickly on mobile devices.</li>
+    <li><em>Ask your student team:</em> If a page that should hold attention consistently shows under 30 seconds average, share that data with your student team and ask them to review the page design and copy together with you.</li>
+  </ul>
+
+  <div class="tip-box" style="margin-top:16px;">
+    <p>Do not compare your time on page numbers to large company websites. A local bakery with an average of 90 seconds on their menu page and a steady month-over-month increase is performing well. Benchmark against your own previous months, not against businesses with entirely different content and audiences.</p>
+    <div class="tip-note">&#9658; Voice the Companies Program Guidance</div>
+  </div>
+</div>
+
+<!-- STEP 6 -->
+<div class="topic-banner" id="step6">
+  <div class="topic-tag">Step 6 of 7</div>
+  <h2>Reach <span>vs. Engagement on Social Media</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 06</span> Understanding how people interact with your social media posts</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Social media platforms have their own built-in analytics tools, separate from your website analytics. The two most important metrics to understand there are Reach and Engagement. Knowing the difference between them helps you judge not just how many people saw your content, but how many people actually cared about it.
+  </p>
+
+  <div class="metric-card">
+    <div class="metric-card-head">
+      <div>
+        <div class="metric-card-label">Metric Definition</div>
+        <div class="metric-card-name">Reach</div>
+      </div>
+    </div>
+    <div class="metric-card-body">
+      <div>
+        <div class="metric-card-section-title">What it counts</div>
+        <p>Reach is the number of individual accounts that saw your post, story, or reel at least once. It tells you how wide your content spread. A post with a reach of 400 means 400 different accounts had that post appear on their screen.</p>
+      </div>
+      <div>
+        <div class="metric-card-section-title">Where to find it</div>
+        <p>On Instagram: tap any post and select View Insights. On Facebook: scroll below any post and click See Insights. On Google Business: open your Business Profile and tap Performance.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="metric-card" style="margin-top:14px;">
+    <div class="metric-card-head">
+      <div>
+        <div class="metric-card-label">Metric Definition</div>
+        <div class="metric-card-name">Engagement</div>
+      </div>
+    </div>
+    <div class="metric-card-body">
+      <div>
+        <div class="metric-card-section-title">What it counts</div>
+        <p>Engagement counts the number of people who interacted with your post in some way: a like, a comment, a share, a save, a link click, or a profile visit triggered by the post. It tells you how many people were interested enough to do something beyond simply seeing the content.</p>
+      </div>
+      <div>
+        <div class="metric-card-section-title">Calculating engagement rate</div>
+        <p>Divide your engagement number by your reach number and multiply by 100. For example, 40 engagements divided by 400 reach equals a 10% engagement rate. Anything above 3% to 5% is considered healthy for a small business account.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="before-after" style="margin-top:20px;">
+    <div class="ba-card">
+      <div class="ba-head before">Low Engagement Signal</div>
+      <div class="ba-body">A product photo with reach of 300 and 2 likes. Engagement rate: 0.7%. The post was seen but did not connect. Try a different angle, a more personal caption, or a direct question to the audience. <em>-- Consider adjusting your content approach for this post type.</em></div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-head after">High Engagement Signal</div>
+      <div class="ba-body">A behind-the-scenes video with reach of 150 and 22 likes, saves, and comments. Engagement rate: 14.7%. Even with lower reach, this post built real connection. Make more content like this.</div>
+    </div>
+  </div>
+
+  <div class="note-box" style="margin-top:6px;">
+    <strong>Saves are an underrated signal.</strong> On Instagram, a save means someone thought your content was valuable enough to return to later. Posts with high save counts often indicate your content is genuinely useful, which is one of the strongest signals the algorithm uses to decide whether to show your content to more people.
+  </div>
+</div>
+
+<!-- STEP 7 -->
+<div class="topic-banner" id="step7">
+  <div class="topic-tag">Step 7 of 7</div>
+  <h2>Build a <span>Monthly Review Habit</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num success">STEP 07</span> 15 minutes per month is enough to stay informed and keep improving</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Knowing what metrics mean is only half the work. The other half is actually looking at them consistently enough to notice trends. This step gives you a simple, repeatable monthly review routine that takes 15 minutes and produces one actionable insight every time.
+  </p>
+
+  <div class="review-grid">
+    <div class="review-time">Min 1 to 3</div>
+    <div class="review-task">
+      <strong>Open your analytics and set the date range to the last 30 days</strong>
+      Log into Google Analytics or your platform's stats dashboard. Set the date range to the past calendar month. Write down this month's sessions and unique visitors in a simple notebook or spreadsheet.
+    </div>
+    <div class="review-time">Min 4 to 6</div>
+    <div class="review-task">
+      <strong>Compare to last month</strong>
+      Change the date range to the previous calendar month and note those same numbers. Are sessions up or down? Are unique visitors growing? Write the comparison. You are looking for a direction, not a perfect explanation.
+    </div>
+    <div class="review-time">Min 7 to 9</div>
+    <div class="review-task">
+      <strong>Check bounce rate and time on page for your top two pages</strong>
+      Find which pages received the most traffic and look at their bounce rate and average time on page. Flag anything that seems noticeably different from the previous month and jot it down.
+    </div>
+    <div class="review-time">Min 10 to 12</div>
+    <div class="review-task">
+      <strong>Open Instagram or Facebook Insights and find your top-performing post</strong>
+      Look at which post in the past month had the highest engagement rate. Ask yourself what was different about that post compared to others: the format, the subject, the caption style, or the time it was posted.
+    </div>
+    <div class="review-time">Min 13 to 15</div>
+    <div class="review-task">
+      <strong>Write down one thing to try next month</strong>
+      Based on what you saw, choose one small thing to do differently next month. It does not have to be big. Examples: post one more behind-the-scenes photo, update the headline on your Services page, add a call to action button to your homepage, or try posting at a different time of day.
+    </div>
+  </div>
+
+  <div class="tip-box" style="margin-top:6px;">
+    <p>Consistency matters more than depth. A business owner who spends 15 minutes reviewing their analytics every single month will outlearn and outperform one who does a deep dive once every six months and forgets about it the rest of the year.</p>
+    <div class="tip-note">&#9658; Voice the Companies Program Guidance</div>
+  </div>
+
+  <div class="note-box">
+    <strong>Make it a calendar event.</strong> Right now, before you close this guide, open your phone's calendar and add a repeating monthly event on the first Monday of each month labeled "15-Minute Analytics Review." Schedule it during a time when you are usually at your computer. This one step is the most important thing you can do to make this habit stick.
+  </div>
+</div>
+
+<!-- QUICK METRICS GLOSSARY -->
+<div class="topic-banner" id="glossary">
+  <div class="topic-tag">Reference</div>
+  <h2>Quick <span>Metrics Glossary</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">REF</span> Every term used in this lesson, defined in plain language</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Analytics dashboards use a lot of terminology. Here is a plain-language definition of every key term covered in this guide, plus a few others you are likely to see in your own dashboard.
+  </p>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Term</th>
+        <th>Plain Language Definition</th>
+        <th>Found In</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Sessions</strong></td>
+        <td>One continuous visit to your website. If the same person visits twice, that is two sessions.</td>
+        <td>Google Analytics, Squarespace, Wix</td>
+      </tr>
+      <tr>
+        <td><strong>Unique Visitors</strong></td>
+        <td>The number of individual people who visited your site, regardless of how many times they visited.</td>
+        <td>Google Analytics, Squarespace, Wix</td>
+      </tr>
+      <tr>
+        <td><strong>Page Views</strong></td>
+        <td>The total number of pages loaded across all visits. One visitor looking at three pages counts as three page views.</td>
+        <td>Google Analytics, Squarespace</td>
+      </tr>
+      <tr>
+        <td><strong>Bounce Rate</strong></td>
+        <td>The percentage of visitors who left your site after viewing only one page without clicking anything else.</td>
+        <td>Google Analytics</td>
+      </tr>
+      <tr>
+        <td><strong>Average Time on Page</strong></td>
+        <td>How long visitors typically spent on a specific page before leaving or clicking to a new page.</td>
+        <td>Google Analytics</td>
+      </tr>
+      <tr>
+        <td><strong>Reach</strong></td>
+        <td>The number of individual accounts that saw a social media post at least once.</td>
+        <td>Instagram Insights, Facebook Insights</td>
+      </tr>
+      <tr>
+        <td><strong>Engagement</strong></td>
+        <td>The number of interactions a post received: likes, comments, shares, saves, and link clicks.</td>
+        <td>Instagram Insights, Facebook Insights</td>
+      </tr>
+      <tr>
+        <td><strong>Engagement Rate</strong></td>
+        <td>Engagement divided by reach, expressed as a percentage. Tells you what portion of people who saw a post actually interacted with it.</td>
+        <td>Calculated manually</td>
+      </tr>
+      <tr>
+        <td><strong>Impressions</strong></td>
+        <td>The total number of times your content was displayed, including repeat views. One person seeing a post three times counts as three impressions but one reach.</td>
+        <td>Instagram Insights, Facebook Insights</td>
+      </tr>
+      <tr>
+        <td><strong>Traffic Source</strong></td>
+        <td>Where your visitors came from: direct (typed your URL), organic search (Google), social media, or referral (a link on another site).</td>
+        <td>Google Analytics</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="topic-banner" id="takeaways">
+  <div class="topic-tag">Wrap-Up</div>
+  <h2>Key <span>Takeaways</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">REVIEW</span> What to Remember From This Lesson</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:20px;">
+    You covered a lot of ground in this lesson. Here are the four ideas that matter most and the ones worth returning to whenever you sit down for your monthly review.
+  </p>
+
+  <div class="takeaway-grid">
+    <div class="takeaway-card">
+      <div class="takeaway-num">01</div>
+      <div class="takeaway-title">Sessions count visits. Unique visitors count individual people.</div>
+      <p>These two numbers work together. Sessions tell you how active your site is. Unique visitors tell you how wide your reach is. Both matter, and neither one alone tells the full story.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">02</div>
+      <div class="takeaway-title">A high bounce rate is not always a problem.</div>
+      <p>Bounce rate depends entirely on what the page is meant to do. A Contact page with a high bounce rate usually means visitors found what they needed and left. Context determines whether a bounce rate is a concern.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">03</div>
+      <div class="takeaway-title">Trending up over time matters more than any single day.</div>
+      <p>One bad day, one slow week, or even one slow month rarely means anything on its own. What you are looking for is direction over time. Three months of steady growth is far more meaningful than one great afternoon.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">04</div>
+      <div class="takeaway-title">Compare month-over-month, not day-to-day.</div>
+      <p>Daily numbers are noisy and unreliable for drawing conclusions. Month-over-month comparisons smooth out the noise and reveal real patterns. Set your date range to 30 days and compare it to the previous 30 days every time you review.</p>
+    </div>
+  </div>
+
+  <div class="tip-box" style="margin-top:8px;">
+    <p>You have completed Lesson 4 of the Voice the Companies Digital Literacy Curriculum. The final lesson covers Digital Security and Maintenance, where you will learn how to update passwords safely, recognize phishing attempts, keep your site software current, and back up your website.</p>
+    <div class="tip-note">&#9658; Next: Lesson 5 - Digital Security and Maintenance</div>
+  </div>
+</div>
+
+<!-- KNOWLEDGE CHECK -->
+<div class="topic-banner" id="quiz">
+  <div class="topic-tag">Wrap-Up</div>
+  <h2>Knowledge <span>Check</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">QUIZ</span> Five Quick Questions</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Answer these five questions to check your understanding. There are no grades here. This is just for you. The answer key appears at the bottom of this section.
+  </p>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q1</span>
+    <div class="quiz-q-text">A visitor comes to your website three times in one month. How does that count in analytics?</div>
+    <ul class="quiz-choices">
+      <li>A) Three unique visitors and one session</li>
+      <li>B) One unique visitor and three sessions</li>
+      <li>C) Three unique visitors and three sessions</li>
+      <li>D) One unique visitor and one session</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q2</span>
+    <div class="quiz-q-text">Your Contact page has a bounce rate of 80%. What is the most likely explanation?</div>
+    <ul class="quiz-choices">
+      <li>A) Your website is broken and needs to be fixed immediately</li>
+      <li>B) Visitors are finding your phone number or address and leaving, which is normal</li>
+      <li>C) Your contact page has too much text</li>
+      <li>D) Google Analytics is not set up correctly</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q3</span>
+    <div class="quiz-q-text">A post reaches 200 people and gets 14 likes, comments, and saves. What is the engagement rate?</div>
+    <ul class="quiz-choices">
+      <li>A) 2%</li>
+      <li>B) 14%</li>
+      <li>C) 7%</li>
+      <li>D) 0.7%</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q4</span>
+    <div class="quiz-q-text">Which comparison method gives you the most useful analytics insight for a small business?</div>
+    <ul class="quiz-choices">
+      <li>A) Comparing today's numbers to last Tuesday</li>
+      <li>B) Comparing your numbers to a large national brand in your industry</li>
+      <li>C) Comparing this month's numbers to last month's numbers</li>
+      <li>D) Comparing Monday traffic to Sunday traffic</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q5</span>
+    <div class="quiz-q-text">What does a high save count on an Instagram post tell you?</div>
+    <ul class="quiz-choices">
+      <li>A) The post was shared to many other accounts</li>
+      <li>B) People found the content valuable enough to return to later, a strong quality signal</li>
+      <li>C) The post had a high reach compared to other posts</li>
+      <li>D) The post received mostly negative comments</li>
+    </ul>
+  </div>
+
+  <div class="answer-key">
+    Answer Key &nbsp;|&nbsp; Q1: B &nbsp;·&nbsp; Q2: B &nbsp;·&nbsp; Q3: C &nbsp;·&nbsp; Q4: C &nbsp;·&nbsp; Q5: B
+  </div>
+</div>
+
+<!-- CHEAT SHEET -->
+<div class="topic-banner" id="cheatsheet">
+  <div class="topic-tag">Reference</div>
+  <h2>Printable <span>Cheat Sheet</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">REF</span> Understanding Website Analytics - Quick Reference</div>
+
+  <p style="font-size:14px; color:var(--muted); font-style:italic; margin-bottom:14px;">
+    Print this page and keep it near your computer. Every key term and habit from this lesson on one reference sheet.
+  </p>
+
+  <div class="cheat-grid">
+    <div class="cheat-header">Key Metrics Defined</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Sessions</dt>
+        <dd>One continuous visit to your website. Same person visiting twice = two sessions.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Unique Visitors</dt>
+        <dd>Individual people who visited. Same person visiting five times = one unique visitor.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Bounce Rate</dt>
+        <dd>% of visitors who left after one page. Not always a problem. Context matters by page type.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Avg. Time on Page</dt>
+        <dd>How long visitors typically spend on a page. Under 30 seconds on a key page is worth investigating.</dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Social Media Metrics</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Reach</dt>
+        <dd>How many individual accounts saw your post at least once.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Engagement</dt>
+        <dd>Likes, comments, shares, saves, and clicks on a post.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Engagement Rate</dt>
+        <dd>Engagement divided by reach, times 100. Above 3% to 5% is healthy for small businesses.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Saves</dt>
+        <dd>A strong quality signal. People saved the post to return to it. Prioritize content that gets saves.</dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Where to Find Your Analytics</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Google Analytics</dt>
+        <dd>analytics.google.com - sign in with your Google account.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Squarespace</dt>
+        <dd>Dashboard, then click Analytics in the left sidebar.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Instagram Insights</dt>
+        <dd>Tap any post, then View Insights. Or tap your profile photo, then the bar chart icon.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Facebook Insights</dt>
+        <dd>Go to your business page, then click Insights or Professional Dashboard.</dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">15-Minute Monthly Review Checklist</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Minutes 1 to 3</dt>
+        <dd>Open analytics. Set date range to last 30 days. Write down sessions and unique visitors.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Minutes 4 to 6</dt>
+        <dd>Compare to previous month. Is the trend up, flat, or down? Note the direction.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Minutes 7 to 12</dt>
+        <dd>Check bounce rate and time on page for your top two pages. Check your top social post's engagement rate.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Minutes 13 to 15</dt>
+        <dd>Write down one thing to try next month based on what you saw. One small change is enough.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="meta-row" style="margin-top:20px;">
+    <div class="meta-cell"><strong>Organization</strong>Voice the Companies</div>
+    <div class="meta-cell"><strong>Curriculum</strong>Digital Literacy - Lesson 4 of 5</div>
+    <div class="meta-cell"><strong>Next Lesson</strong>Digital Security and Maintenance</div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="doc-footer">
+  <span>Voice the Companies</span> &nbsp;·&nbsp; Digital Literacy Curriculum &nbsp;·&nbsp; Understanding Website Analytics &nbsp;·&nbsp; Lesson 4 of 5
+  <br/><br/>
+  This guide was prepared by the Voice the Companies student team for use by participating small business partners.
+  All rights reserved. For questions, contact your assigned student team or program coordinator.
+</div>
+
+<script>
+  (function () {
+    function initWorkbookTools() {
+      const slug = (window.location.pathname.split('/').pop() || 'lesson').replace('.html', '');
+      const progressKey = 'vtc_progress_' + slug;
+      const notesKey = 'vtc_notes_' + slug;
+
+      const stepList = document.getElementById('interactive-step-list');
+      const progressStatus = document.getElementById('interactive-progress-status');
+      const notesBox = document.getElementById('interactive-notes');
+
+      if (stepList && progressStatus) {
+        const stepLinks = Array.from(document.querySelectorAll('.toc a[href^="#step"]'));
+        const savedProgress = JSON.parse(window.localStorage.getItem(progressKey) || '[]');
+
+        stepLinks.forEach(function (link, index) {
+          const item = document.createElement('li');
+          item.className = 'progress-item';
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.id = 'progress-step-' + index;
+          checkbox.checked = Boolean(savedProgress[index]);
+
+          const label = document.createElement('label');
+          label.setAttribute('for', checkbox.id);
+          label.textContent = link.textContent.trim();
+
+          checkbox.addEventListener('change', function () {
+            const states = Array.from(stepList.querySelectorAll('input[type="checkbox"]')).map(function (node) {
+              return node.checked;
+            });
+            window.localStorage.setItem(progressKey, JSON.stringify(states));
+            updateProgress(states);
+          });
+
+          item.appendChild(checkbox);
+          item.appendChild(label);
+          stepList.appendChild(item);
+        });
+
+        function updateProgress(states) {
+          const done = states.filter(Boolean).length;
+          const total = states.length;
+          progressStatus.textContent = total
+            ? 'Progress: ' + done + '/' + total + ' steps completed'
+            : 'Progress tracker unavailable';
+        }
+
+        const initialStates = Array.from(stepList.querySelectorAll('input[type="checkbox"]')).map(function (node) {
+          return node.checked;
+        });
+        updateProgress(initialStates);
+      }
+
+      if (notesBox) {
+        notesBox.value = window.localStorage.getItem(notesKey) || '';
+        notesBox.addEventListener('input', function () {
+          window.localStorage.setItem(notesKey, notesBox.value);
+        });
+      }
+    }
+
+    function initInteractiveQuiz() {
+      const quizSection = document.querySelector('#quiz + .section');
+      if (!quizSection) return;
+
+      const questions = Array.from(quizSection.querySelectorAll('.quiz-q'));
+      if (!questions.length) return;
+
+      const answerMap = {
+        1: 'B',
+        2: 'B',
+        3: 'C',
+        4: 'C',
+        5: 'B'
+      };
+
+      const selections = {};
+
+      questions.forEach(function (question, qIndex) {
+        const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+        options.forEach(function (option, optIndex) {
+          const letter = String.fromCharCode(65 + optIndex);
+          option.dataset.letter = letter;
+          option.setAttribute('role', 'button');
+          option.setAttribute('tabindex', '0');
+
+          function choose() {
+            selections[qIndex + 1] = letter;
+            options.forEach(function (opt) {
+              opt.classList.remove('quiz-selected');
+            });
+            option.classList.add('quiz-selected');
+          }
+
+          option.addEventListener('click', choose);
+          option.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              choose();
+            }
+          });
+        });
+      });
+
+      const controls = document.createElement('div');
+      controls.className = 'quiz-controls';
+
+      const checkBtn = document.createElement('button');
+      checkBtn.className = 'quiz-btn';
+      checkBtn.type = 'button';
+      checkBtn.textContent = 'Check my answers';
+
+      const resetBtn = document.createElement('button');
+      resetBtn.className = 'quiz-btn secondary';
+      resetBtn.type = 'button';
+      resetBtn.textContent = 'Reset';
+
+      const result = document.createElement('div');
+      result.className = 'quiz-result';
+      result.setAttribute('aria-live', 'polite');
+
+      checkBtn.addEventListener('click', function () {
+        if (Object.keys(selections).length < questions.length) {
+          result.textContent = 'Answer all questions first, then check your score.';
+          return;
+        }
+
+        let score = 0;
+
+        questions.forEach(function (question, qIndex) {
+          const qNumber = qIndex + 1;
+          const correctLetter = answerMap[qNumber];
+          const selectedLetter = selections[qNumber];
+          const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+
+          options.forEach(function (option) {
+            option.classList.remove('quiz-correct', 'quiz-incorrect');
+            const letter = option.dataset.letter;
+            if (letter === correctLetter) {
+              option.classList.add('quiz-correct');
+            }
+            if (letter === selectedLetter && letter !== correctLetter) {
+              option.classList.add('quiz-incorrect');
+            }
+          });
+
+          if (selectedLetter === correctLetter) score += 1;
+        });
+
+        result.textContent = 'You scored ' + score + ' out of ' + questions.length + '.';
+      });
+
+      resetBtn.addEventListener('click', function () {
+        Object.keys(selections).forEach(function (key) {
+          delete selections[key];
+        });
+
+        questions.forEach(function (question) {
+          const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+          options.forEach(function (option) {
+            option.classList.remove('quiz-selected', 'quiz-correct', 'quiz-incorrect');
+          });
+        });
+
+        result.textContent = '';
+      });
+
+      controls.appendChild(checkBtn);
+      controls.appendChild(resetBtn);
+      quizSection.appendChild(controls);
+      quizSection.appendChild(result);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      initWorkbookTools();
+      initInteractiveQuiz();
+    });
+  })();
+</script>
+
+</body>
+</html>

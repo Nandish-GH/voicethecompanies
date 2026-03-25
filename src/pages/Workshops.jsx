@@ -74,7 +74,6 @@ function WorkshopCard({ workshop, index }) {
   const [emailInput, setEmailInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [submitWarning, setSubmitWarning] = useState("");
 
   const handleInterest = async () => {
     const email = emailInput.trim();
@@ -86,7 +85,6 @@ function WorkshopCard({ workshop, index }) {
 
     setSubmitting(true);
     setSubmitError("");
-    setSubmitWarning("");
 
     try {
       await localClient.entities.WorkshopInterest.create({
@@ -102,14 +100,11 @@ function WorkshopCard({ workshop, index }) {
         status: "new",
       });
 
-      const emailResult = await localClient.integrations.Core.SendEmail({
+      await localClient.integrations.Core.SendEmail({
         to: "voicethecompanies@gmail.com",
         subject: `Workshop Interest: ${workshop.title}`,
         body: `${email} is interested in this workshop.\n\nWorkshop: ${workshop.title}\nTiming: ${workshop.timing}\nFormat: ${workshop.format}\nDuration: ${workshop.duration}`,
       });
-      if (!emailResult?.success) {
-        setSubmitWarning("Interest saved, but email notifications are temporarily unavailable. Please also email voicethecompanies@gmail.com.");
-      }
 
       setInterested(true);
       setCollectingEmail(false);
@@ -197,7 +192,6 @@ function WorkshopCard({ workshop, index }) {
               <button
                 onClick={() => {
                   setSubmitError("");
-                  setSubmitWarning("");
                   setCollectingEmail(true);
                 }}
                 className="flex-shrink-0 px-5 py-2.5 bg-[#B2C9AD] hover:bg-[#8FAF88] text-white font-semibold rounded-xl text-sm transition-colors"
@@ -213,7 +207,6 @@ function WorkshopCard({ workshop, index }) {
           )}
         </div>
         {submitError && <p className="mt-3 text-sm text-red-600">{submitError}</p>}
-        {submitWarning && <p className="mt-3 text-sm text-amber-700">{submitWarning}</p>}
       </div>
     </motion.div>
   );

@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Security and Maintenance - Voice the Companies Digital Literacy Curriculum</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --sage:        #B2C9AD;
+    --sage-dark:   #7a9e74;
+    --sage-deep:   #4a7044;
+    --sage-deeper: #2d4d2a;
+    --sage-light:  #eef4ec;
+    --sage-border: #9ebd98;
+    --ink:         #2E2E2E;
+    --soft-ink:    #4a4a4a;
+    --bg:          #f7faf6;
+    --paper:       #ffffff;
+    --rule:        #d4e0d1;
+    --muted:       #7a8c78;
+    --warn-bg:     #fff8f0;
+    --warn-border: #e0a060;
+    --tip-bg:      #f0faf0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* COVER */
+  .cover {
+    background: linear-gradient(150deg, #1e3a1a 0%, #2d4d2a 40%, #1a2e18 100%);
+    color: white;
+    padding: 70px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 50px,
+      rgba(255,255,255,0.012) 50px, rgba(255,255,255,0.012) 100px
+    );
+  }
+  .cover-logo {
+    width: 170px;
+    height: auto;
+    max-width: 60%;
+    margin-bottom: 22px;
+    filter: none;
+    position: relative; z-index: 1;
+  }
+  .cover-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.55); margin-bottom: 14px;
+    position: relative; z-index: 1;
+  }
+  .cover h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 50px; font-weight: 900; line-height: 1.05;
+    margin-bottom: 18px; position: relative; z-index: 1;
+  }
+  .cover h1 em { color: var(--sage); font-style: normal; }
+  .cover-sub {
+    font-size: 16px; color: rgba(255,255,255,0.78);
+    max-width: 500px; line-height: 1.65; position: relative; z-index: 1;
+  }
+  .cover-badges {
+    display: flex; gap: 10px; margin-top: 36px; flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .badge {
+    border: 1px solid rgba(178,201,173,0.4);
+    padding: 5px 14px; border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+  }
+  .cover-back-link {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 8px 14px;
+    border: 1px solid rgba(178,201,173,0.6);
+    border-radius: 999px;
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  }
+  .cover-back-link:hover {
+    background: rgba(178,201,173,0.22);
+    border-color: rgba(178,201,173,0.9);
+    color: #ffffff;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 40px 60px; }
+
+  /* TABLE OF CONTENTS */
+  .toc {
+    background: var(--paper);
+    border-left: 4px solid var(--sage);
+    margin: 44px 0;
+    padding: 32px 36px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .toc-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 20px; color: var(--ink);
+  }
+  .toc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .toc-section {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--sage-deep);
+    margin: 16px 0 7px;
+  }
+  .toc a {
+    display: block; font-size: 13.5px; color: var(--soft-ink);
+    text-decoration: none; padding: 3px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .toc a:hover { color: var(--sage-deep); }
+
+  /* TOPIC / SECTION BANNERS */
+  .topic-banner {
+    margin: 52px -40px 0;
+    padding: 38px 40px 30px;
+    background: var(--sage-deeper);
+    position: relative;
+  }
+  .topic-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); margin-bottom: 9px;
+  }
+  .topic-banner h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px; font-weight: 800; color: white;
+    line-height: 1.2;
+  }
+  .topic-banner h2 span { color: var(--sage); }
+
+  /* SECTION HEADERS */
+  .section {
+    margin-top: 44px;
+    padding-top: 28px;
+    border-top: 2px solid var(--rule);
+  }
+  .section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px; font-weight: 700;
+    color: var(--ink); margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; background: var(--sage-deep);
+    color: white; padding: 3px 10px; border-radius: 3px;
+    letter-spacing: 1px; white-space: nowrap;
+  }
+  .section-title .num.warn { background: #c0763a; }
+  .section-title .num.success { background: var(--sage-dark); }
+
+  /* GUIDE LIST */
+  ul.guide-list { list-style: none; padding: 0; }
+  ul.guide-list > li {
+    padding: 6px 0 6px 22px;
+    position: relative; font-size: 14.5px;
+    border-bottom: 1px dotted var(--rule);
+  }
+  ul.guide-list > li:last-child { border-bottom: none; }
+  ul.guide-list > li::before {
+    content: '\25B8';
+    position: absolute; left: 0; color: var(--sage-dark);
+    font-size: 11px; top: 9px;
+  }
+  ul.guide-list li strong { color: var(--ink); }
+  ul.guide-list li em { color: var(--sage-deep); font-style: normal; font-weight: 600; }
+  ul.sub-list { list-style: none; margin: 7px 0 5px 18px; }
+  ul.sub-list li {
+    font-size: 13.5px; padding: 2px 0 2px 16px;
+    position: relative; color: var(--soft-ink);
+  }
+  ul.sub-list li::before {
+    content: '\2013'; position: absolute; left: 0; color: var(--sage);
+  }
+
+  /* STAT GRID */
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; margin: 22px 0;
+  }
+  .stat-box {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--sage-dark);
+    padding: 16px; text-align: center;
+  }
+  .stat-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 26px; font-weight: 900;
+    color: var(--sage-deep); display: block;
+  }
+  .stat-label { font-size: 11.5px; color: var(--soft-ink); margin-top: 4px; line-height: 1.35; }
+
+  /* PILLARS / STEP CARDS */
+  .pillar {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    margin: 0 0 16px;
+  }
+  .pillar-header {
+    background: var(--sage-light);
+    border-bottom: 2px solid var(--sage-border);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .pillar-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px; font-weight: 900;
+    color: var(--sage-dark); line-height: 1; min-width: 36px;
+  }
+  .pillar-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .pillar-tag { font-size: 11px; color: var(--muted); margin-top: 2px; font-style: italic; }
+  .pillar-body { padding: 18px 22px; }
+  .pillar-section { margin-bottom: 14px; }
+  .pillar-section:last-child { margin-bottom: 0; }
+  .pillar-section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sage-deep); margin-bottom: 7px; font-weight: 700;
+  }
+  .pillar-section p { font-size: 14px; color: var(--soft-ink); line-height: 1.7; }
+  .pillar-section ul { padding-left: 18px; }
+  .pillar-section li { font-size: 13.5px; margin-bottom: 4px; color: var(--soft-ink); }
+
+  /* TABLE */
+  .guide-table {
+    width: 100%; border-collapse: collapse;
+    margin: 20px 0; font-size: 13.5px;
+  }
+  .guide-table th {
+    background: var(--sage-deep); color: white;
+    padding: 10px 14px; text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .guide-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .guide-table tr:nth-child(even) td { background: var(--sage-light); }
+  .guide-table td strong { color: var(--sage-deep); }
+
+  /* NOTE / CALLOUT BOX */
+  .note-box {
+    background: var(--sage-light);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 14px 18px; font-size: 13.5px;
+    margin: 16px 0; color: var(--soft-ink);
+    line-height: 1.7;
+  }
+  .note-box strong { color: var(--sage-deep); }
+
+  /* WARNING BOX */
+  .warn-box {
+    background: var(--warn-bg);
+    border: 1px solid #f0d0b0;
+    border-left: 4px solid var(--warn-border);
+    padding: 16px 20px; margin: 14px 0;
+  }
+  .warn-box h5 {
+    font-size: 13.5px; font-weight: 700;
+    color: #b06020; margin-bottom: 8px;
+    font-family: 'Poppins', sans-serif;
+  }
+  .warn-box p { font-size: 13.5px; color: var(--soft-ink); line-height: 1.65; }
+  .warn-box .safe-note {
+    background: var(--tip-bg);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 10px 14px; margin-top: 10px;
+    font-size: 13.5px; color: var(--soft-ink);
+  }
+  .warn-box .safe-note strong { color: var(--sage-deep); }
+
+  /* TIP / QUOTE BOX */
+  .tip-box {
+    background: linear-gradient(135deg, var(--sage-light) 0%, #f0f7ee 100%);
+    border: 1px solid var(--rule);
+    padding: 20px 26px; margin: 16px 0;
+    position: relative;
+  }
+  .tip-box::before {
+    content: '\201C';
+    font-family: 'Poppins', sans-serif;
+    font-size: 90px; color: rgba(74,112,68,0.08);
+    position: absolute; top: -14px; left: 12px;
+    line-height: 1;
+  }
+  .tip-box p { font-size: 14px; line-height: 1.75; padding-left: 16px; font-style: italic; color: var(--soft-ink); }
+  .tip-box .tip-note {
+    font-style: normal; font-size: 11.5px; color: var(--muted);
+    margin-top: 8px; padding-left: 16px;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px;
+  }
+
+  /* TAKEAWAY CARDS */
+  .takeaway-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0;
+  }
+  .takeaway-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-top: 3px solid var(--sage-dark);
+    padding: 18px 20px;
+  }
+  .takeaway-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px; font-weight: 900;
+    color: var(--sage); line-height: 1; margin-bottom: 8px;
+  }
+  .takeaway-title {
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .takeaway-card p { font-size: 13.5px; color: var(--soft-ink); line-height: 1.65; }
+
+  /* QUIZ */
+  .quiz-q {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 18px 22px; margin: 14px 0;
+  }
+  .quiz-q-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .quiz-q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; background: var(--sage-deep);
+    color: white; padding: 2px 8px; border-radius: 3px;
+    letter-spacing: 1px; margin-right: 8px;
+    display: inline-block; margin-bottom: 10px;
+  }
+  .quiz-choices { list-style: none; padding: 0; }
+  .quiz-choices li {
+    font-size: 13.5px; color: var(--soft-ink);
+    padding: 5px 0 5px 22px; position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .quiz-choices li:last-child { border-bottom: none; }
+  .quiz-choices li::before {
+    content: '\25CB'; position: absolute; left: 0;
+    color: var(--sage); font-size: 12px; top: 6px;
+  }
+  .answer-key {
+    background: var(--sage-light);
+    border: 1px solid var(--sage-border);
+    padding: 12px 18px; margin-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--sage-deeper);
+    letter-spacing: 0.5px;
+  }
+  .interactive-panel {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-left: 4px solid var(--sage-dark);
+    padding: 18px 20px;
+    margin: 24px 0 36px;
+  }
+  .interactive-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .interactive-sub {
+    font-size: 13px;
+    color: var(--soft-ink);
+    margin-bottom: 14px;
+  }
+  .progress-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .progress-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .progress-item label {
+    font-size: 13px;
+    color: var(--soft-ink);
+    cursor: pointer;
+  }
+  .progress-item input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--sage-deep);
+  }
+  .progress-status {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.4px;
+    margin-bottom: 12px;
+  }
+  .interactive-notes-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--sage-deep);
+    margin-bottom: 6px;
+  }
+  .interactive-notes {
+    width: 100%;
+    min-height: 92px;
+    border: 1px solid var(--rule);
+    background: #fff;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    resize: vertical;
+  }
+  .quiz-choices li {
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .quiz-choices li:hover {
+    background: #f5f9f4;
+  }
+  .quiz-choices li.quiz-selected {
+    background: #edf3eb;
+    border-color: var(--sage-border);
+  }
+  .quiz-choices li.quiz-selected::before {
+    content: '◉';
+    color: var(--sage-deep);
+  }
+  .quiz-choices li.quiz-correct {
+    background: #eaf6e7;
+    border-color: #8ab27f;
+  }
+  .quiz-choices li.quiz-correct::before {
+    content: '✓';
+    color: #3f7f33;
+    font-weight: 700;
+  }
+  .quiz-choices li.quiz-incorrect {
+    background: #fff1f0;
+    border-color: #d99891;
+  }
+  .quiz-choices li.quiz-incorrect::before {
+    content: '✕';
+    color: #b24b42;
+    font-weight: 700;
+  }
+  .quiz-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .quiz-btn {
+    background: var(--sage-deep);
+    color: #fff;
+    border: 1px solid var(--sage-deep);
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .quiz-btn.secondary {
+    background: #fff;
+    color: var(--sage-deep);
+  }
+  .quiz-result {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--soft-ink);
+  }
+
+  /* CHEAT SHEET */
+  .cheat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border: 1px solid var(--sage-border); margin: 20px 0;
+  }
+  .cheat-cell {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--sage-border);
+    border-right: 1px solid var(--sage-border);
+  }
+  .cheat-cell:nth-child(even) { border-right: none; }
+  .cheat-cell:nth-last-child(1),
+  .cheat-cell:nth-last-child(2) { border-bottom: none; }
+  .cheat-cell dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700; color: var(--sage-deep);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;
+  }
+  .cheat-cell dd { font-size: 13px; color: var(--soft-ink); line-height: 1.6; }
+  .cheat-cell dd ul { padding-left: 14px; margin-top: 4px; }
+  .cheat-cell dd li { margin-bottom: 2px; font-size: 12.5px; }
+  .cheat-header {
+    grid-column: 1 / -1;
+    background: var(--sage-deep); color: white;
+    padding: 9px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+    border-bottom: 1px solid var(--sage-border);
+  }
+
+  /* WELCOME BANNER */
+  .welcome-banner {
+    background: var(--sage-light);
+    border-left: 4px solid var(--sage-dark);
+    padding: 22px 28px; margin: 20px 0;
+  }
+  .welcome-banner p { font-size: 14.5px; color: var(--soft-ink); line-height: 1.75; }
+
+  /* CHECKLIST */
+  ul.checklist { list-style: none; padding: 0; margin: 14px 0; }
+  ul.checklist li {
+    font-size: 14px; color: var(--soft-ink);
+    padding: 6px 0 6px 26px; position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+  ul.checklist li:last-child { border-bottom: none; }
+  ul.checklist li::before {
+    content: '\2713'; position: absolute; left: 0;
+    color: var(--sage-dark); font-weight: 700; font-size: 13px; top: 7px;
+  }
+
+  /* BEFORE / AFTER */
+  .before-after {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;
+  }
+  .ba-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    overflow: hidden;
+  }
+  .ba-head {
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    font-weight: 700;
+  }
+  .ba-head.before { background: #fff4ee; color: #b06020; border-bottom: 2px solid #e0a060; }
+  .ba-head.after  { background: var(--sage-light); color: var(--sage-deep); border-bottom: 2px solid var(--sage-border); }
+  .ba-body { padding: 14px 16px; font-size: 13.5px; color: var(--soft-ink); line-height: 1.7; }
+  .ba-body em { font-style: italic; color: var(--muted); }
+
+  /* MAINTENANCE CALENDAR */
+  .cal-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px; margin: 22px 0;
+  }
+  .cal-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    border-top: 4px solid var(--sage-dark);
+    overflow: hidden;
+  }
+  .cal-card-head {
+    background: var(--sage-light);
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sage-deep); font-weight: 700;
+    border-bottom: 1px solid var(--sage-border);
+  }
+  .cal-card-body {
+    padding: 14px 16px;
+  }
+  .cal-card-body ul { list-style: none; padding: 0; }
+  .cal-card-body li {
+    font-size: 13px; color: var(--soft-ink);
+    padding: 4px 0 4px 18px; position: relative;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .cal-card-body li:last-child { border-bottom: none; }
+  .cal-card-body li::before {
+    content: '\25B8'; position: absolute; left: 0;
+    color: var(--sage-dark); font-size: 10px; top: 7px;
+  }
+
+  /* PHISHING SPOTTER */
+  .phish-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;
+  }
+  .phish-card {
+    background: var(--paper);
+    border: 1px solid var(--sage-border);
+    overflow: hidden;
+  }
+  .phish-head {
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    font-weight: 700;
+  }
+  .phish-head.red { background: #fff4ee; color: #b06020; border-bottom: 2px solid #e0a060; }
+  .phish-head.green { background: var(--sage-light); color: var(--sage-deep); border-bottom: 2px solid var(--sage-border); }
+  .phish-body { padding: 14px 16px; font-size: 13.5px; color: var(--soft-ink); line-height: 1.7; }
+
+  /* SECURITY CHECKLIST STRIP */
+  .sec-checklist {
+    border: 1px solid var(--sage-border);
+    margin: 20px 0; overflow: hidden;
+  }
+  .sec-check-head {
+    background: var(--sage-deep); color: white;
+    padding: 10px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  }
+  .sec-check-item {
+    display: grid; grid-template-columns: 36px 1fr auto;
+    align-items: center; gap: 0;
+    border-bottom: 1px solid var(--rule);
+    padding: 0;
+  }
+  .sec-check-item:last-child { border-bottom: none; }
+  .sec-check-item:nth-child(even) { background: var(--sage-light); }
+  .sec-box {
+    width: 36px; height: 36px;
+    border-right: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; color: var(--sage-dark);
+    flex-shrink: 0;
+  }
+  .sec-text {
+    font-size: 13.5px; color: var(--soft-ink);
+    padding: 10px 16px; line-height: 1.5;
+  }
+  .sec-freq {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--sage-deep); padding: 10px 14px;
+    white-space: nowrap;
+  }
+
+  /* BATCH TIMER STEPS */
+  .batch-grid {
+    display: grid; grid-template-columns: 100px 1fr; gap: 0;
+    border: 1px solid var(--sage-border); margin: 20px 0;
+  }
+  .batch-time {
+    background: var(--sage-deep); color: white;
+    padding: 14px 10px; text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px; font-weight: 700;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 2px;
+  }
+  .batch-time span { font-size: 9px; font-weight: 400; opacity: 0.7; letter-spacing: 1px; text-transform: uppercase; }
+  .batch-task {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--sage-border);
+    font-size: 14px; color: var(--soft-ink); line-height: 1.6;
+  }
+  .batch-task:last-child { border-bottom: none; }
+  .batch-task strong { color: var(--ink); display: block; margin-bottom: 3px; }
+
+  /* DIVIDERS */
+  .divider { border: none; border-top: 1px solid var(--rule); margin: 32px 0; }
+
+  /* META ROW */
+  .meta-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px;
+  }
+  .meta-cell {
+    background: #f4f4f4; padding: 10px 14px; font-size: 12.5px; color: var(--soft-ink);
+  }
+  .meta-cell strong {
+    display: block; font-size: 9.5px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* FOOTER */
+  .doc-footer {
+    background: var(--ink); color: rgba(255,255,255,0.45);
+    text-align: center; padding: 28px 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: 1px;
+    margin-top: 60px;
+  }
+  .doc-footer span { color: var(--sage); }
+
+  @media print {
+    .cover { padding: 40px; }
+    body { font-size: 13px; }
+    .topic-banner { margin: 40px 0 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <img class="cover-logo" src="../logo.png" alt="Voice the Companies logo" />
+  <div class="cover-label">Voice the Companies · Digital Literacy Curriculum · Lesson 5 of 5</div>
+  <h1>Digital Security<br><em>&amp; Maintenance</em></h1>
+  <p class="cover-sub">Learn how to update passwords safely, recognize phishing attempts, keep your website plugins current, and back up your site so your hard work is never at risk - no technical background required.</p>
+  <div class="cover-badges">
+    <div class="badge">7 Steps</div>
+    <div class="badge">4 Key Takeaways</div>
+    <div class="badge">Security Checklist</div>
+    <div class="badge">Maintenance Calendar</div>
+    <div class="badge">No Tech Experience Required</div>
+  </div>
+  <a class="cover-back-link" href="/digital-literacy">Back to Digital Literacy</a>
+</div>
+
+<div class="container">
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <div class="toc-title">Table of Contents</div>
+  <div class="toc-cols">
+    <div>
+      <div class="toc-section">Getting Started</div>
+      <a href="#welcome">Welcome and What You Will Learn</a>
+      <a href="#why">Why Digital Security Matters</a>
+      <a href="#how-to-use">How to Use This Guide</a>
+      <div class="toc-section">The Seven Steps</div>
+      <a href="#step1">Step 1 - Update Your Passwords</a>
+      <a href="#step2">Step 2 - Use a Password Manager</a>
+      <a href="#step3">Step 3 - Enable Two-Factor Authentication</a>
+      <a href="#step4">Step 4 - Recognize Phishing Attempts</a>
+    </div>
+    <div>
+      <div class="toc-section">&nbsp;</div>
+      <a href="#step5">Step 5 - Check for and Apply Updates</a>
+      <a href="#step6">Step 6 - Set Up Automatic Backups</a>
+      <a href="#step7">Step 7 - Audit Account Access</a>
+      <div class="toc-section">Wrap-Up</div>
+      <a href="#takeaways">Key Takeaways</a>
+      <a href="#calendar">Security Checklist and Maintenance Calendar</a>
+      <a href="#quiz">Knowledge Check</a>
+      <a href="#cheatsheet">Printable Cheat Sheet</a>
+    </div>
+  </div>
+</div>
+
+<div class="interactive-panel" id="workbook-tools">
+  <div class="interactive-title">Interactive Workbook</div>
+  <p class="interactive-sub">Track your progress and keep notes while you work through this lesson.</p>
+  <ul class="progress-list" id="interactive-step-list"></ul>
+  <p class="progress-status" id="interactive-progress-status"></p>
+  <label class="interactive-notes-label" for="interactive-notes">My Notes</label>
+  <textarea class="interactive-notes" id="interactive-notes" placeholder="Write reminders, questions, or actions you want to take..."></textarea>
+</div>
+
+<!-- WELCOME -->
+<div class="topic-banner" id="welcome">
+  <div class="topic-tag">Voice the Companies · Digital Literacy Curriculum · Lesson 5</div>
+  <h2>Welcome to <span>Digital Security and Maintenance</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">INTRO</span> A Note Before You Begin</div>
+
+  <div class="welcome-banner">
+    <p>Welcome back. Over the past three lessons, you have built a strong digital foundation: you understand your website, you have a presence on social media, and you know how to create content consistently. Now it is time to protect all of that work. This lesson is about digital security and regular maintenance - the habits that keep your accounts safe, your website running, and your business protected from the kinds of threats that affect small businesses every day. None of this is complicated. It is mostly a matter of building a few simple habits, and this guide will walk you through each one.</p>
+  </div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:14px;">
+    Security can feel like a scary topic, and we understand that. But we want to reframe it for you: digital security is not about being paranoid. It is about being prepared. The steps in this lesson are the same ones that professional IT teams recommend for businesses of every size, and most of them take less than five minutes to complete.
+  </p>
+
+  <div class="stat-grid">
+    <div class="stat-box"><span class="stat-num">7</span><div class="stat-label">Step-by-step actions in this guide</div></div>
+    <div class="stat-box"><span class="stat-num">43%</span><div class="stat-label">Of cyberattacks target small businesses specifically</div></div>
+    <div class="stat-box"><span class="stat-num">5</span><div class="stat-label">Quiz questions to check your understanding</div></div>
+    <div class="stat-box"><span class="stat-num">1</span><div class="stat-label">Printable security checklist and calendar to keep nearby</div></div>
+  </div>
+
+  <p style="font-size:14px; color:var(--soft-ink); line-height:1.75; margin-bottom:14px;">By the end of this lesson, you will be able to:</p>
+  <ul class="checklist">
+    <li>Create strong, unique passwords for every account and store them safely</li>
+    <li>Set up two-factor authentication on your key platforms</li>
+    <li>Recognize the warning signs of a phishing email before you click anything</li>
+    <li>Log into your website regularly and apply available software and plugin updates</li>
+    <li>Set up automatic backups so your website data is always protected</li>
+    <li>Audit who has access to your accounts and remove anyone who should not</li>
+    <li>Follow a simple monthly and quarterly maintenance calendar going forward</li>
+  </ul>
+</div>
+
+<!-- WHY SECURITY MATTERS -->
+<div class="topic-banner" id="why">
+  <div class="topic-tag">Background</div>
+  <h2>Why Digital Security <span>Matters for Your Business</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">CONTEXT</span> The Big Picture</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Small business owners often assume that hackers are only interested in large corporations. That assumption is exactly why small businesses are such common targets. They tend to have weaker security practices, less monitoring, and fewer resources to recover from an attack. Understanding the landscape helps you take the right precautions without overcomplicating things.
+  </p>
+
+  <div class="stat-grid">
+    <div class="stat-box"><span class="stat-num">43%</span><div class="stat-label">Of all cyberattacks are aimed at small businesses</div></div>
+    <div class="stat-box"><span class="stat-num">60%</span><div class="stat-label">Of small businesses close within six months of a major cyberattack</div></div>
+    <div class="stat-box"><span class="stat-num">81%</span><div class="stat-label">Of data breaches involve weak or reused passwords</div></div>
+    <div class="stat-box"><span class="stat-num">95%</span><div class="stat-label">Of cybersecurity breaches are caused by human error, not technical flaws</div></div>
+  </div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Those last two statistics are the most important ones for you to hold onto. The vast majority of security problems come from things that are entirely within your control: weak passwords, clicking on phishing links, and software that has not been updated. This is genuinely good news, because it means that the steps in this lesson will protect you against the overwhelming majority of real-world threats.
+  </p>
+
+  <div class="tip-box">
+    <p>You do not need to become a cybersecurity expert. You need to build seven habits. That is all this lesson asks of you, and those seven habits will put you ahead of the majority of small businesses when it comes to digital safety.</p>
+    <div class="tip-note">&#9658; Voice the Companies Program Guidance</div>
+  </div>
+</div>
+
+<!-- HOW TO USE -->
+<div class="section" id="how-to-use">
+  <div class="section-title"><span class="num">GUIDE</span> How to Use This Curriculum</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    This guide is designed to be read section by section, with each step completed as you go. Unlike content creation or social media, most of the steps in this lesson are one-time setup tasks rather than ongoing habits - which means that once you complete them, much of the work is done.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">1</div>
+      <div>
+        <div class="pillar-name">Complete Steps 1 through 3 in a single sitting if possible</div>
+        <div class="pillar-tag">Passwords, a password manager, and two-factor authentication work best together</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">The first three steps build on each other directly. Setting up a password manager first makes updating your passwords much easier. Enabling two-factor authentication immediately after means your new strong passwords have an extra layer of protection from day one. Plan about 30 to 45 minutes for this first block of three steps.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">2</div>
+      <div>
+        <div class="pillar-name">Read Step 4 carefully even if you feel confident about phishing</div>
+        <div class="pillar-tag">Phishing attempts have become much harder to spot in recent years</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Phishing emails used to be obviously fake. Today, many of them are convincingly designed to look exactly like legitimate emails from banks, platforms, and service providers. The warning signs are still there, but they are more subtle. Step 4 walks through exactly what to look for with real-world examples.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">3</div>
+      <div>
+        <div class="pillar-name">Schedule Steps 5, 6, and 7 into your calendar right now</div>
+        <div class="pillar-tag">These steps have an ongoing component that works best with a set reminder</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">Checking for website updates, verifying your backup, and auditing account access are all recurring tasks. The maintenance calendar at the end of this lesson tells you exactly how often to do each one. After reading this guide, add those recurring tasks to your phone calendar so they actually happen.</p>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">4</div>
+      <div>
+        <div class="pillar-name">Print the cheat sheet and security checklist</div>
+        <div class="pillar-tag">A one-page reference you can keep near your workspace</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <p style="font-size:14px; color:var(--soft-ink); line-height:1.7;">The final section of this guide includes a printable cheat sheet and a maintenance calendar. Print both and keep them somewhere visible - on a bulletin board, inside a notebook, or taped near your computer. A physical reminder is much more reliable than trying to remember a mental checklist.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 1 -->
+<div class="topic-banner" id="step1">
+  <div class="topic-tag">Step 1 of 7</div>
+  <h2>Update Your <span>Passwords</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 01</span> A unique password for every account is your single most important security habit</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    The most common way that accounts get compromised is not through a sophisticated hack. It is through a data breach at another website. When a large website gets breached, attackers collect millions of username and password combinations and then try those same combinations on every other major platform. If you use the same password on multiple accounts, one breach can expose all of them at once.
+  </p>
+
+  <div class="before-after">
+    <div class="ba-card">
+      <div class="ba-head before">&#10007; &nbsp; Weak Password Habits</div>
+      <div class="ba-body">
+        <em>Using the same password on your email, Instagram, Facebook, and website dashboard. The password is your business name followed by the year you opened.</em>
+        <br><br>
+        <strong style="color:#b06020; font-size:12px;">Why this is risky:</strong> One breach of any platform that uses this password exposes every other account simultaneously. Business names and founding years are also extremely easy for attackers to guess.
+      </div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-head after">&#10003; &nbsp; Strong Password Habits</div>
+      <div class="ba-body">
+        <em>Every account has a different password. Each one is at least 12 characters and includes uppercase letters, lowercase letters, numbers, and at least one symbol. Passwords are stored in a password manager.</em>
+        <br><br>
+        <strong style="color:var(--sage-deep); font-size:12px;">Why this works:</strong> A breach of one platform exposes only that platform. No other accounts are at risk, because none of them share that password.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">RULES</span> What Makes a Strong Password</div>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Rule</th>
+        <th>Why It Matters</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>At least 12 characters long</strong></td>
+        <td>Longer passwords take exponentially longer to crack with automated tools</td>
+        <td>A 12-character password is millions of times harder to crack than an 8-character one</td>
+      </tr>
+      <tr>
+        <td><strong>Mix of uppercase, lowercase, numbers, and symbols</strong></td>
+        <td>Increases the number of possible combinations dramatically</td>
+        <td>Tr33House!47kQ is far stronger than treehouse47</td>
+      </tr>
+      <tr>
+        <td><strong>No real words, names, or dates</strong></td>
+        <td>Attackers run dictionary attacks that try common words and personal details first</td>
+        <td>Avoid your business name, your street, your birthday, or your pet's name</td>
+      </tr>
+      <tr>
+        <td><strong>Unique to each account</strong></td>
+        <td>Prevents one breach from compromising all your other accounts</td>
+        <td>Use a password manager (Step 2) to keep track of dozens of unique passwords without memorizing them</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">ACTION</span> Which Accounts to Update First</div>
+
+  <p style="font-size:14px; color:var(--soft-ink); margin-bottom:14px;">If updating all your passwords feels overwhelming, start with these accounts in priority order. These are the accounts that cause the most damage if compromised.</p>
+
+  <ul class="guide-list">
+    <li><strong>Your primary email account.</strong> <em>This is the master key.</em> Most password reset emails go here, which means anyone who accesses your email can reset every other account you own.</li>
+    <li><strong>Your website dashboard.</strong> <em>Your WordPress, Squarespace, or Wix admin password.</em> An attacker with this access can delete your site, inject malware, or lock you out entirely.</li>
+    <li><strong>Facebook Business Page and Instagram Business Account.</strong> <em>Loss of these accounts is extremely difficult to reverse.</em> Meta's account recovery process is notoriously slow and unreliable.</li>
+    <li><strong>Google Business Profile.</strong> <em>Access through your Google account.</em> Update your Google account password and secure it with two-factor authentication immediately.</li>
+    <li><strong>Any platform where customers can make payments.</strong> <em>Financial and transaction platforms carry the highest risk.</em> These accounts should have the strongest passwords and always use two-factor authentication.</li>
+  </ul>
+
+  <div class="note-box">
+    <strong>A helpful strategy:</strong> Use a passphrase rather than a random string of characters. A passphrase is a sequence of four or more unrelated words, such as "correct horse battery staple." This kind of password is both long and genuinely difficult to crack, while still being possible to type without too much frustration. Add a number and a symbol to meet most platform requirements: "correct!horse4battery."
+  </div>
+</div>
+
+<!-- STEP 2 -->
+<div class="topic-banner" id="step2">
+  <div class="topic-tag">Step 2 of 7</div>
+  <h2>Use a <span>Password Manager</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 02</span> Stop trying to remember passwords - let a secure tool do it for you</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    The most common objection to using unique passwords for every account is memory. Nobody can realistically memorize 20 different complex passwords. That is exactly what password managers are designed to solve. A password manager stores all of your passwords in an encrypted vault that is protected by a single master password. You only ever need to remember one password to access all the rest.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">&#128274;</div>
+      <div>
+        <div class="pillar-name">Bitwarden - Free and Highly Recommended</div>
+        <div class="pillar-tag">bitwarden.com - free for individuals and small teams</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">Why Bitwarden</div>
+        <p>Bitwarden is open-source, independently audited, and free for individual use. It works on every device and every browser, and it syncs your passwords across your phone, tablet, and computer automatically. It also includes a built-in password generator that creates strong, unique passwords for you with one click.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">How to Get Started</div>
+        <p>Go to bitwarden.com and create a free account. Install the browser extension on your computer and the app on your phone. As you log into your accounts over the coming week, Bitwarden will offer to save each password automatically. Within a few days, your vault will contain most of your important accounts without any manual entry required.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">&#128274;</div>
+      <div>
+        <div class="pillar-name">Your Phone's Built-In Password Manager</div>
+        <div class="pillar-tag">iCloud Keychain on iPhone or Google Password Manager on Android - already on your phone</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">iCloud Keychain (iPhone and Mac)</div>
+        <p>iCloud Keychain is Apple's built-in password manager. It saves passwords automatically when you log in on your iPhone, iPad, or Mac, and syncs them across all of your Apple devices. It also alerts you if any of your saved passwords have appeared in a known data breach. Find it in Settings, then Passwords on your iPhone.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">Google Password Manager (Android and Chrome)</div>
+        <p>Google Password Manager works similarly and is available on any Android phone or any device using the Chrome browser. It saves, syncs, and autofills your passwords, and it checks them against known breach databases. Access it at passwords.google.com or through your Chrome browser settings.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <h5>&#9888; Never Store Passwords in a Text File, a Note App, or a Spreadsheet</h5>
+    <p>Saving passwords in a plain text file, your phone's Notes app, or a spreadsheet is one of the most common and dangerous habits we see. These files are not encrypted, and if your device is ever lost, stolen, or compromised, every password in that file is immediately visible to anyone who opens it. Use a dedicated password manager instead - they are specifically designed to keep this information encrypted and secure.</p>
+    <div class="safe-note">
+      <strong>Already doing this?</strong> That is okay. Start moving your passwords into a proper password manager today, one account at a time. Once an account is in the manager, delete it from the text file or spreadsheet. Aim to have everything migrated within two weeks.
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="topic-banner" id="step3">
+  <div class="topic-tag">Step 3 of 7</div>
+  <h2>Enable <span>Two-Factor Authentication</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 03</span> Two-factor authentication stops most account takeover attempts cold</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Two-factor authentication - often called 2FA - adds a second verification step to your login process. Even if an attacker has your correct username and password, they still cannot access your account without the second factor: typically a code sent to your phone or generated by an app. This single setting dramatically reduces the risk of unauthorized account access.
+  </p>
+
+  <div class="stat-grid">
+    <div class="stat-box"><span class="stat-num">99.9%</span><div class="stat-label">Of automated account attacks are blocked by two-factor authentication</div></div>
+    <div class="stat-box"><span class="stat-num">2FA</span><div class="stat-label">Available on Instagram, Facebook, Google, and most website platforms</div></div>
+    <div class="stat-box"><span class="stat-num">Free</span><div class="stat-label">Two-factor authentication costs nothing to set up on any platform</div></div>
+    <div class="stat-box"><span class="stat-num">5 min</span><div class="stat-label">Time required to enable 2FA on each platform</div></div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">HOW TO</span> Enabling 2FA on Each Platform</div>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Where to Find It</th>
+        <th>Recommended Method</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Instagram</strong></td>
+        <td>Settings and Privacy, then Accounts Center, then Password and Security, then Two-Factor Authentication</td>
+        <td>Authentication app (more secure than SMS text message)</td>
+      </tr>
+      <tr>
+        <td><strong>Facebook</strong></td>
+        <td>Settings, then Security and Login, then Two-Factor Authentication</td>
+        <td>Authentication app. Also enable login alerts while you are in this menu.</td>
+      </tr>
+      <tr>
+        <td><strong>Google Account</strong></td>
+        <td>myaccount.google.com, then Security, then 2-Step Verification</td>
+        <td>Google Prompt on your phone or an authentication app</td>
+      </tr>
+      <tr>
+        <td><strong>WordPress</strong></td>
+        <td>Install a free plugin such as WP 2FA, then follow the setup wizard</td>
+        <td>Authentication app such as Google Authenticator or Authy</td>
+      </tr>
+      <tr>
+        <td><strong>Squarespace</strong></td>
+        <td>Account, then Login and Security, then Two-Step Authentication</td>
+        <td>Authentication app is available; SMS is also an option</td>
+      </tr>
+      <tr>
+        <td><strong>Wix</strong></td>
+        <td>Account Settings, then Security, then Two-Factor Authentication</td>
+        <td>SMS or authentication app, both available</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">TOOLS</span> Free Authentication Apps</div>
+
+  <p style="font-size:14px; color:var(--soft-ink); margin-bottom:14px;">An authentication app generates a time-sensitive six-digit code that changes every 30 seconds. It is more secure than receiving codes by SMS text message, because text messages can be intercepted or redirected. Any of the apps below work with most major platforms.</p>
+
+  <ul class="guide-list">
+    <li><strong>Google Authenticator.</strong> <em>Simple, free, and widely supported.</em> Available on both iPhone and Android. No account required to use it.</li>
+    <li><strong>Authy.</strong> <em>Free, backs up your codes to the cloud.</em> The main advantage over Google Authenticator is that if you lose your phone, you can recover your codes on a new device without being locked out of all your accounts.</li>
+    <li><strong>Microsoft Authenticator.</strong> <em>Free and highly rated.</em> Works with any platform that supports standard authentication apps, not just Microsoft products.</li>
+  </ul>
+
+  <div class="note-box">
+    <strong>Important:</strong> When you enable 2FA on any platform, you will be given a set of backup codes. These codes let you log in if you ever lose access to your phone. Print these codes immediately and store them somewhere safe and offline - in a filing cabinet, a locked drawer, or a fireproof box. Do not store them digitally on the same device.
+  </div>
+</div>
+
+<!-- STEP 4 -->
+<div class="topic-banner" id="step4">
+  <div class="topic-tag">Step 4 of 7</div>
+  <h2>Recognize <span>Phishing Attempts</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 04</span> Learn to spot a fake email before you click anything</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Phishing is when an attacker sends you a fake email that looks like it comes from a trusted source - your bank, your website platform, Instagram, or a well-known service - in order to trick you into entering your username and password on a fake website they control. Once you do, they have your credentials and can immediately log into the real platform. Phishing is the most common method of account compromise for small businesses, and it works because the emails look convincing.
+  </p>
+
+  <div class="section-title"><span class="num">SPOTTER</span> Real vs. Phishing - Side by Side</div>
+
+  <div class="phish-grid">
+    <div class="phish-card">
+      <div class="phish-head red">&#9888; Phishing Email - Red Flags</div>
+      <div class="phish-body">
+        <strong style="color:#b06020; display:block; margin-bottom:8px;">Subject: URGENT - Your account has been suspended</strong>
+        From: support@instagr-am-security.net<br><br>
+        Dear Customer,<br>
+        We have detected unusual activity on your account. Your account will be permanently deleted in 24 hours unless you verify your information immediately.<br><br>
+        <a href="#" style="color:#b06020;">Click here to verify your account now</a>
+        <br><br>
+        <strong style="font-size:12px; color:#b06020;">Red flags: fake domain, extreme urgency, threat of permanent deletion, vague greeting, pressure to click a link</strong>
+      </div>
+    </div>
+    <div class="phish-card">
+      <div class="phish-head green">&#10003; Legitimate Email - What to Look For</div>
+      <div class="phish-body">
+        <strong style="color:var(--sage-deep); display:block; margin-bottom:8px;">Subject: Action required - unusual login detected</strong>
+        From: security@mail.instagram.com<br><br>
+        Hi [Your Name],<br>
+        We noticed a login to your account from a new device. If this was you, no action is needed. If this was not you, please secure your account through our app or website.<br><br>
+        <span style="color:var(--sage-deep);">instagram.com/accounts/login</span>
+        <br><br>
+        <strong style="font-size:12px; color:var(--sage-deep);">Green flags: real domain, calm tone, gives you the choice to ignore it if it was you, directs you to the real site rather than a link</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">CHECKLIST</span> The Seven Warning Signs of a Phishing Email</div>
+
+  <ul class="guide-list">
+    <li><strong>Urgency and threats.</strong> <em>Phrases like "Act now," "Your account will be deleted," or "You have 24 hours."</em> Legitimate companies do not threaten you with permanent consequences for not clicking an email link immediately.</li>
+    <li><strong>A mismatched or misspelled sender domain.</strong> <em>The part after the @ symbol is where to look.</em> Compare "support@instagram.com" (real) to "support@instagr-am.net" (fake). Attackers add hyphens, change letters, or use different extensions like .net instead of .com.</li>
+    <li><strong>A generic greeting.</strong> <em>"Dear Customer" or "Dear User" instead of your actual name.</em> Companies that have your account information know your name and use it.</li>
+    <li><strong>A link that does not match what it claims.</strong> <em>Hover your mouse over any link (do not click) to see the actual URL it points to.</em> If it does not match the company's real domain, do not click it.</li>
+    <li><strong>A request for your password or sensitive information.</strong> <em>No legitimate company will ever ask for your password via email.</em> Ever. If an email asks for this, it is a phishing attempt regardless of how official it looks.</li>
+    <li><strong>Unexpected attachments.</strong> <em>An attachment you did not request from a company you were not actively doing business with.</em> Even PDF files can contain malware. When in doubt, do not open it.</li>
+    <li><strong>Poor spelling or unusual formatting.</strong> <em>Professional companies proofread their emails.</em> Obvious grammatical errors, strange fonts, or inconsistent formatting are often signs that the email was created hastily by an attacker.</li>
+  </ul>
+
+  <div class="warn-box">
+    <h5>&#9888; What to Do If You Suspect a Phishing Email</h5>
+    <p>Do not click any links, open any attachments, or reply to the email. If the email claims to be from a platform you use, go directly to that platform by typing its real URL into your browser (for example, instagram.com or wordpress.com) and log in from there. If there is a real issue with your account, you will see it when you log in normally. You can also forward the suspicious email to the platform's official phishing report address, which most major companies publish on their security help pages.</p>
+    <div class="safe-note">
+      <strong>Already clicked a link?</strong> Change your password for that account immediately, using a device you trust. Then enable two-factor authentication if you have not already. Contact your Voice the Companies student team for additional guidance on next steps.
+    </div>
+  </div>
+</div>
+
+<!-- STEP 5 -->
+<div class="topic-banner" id="step5">
+  <div class="topic-tag">Step 5 of 7</div>
+  <h2>Check for and Apply <span>Updates</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 05</span> Outdated plugins are the most common way small business websites get hacked</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Website software, themes, and plugins release regular updates for two reasons: to add new features and to fix security vulnerabilities. When a vulnerability is discovered in a popular plugin, the developer releases a patch. But attackers also know about that vulnerability - and they actively scan the internet for websites still running the old, unpatched version. Keeping your software updated is the simplest and most effective way to prevent this kind of attack.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">&#128187;</div>
+      <div>
+        <div class="pillar-name">Updating on WordPress</div>
+        <div class="pillar-tag">The most update-intensive platform - check at least once per month</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">Where to Find Updates</div>
+        <p>Log into your WordPress dashboard at yourwebsite.com/wp-admin. Look for the Updates option in the left menu (it will show a red number badge if updates are available). This page lists any available updates for WordPress itself, your active theme, and all installed plugins.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">How to Apply Updates Safely</div>
+        <p>Before applying updates, create a backup of your site (Step 6 covers this). Then select all available updates and click "Update All." After the updates are applied, visit your live site to make sure everything still looks and works correctly. Most updates apply without any visible change. If something breaks, your backup allows you to restore the previous version.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">Enabling Automatic Updates</div>
+        <p>WordPress allows you to enable automatic updates for minor releases and security patches. Go to Dashboard, then Updates, and look for the option to "Enable automatic updates for all new versions of WordPress." For plugins, each plugin's listing in the Plugins menu has an "Enable auto-updates" link. Turn this on for all plugins you trust and use regularly.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">&#128187;</div>
+      <div>
+        <div class="pillar-name">Updating on Squarespace and Wix</div>
+        <div class="pillar-tag">These platforms handle most updates automatically on your behalf</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">What You Still Need to Do</div>
+        <p>Squarespace and Wix handle core software updates automatically, which is one of their advantages for less technical users. However, you should still log into your dashboard at least once a month to review any notifications, check that third-party integrations are still functioning correctly, and look for any alerts from the platform about your account or billing status. A dormant account you never check is still a security risk even on a managed platform.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <strong>Our recommendation:</strong> Set a recurring reminder on the first Monday of every month to log into your website dashboard and check for updates. Even if no updates are available, the habit of logging in regularly means you will notice anything unusual about your site much sooner than if you only log in when there is a problem.
+  </div>
+</div>
+
+<!-- STEP 6 -->
+<div class="topic-banner" id="step6">
+  <div class="topic-tag">Step 6 of 7</div>
+  <h2>Set Up <span>Automatic Backups</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 06</span> A backup is only useful if it is recent - automate it so you never have to think about it</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    A website backup is a complete saved copy of your site - its pages, images, settings, and database - that can be used to restore your site to a working state if something goes wrong. Backups protect you against hacking, accidental deletion, failed updates, and hosting problems. The most important thing about backups is that they need to be recent. A backup from six months ago is much less useful than one from last week.
+  </p>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">&#128190;</div>
+      <div>
+        <div class="pillar-name">WordPress - Install a Backup Plugin</div>
+        <div class="pillar-tag">UpdraftPlus is free, highly rated, and straightforward to set up</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <div class="pillar-section-title">Installing UpdraftPlus</div>
+        <p>In your WordPress dashboard, go to Plugins, then Add New, and search for "UpdraftPlus." Install and activate the free version. Once activated, go to Settings, then UpdraftPlus Backups. From here you can configure automatic backup schedules and choose where your backups are stored.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">Recommended Settings</div>
+        <p>Set your files backup schedule to Weekly and your database backup schedule to Weekly. For remote storage, connect UpdraftPlus to a free Google Drive or Dropbox account. This stores your backups in a separate location from your website server, which is important because if your hosting server has a problem, backups stored on the same server may also be affected.</p>
+      </div>
+      <div class="pillar-section">
+        <div class="pillar-section-title">Testing Your Backup</div>
+        <p>After setting up UpdraftPlus, run a manual backup immediately and confirm that the backup files appear in your chosen remote storage location. Do not assume the backup is working - verify it. Check once a month that the most recent automatic backup completed successfully.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">&#128190;</div>
+      <div>
+        <div class="pillar-name">Squarespace - Built-In Backup Options</div>
+        <div class="pillar-tag">Squarespace provides automatic daily backups on paid plans</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <p>Squarespace automatically backs up your site content on all paid plans. You can also export your site content manually at any time by going to Settings, then Advanced, then Import and Export Content. Export your content as an XML file and store it in a folder on your computer or Google Drive. Do this at least once per quarter as an additional precaution beyond Squarespace's built-in backups.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">&#128190;</div>
+      <div>
+        <div class="pillar-name">Wix - Built-In Version History</div>
+        <div class="pillar-tag">Wix saves versions of your site automatically as you edit it</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-section">
+        <p>Wix automatically saves version history as you make changes to your site. You can access this through the Editor by clicking the Site menu and selecting Version History. From there you can restore any previous version of your site. Like Squarespace, we recommend also periodically exporting any critical content - blog posts, product listings, contact information - to a separate document stored outside of Wix as an additional layer of protection.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <h5>&#9888; Backups Stored Only on Your Website Server Are Not True Backups</h5>
+    <p>A backup stored in the same place as your live website does not protect you if your hosting server experiences a failure, a fire, a flood, or a hack that affects the entire server. Always store at least one copy of your backup in a separate location: a cloud storage service like Google Drive or Dropbox, or an external hard drive that is not permanently connected to your computer.</p>
+    <div class="safe-note">
+      <strong>The 3-2-1 rule:</strong> Security professionals recommend keeping 3 copies of your data, on 2 different types of storage, with 1 copy stored off-site (such as in cloud storage). For a small business website, this means: one live site, one backup on your host or a plugin, and one backup in Google Drive or Dropbox.
+    </div>
+  </div>
+</div>
+
+<!-- STEP 7 -->
+<div class="topic-banner" id="step7">
+  <div class="topic-tag">Step 7 of 7</div>
+  <h2>Audit <span>Account Access</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">STEP 07</span> Remove anyone who no longer needs access to your accounts</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Over time, business owners tend to accumulate a growing list of people who have access to their digital accounts: a former contractor, an old employee, a family member who helped set things up, a previous web developer. Each of those accounts represents a potential point of vulnerability. If a former collaborator's email gets compromised, that is one more way an attacker could reach your platforms. Auditing access every six months takes about 20 minutes and dramatically reduces this risk.
+  </p>
+
+  <div class="section-title"><span class="num">AUDIT</span> Where to Check and Remove Access</div>
+
+  <table class="guide-table">
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Where to Find User Management</th>
+        <th>What to Look For</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>WordPress</strong></td>
+        <td>Dashboard, then Users, then All Users</td>
+        <td>Remove any users with Administrator or Editor roles who no longer work with you. Former contractors often remain in this list indefinitely.</td>
+      </tr>
+      <tr>
+        <td><strong>Facebook Business Page</strong></td>
+        <td>Meta Business Suite, then Settings, then People</td>
+        <td>Review every person listed with page access. Remove anyone who no longer has a business reason to access the page.</td>
+      </tr>
+      <tr>
+        <td><strong>Instagram Business Account</strong></td>
+        <td>Managed through Meta Business Suite alongside Facebook</td>
+        <td>Revoke any third-party app connections you no longer use. Go to Instagram Settings, then Security, then Apps and Websites.</td>
+      </tr>
+      <tr>
+        <td><strong>Google Business Profile</strong></td>
+        <td>business.google.com, then Managers</td>
+        <td>Review all managers and owners. Remove anyone whose role with your business has ended.</td>
+      </tr>
+      <tr>
+        <td><strong>Squarespace or Wix</strong></td>
+        <td>Settings, then Contributors or Collaborators depending on your platform</td>
+        <td>Remove any contributor accounts that belong to people who are no longer actively working on your site.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">RULE</span> The Principle of Least Privilege</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:14px;">
+    When adding new people to your accounts, only give them the minimum level of access they actually need to do their job. This principle is called "least privilege," and it limits the damage that can occur if any one account is compromised.
+  </p>
+
+  <ul class="guide-list">
+    <li><strong>A social media manager does not need Administrator access to your website.</strong> <em>Give them only access to the social media platforms they manage.</em></li>
+    <li><strong>A contractor updating a blog post does not need Administrator access.</strong> <em>WordPress has an Editor role specifically for this.</em> They can write and publish posts without being able to change site settings, install plugins, or access other accounts.</li>
+    <li><strong>A Facebook Page admin does not need to be a co-owner of your Google Business Profile.</strong> <em>Keep these accounts separate.</em> Each person should only have access to the specific platform they need.</li>
+    <li><strong>When a working relationship ends, remove access the same day.</strong> <em>Do not wait until your next audit cycle.</em> Access removal should happen immediately whenever someone stops working with your business.</li>
+  </ul>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="topic-banner" id="takeaways">
+  <div class="topic-tag">Summary</div>
+  <h2>Key <span>Takeaways</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num success">SUMMARY</span> The Four Things That Matter Most</div>
+
+  <div class="takeaway-grid">
+    <div class="takeaway-card">
+      <div class="takeaway-num">01</div>
+      <div class="takeaway-title">A unique password for every account is your single most important security habit.</div>
+      <p>Password reuse is the primary reason that one breach turns into many. Use a password manager so you never have to choose between security and convenience. Generate a unique, strong password for every account you own and let the manager remember them all for you.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">02</div>
+      <div class="takeaway-title">Two-factor authentication stops most account takeover attempts.</div>
+      <p>Even a stolen password cannot get an attacker into an account protected by 2FA. Enable it on every platform that offers it, starting with your email, your website, and your social media accounts. Use an authentication app rather than SMS for the strongest protection available.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">03</div>
+      <div class="takeaway-title">Outdated plugins are the most common way websites get hacked.</div>
+      <p>Log into your website dashboard at least once a month and apply any available updates. For WordPress sites, enable automatic updates for plugins where possible. For managed platforms like Squarespace and Wix, check your notifications monthly even though core updates are handled automatically.</p>
+    </div>
+    <div class="takeaway-card">
+      <div class="takeaway-num">04</div>
+      <div class="takeaway-title">A backup is only useful if it is recent. Automate it.</div>
+      <p>Manual backups are forgotten. Set up automatic weekly backups and store them in a separate location from your website server, such as Google Drive or Dropbox. Verify once a month that the most recent backup completed successfully. Do not wait until something goes wrong to find out your backup was not working.</p>
+    </div>
+  </div>
+
+  <div class="tip-box" style="margin-top:8px;">
+    <p>You have completed Lesson 5 of the Voice the Companies Digital Literacy Curriculum. You now have the full set of practical skills needed to manage your website, social media, content, analytics, and security with confidence.</p>
+    <div class="tip-note">&#9658; Curriculum Complete</div>
+  </div>
+</div>
+
+<!-- SECURITY CHECKLIST AND MAINTENANCE CALENDAR -->
+<div class="topic-banner" id="calendar" style="margin-top:44px;">
+  <div class="topic-tag">Ongoing Maintenance</div>
+  <h2>Security Checklist <span>and Maintenance Calendar</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num success">CALENDAR</span> How Often to Do Each Security Task</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Digital security is not a one-time project. It is a set of recurring habits. This calendar tells you exactly how often to complete each task. Add these as recurring reminders in your phone calendar so they do not get forgotten.
+  </p>
+
+  <div class="cal-grid">
+    <div class="cal-card">
+      <div class="cal-card-head">Monthly Tasks</div>
+      <div class="cal-card-body">
+        <ul>
+          <li>Log into your website dashboard and apply any available updates</li>
+          <li>Verify that your most recent automatic backup completed successfully</li>
+          <li>Scan your social media accounts for unusual activity or unauthorized posts</li>
+          <li>Review any security alerts or notifications from your platforms</li>
+          <li>Check that all linked platforms are still connected and working correctly</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cal-card">
+      <div class="cal-card-head">Quarterly Tasks</div>
+      <div class="cal-card-body">
+        <ul>
+          <li>Change your primary email and website passwords</li>
+          <li>Review your password manager and update any passwords flagged as weak or reused</li>
+          <li>Export a manual backup of any platform that does not have automatic backups</li>
+          <li>Review your Google Business Profile for accuracy (hours, photos, contact info)</li>
+          <li>Check that two-factor authentication is still enabled on all key accounts</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cal-card">
+      <div class="cal-card-head">Twice-Yearly Tasks</div>
+      <div class="cal-card-body">
+        <ul>
+          <li>Audit account access on all platforms and remove anyone who no longer needs it</li>
+          <li>Review all third-party apps connected to your Instagram and Facebook accounts</li>
+          <li>Update your backup destination if your cloud storage account has changed</li>
+          <li>Review your 2FA backup codes and store a fresh set in a safe location</li>
+          <li>Walk through this lesson again with any new team members or collaborators</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;"><span class="num">CHECKLIST</span> One-Time Setup Checklist</div>
+
+  <p style="font-size:14px; color:var(--soft-ink); margin-bottom:14px;">Use this checklist to confirm that you have completed the one-time setup tasks from this lesson. Check each item off as you complete it.</p>
+
+  <div class="sec-checklist">
+    <div class="sec-check-head">One-Time Security Setup - Complete These First</div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Created a free Bitwarden account (or confirmed use of iCloud Keychain or Google Password Manager)</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Updated password for primary email account to a unique, 12+ character password stored in the password manager</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Updated password for website dashboard to a unique, 12+ character password stored in the password manager</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Updated passwords for Facebook, Instagram, and Google accounts</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Enabled two-factor authentication on primary email</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Enabled two-factor authentication on website dashboard</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Enabled two-factor authentication on Facebook and Instagram</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Enabled two-factor authentication on Google account</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Printed and stored 2FA backup codes in a safe offline location</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Installed and configured a backup plugin or confirmed platform's built-in backup is active</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Confirmed backup storage is in a separate location (Google Drive, Dropbox, or similar)</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Ran a manual backup and verified the files appeared in remote storage</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Completed first account access audit across all platforms</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+    <div class="sec-check-item">
+      <div class="sec-box">&#9744;</div>
+      <div class="sec-text">Added monthly, quarterly, and twice-yearly maintenance reminders to phone calendar</div>
+      <div class="sec-freq">One-time</div>
+    </div>
+  </div>
+</div>
+
+<!-- KNOWLEDGE CHECK -->
+<div class="topic-banner" id="quiz" style="margin-top:44px;">
+  <div class="topic-tag">Wrap-Up</div>
+  <h2>Knowledge <span>Check</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">QUIZ</span> Five Quick Questions</div>
+
+  <p style="font-size:14.5px; color:var(--soft-ink); line-height:1.75; margin-bottom:18px;">
+    Answer these five questions to check your understanding. There are no grades here - this is just for you. The answer key appears at the bottom of this section.
+  </p>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q1</span>
+    <div class="quiz-q-text">What is the primary reason that using the same password on multiple accounts is dangerous?</div>
+    <ul class="quiz-choices">
+      <li>A) It makes it easier for you to forget the password over time</li>
+      <li>B) Platforms can detect reused passwords and flag your account</li>
+      <li>C) A breach on one platform immediately exposes all other accounts that share the same password</li>
+      <li>D) Reused passwords expire faster than unique ones</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q2</span>
+    <div class="quiz-q-text">Which of the following is a recommended free password manager for small business owners?</div>
+    <ul class="quiz-choices">
+      <li>A) Saving passwords in a Google Docs spreadsheet</li>
+      <li>B) Writing passwords in a notebook kept near the computer</li>
+      <li>C) Bitwarden, iCloud Keychain, or Google Password Manager</li>
+      <li>D) Emailing yourself a list of passwords for easy access</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q3</span>
+    <div class="quiz-q-text">Which of the following is a clear warning sign that an email may be a phishing attempt?</div>
+    <ul class="quiz-choices">
+      <li>A) The email was sent on a weekday during business hours</li>
+      <li>B) The email uses your actual name in the greeting</li>
+      <li>C) The sender domain is misspelled, such as "instagr-am-security.net" instead of "instagram.com"</li>
+      <li>D) The email does not include an unsubscribe link</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q4</span>
+    <div class="quiz-q-text">How often should you log into your website dashboard to check for and apply available updates?</div>
+    <ul class="quiz-choices">
+      <li>A) Only when you notice your site is broken or loading slowly</li>
+      <li>B) At least once per month</li>
+      <li>C) Once per year during your annual business review</li>
+      <li>D) Only when your hosting provider sends an alert</li>
+    </ul>
+  </div>
+
+  <div class="quiz-q">
+    <span class="quiz-q-num">Q5</span>
+    <div class="quiz-q-text">Why is it important to store website backups in a location separate from your website server?</div>
+    <ul class="quiz-choices">
+      <li>A) Separate storage makes backups download faster when you need them</li>
+      <li>B) Platform terms of service require it for all business accounts</li>
+      <li>C) If your server experiences a failure or is compromised, backups stored on the same server may be affected or lost as well</li>
+      <li>D) It reduces the size of your backup files significantly</li>
+    </ul>
+  </div>
+
+  <div class="answer-key">
+    Answer Key &nbsp;|&nbsp; Q1: C &nbsp;·&nbsp; Q2: C &nbsp;·&nbsp; Q3: C &nbsp;·&nbsp; Q4: B &nbsp;·&nbsp; Q5: C
+  </div>
+</div>
+
+<!-- CHEAT SHEET -->
+<div class="topic-banner" id="cheatsheet" style="margin-top:44px;">
+  <div class="topic-tag">Reference</div>
+  <h2>Printable <span>Cheat Sheet</span></h2>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">REF</span> Digital Security and Maintenance - Quick Reference</div>
+
+  <p style="font-size:14px; color:var(--muted); font-style:italic; margin-bottom:14px;">
+    Print this page and keep it near your workspace. Everything from this lesson, condensed into one reference sheet.
+  </p>
+
+  <div class="cheat-grid">
+
+    <div class="cheat-header">Steps 1 and 2 - Passwords and Password Manager</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Strong Password Rules</dt>
+        <dd>
+          <ul>
+            <li>At least 12 characters</li>
+            <li>Mix of upper, lower, numbers, symbols</li>
+            <li>No real words, names, or dates</li>
+            <li>Unique to every single account</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Password Manager Options</dt>
+        <dd>
+          <ul>
+            <li>Bitwarden (free, bitwarden.com)</li>
+            <li>iCloud Keychain (iPhone / Mac, built-in)</li>
+            <li>Google Password Manager (Android / Chrome)</li>
+          </ul>
+          Never store passwords in text files, notes, or spreadsheets.
+        </dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Step 3 - Two-Factor Authentication</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Where to Enable 2FA</dt>
+        <dd>
+          <ul>
+            <li>Primary email (most critical)</li>
+            <li>Website dashboard</li>
+            <li>Facebook and Instagram (via Accounts Center)</li>
+            <li>Google account (myaccount.google.com)</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Free Authenticator Apps</dt>
+        <dd>
+          <ul>
+            <li>Google Authenticator</li>
+            <li>Authy (backs up codes to cloud)</li>
+            <li>Microsoft Authenticator</li>
+          </ul>
+          Print and store backup codes offline in a safe location.
+        </dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Step 4 - Phishing Warning Signs</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>7 Red Flags</dt>
+        <dd>
+          <ul>
+            <li>Urgency and threats ("Act now," "24 hours")</li>
+            <li>Misspelled or mismatched sender domain</li>
+            <li>Generic greeting ("Dear Customer")</li>
+            <li>Suspicious link URL (hover before clicking)</li>
+            <li>Request for your password via email</li>
+            <li>Unexpected attachments</li>
+            <li>Poor spelling or unusual formatting</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>If You Suspect Phishing</dt>
+        <dd>
+          <ul>
+            <li>Do not click any links or open attachments</li>
+            <li>Go directly to the platform by typing the URL yourself</li>
+            <li>If you clicked: change your password immediately</li>
+            <li>Contact your VTC student team for guidance</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="cheat-header">Steps 5, 6, and 7 - Updates, Backups, and Access</div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Monthly Update Habit</dt>
+        <dd>Log into your website dashboard on the first Monday of every month. Apply all available updates for WordPress core, plugins, and themes. Visit your live site afterward to confirm everything works correctly.</dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Backup Setup</dt>
+        <dd>
+          <ul>
+            <li>WordPress: UpdraftPlus plugin (free)</li>
+            <li>Squarespace: built-in plus manual export quarterly</li>
+            <li>Wix: Version History plus manual export quarterly</li>
+            <li>Store backups in Google Drive or Dropbox</li>
+            <li>Verify backup completion once per month</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Maintenance Calendar Summary</dt>
+        <dd>
+          Monthly: check updates, verify backup, review notifications<br>
+          Quarterly: change key passwords, review password manager, manual backup export<br>
+          Twice yearly: audit account access, review 2FA codes
+        </dd>
+      </dl>
+    </div>
+    <div class="cheat-cell">
+      <dl>
+        <dt>Access Audit Locations</dt>
+        <dd>
+          <ul>
+            <li>WordPress: Dashboard, Users, All Users</li>
+            <li>Facebook: Meta Business Suite, Settings, People</li>
+            <li>Google Business: business.google.com, Managers</li>
+            <li>Squarespace or Wix: Settings, Contributors</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+
+  </div>
+
+  <div class="meta-row" style="margin-top:20px;">
+    <div class="meta-cell"><strong>Organization</strong>Voice the Companies</div>
+    <div class="meta-cell"><strong>Curriculum</strong>Digital Literacy - Lesson 5 of 5</div>
+    <div class="meta-cell"><strong>Status</strong>Curriculum Complete</div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="doc-footer">
+  <span>Voice the Companies</span> &nbsp;·&nbsp; Digital Literacy Curriculum &nbsp;·&nbsp; Digital Security and Maintenance &nbsp;·&nbsp; Lesson 5 of 5
+  <br/><br/>
+  This guide was prepared by the Voice the Companies student team for use by participating small business partners.
+  All rights reserved. For questions, contact your assigned student team or program coordinator.
+</div>
+
+<script>
+  (function () {
+    function initWorkbookTools() {
+      const slug = (window.location.pathname.split('/').pop() || 'lesson').replace('.html', '');
+      const progressKey = 'vtc_progress_' + slug;
+      const notesKey = 'vtc_notes_' + slug;
+
+      const stepList = document.getElementById('interactive-step-list');
+      const progressStatus = document.getElementById('interactive-progress-status');
+      const notesBox = document.getElementById('interactive-notes');
+
+      if (stepList && progressStatus) {
+        const stepLinks = Array.from(document.querySelectorAll('.toc a[href^="#step"]'));
+        const savedProgress = JSON.parse(window.localStorage.getItem(progressKey) || '[]');
+
+        stepLinks.forEach(function (link, index) {
+          const item = document.createElement('li');
+          item.className = 'progress-item';
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.id = 'progress-step-' + index;
+          checkbox.checked = Boolean(savedProgress[index]);
+
+          const label = document.createElement('label');
+          label.setAttribute('for', checkbox.id);
+          label.textContent = link.textContent.trim();
+
+          checkbox.addEventListener('change', function () {
+            const states = Array.from(stepList.querySelectorAll('input[type="checkbox"]')).map(function (node) {
+              return node.checked;
+            });
+            window.localStorage.setItem(progressKey, JSON.stringify(states));
+            updateProgress(states);
+          });
+
+          item.appendChild(checkbox);
+          item.appendChild(label);
+          stepList.appendChild(item);
+        });
+
+        function updateProgress(states) {
+          const done = states.filter(Boolean).length;
+          const total = states.length;
+          progressStatus.textContent = total
+            ? 'Progress: ' + done + '/' + total + ' steps completed'
+            : 'Progress tracker unavailable';
+        }
+
+        const initialStates = Array.from(stepList.querySelectorAll('input[type="checkbox"]')).map(function (node) {
+          return node.checked;
+        });
+        updateProgress(initialStates);
+      }
+
+      if (notesBox) {
+        notesBox.value = window.localStorage.getItem(notesKey) || '';
+        notesBox.addEventListener('input', function () {
+          window.localStorage.setItem(notesKey, notesBox.value);
+        });
+      }
+    }
+
+    function initInteractiveQuiz() {
+      const quizSection = document.querySelector('#quiz + .section');
+      if (!quizSection) return;
+
+      const questions = Array.from(quizSection.querySelectorAll('.quiz-q'));
+      if (!questions.length) return;
+
+      const answerMap = {
+        1: 'C',
+        2: 'C',
+        3: 'C',
+        4: 'B',
+        5: 'C'
+      };
+
+      const selections = {};
+
+      questions.forEach(function (question, qIndex) {
+        const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+        options.forEach(function (option, optIndex) {
+          const letter = String.fromCharCode(65 + optIndex);
+          option.dataset.letter = letter;
+          option.setAttribute('role', 'button');
+          option.setAttribute('tabindex', '0');
+
+          function choose() {
+            selections[qIndex + 1] = letter;
+            options.forEach(function (opt) {
+              opt.classList.remove('quiz-selected');
+            });
+            option.classList.add('quiz-selected');
+          }
+
+          option.addEventListener('click', choose);
+          option.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              choose();
+            }
+          });
+        });
+      });
+
+      const controls = document.createElement('div');
+      controls.className = 'quiz-controls';
+
+      const checkBtn = document.createElement('button');
+      checkBtn.className = 'quiz-btn';
+      checkBtn.type = 'button';
+      checkBtn.textContent = 'Check my answers';
+
+      const resetBtn = document.createElement('button');
+      resetBtn.className = 'quiz-btn secondary';
+      resetBtn.type = 'button';
+      resetBtn.textContent = 'Reset';
+
+      const result = document.createElement('div');
+      result.className = 'quiz-result';
+      result.setAttribute('aria-live', 'polite');
+
+      checkBtn.addEventListener('click', function () {
+        if (Object.keys(selections).length < questions.length) {
+          result.textContent = 'Answer all questions first, then check your score.';
+          return;
+        }
+
+        let score = 0;
+
+        questions.forEach(function (question, qIndex) {
+          const qNumber = qIndex + 1;
+          const correctLetter = answerMap[qNumber];
+          const selectedLetter = selections[qNumber];
+          const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+
+          options.forEach(function (option) {
+            option.classList.remove('quiz-correct', 'quiz-incorrect');
+            const letter = option.dataset.letter;
+            if (letter === correctLetter) {
+              option.classList.add('quiz-correct');
+            }
+            if (letter === selectedLetter && letter !== correctLetter) {
+              option.classList.add('quiz-incorrect');
+            }
+          });
+
+          if (selectedLetter === correctLetter) score += 1;
+        });
+
+        result.textContent = 'You scored ' + score + ' out of ' + questions.length + '.';
+      });
+
+      resetBtn.addEventListener('click', function () {
+        Object.keys(selections).forEach(function (key) {
+          delete selections[key];
+        });
+
+        questions.forEach(function (question) {
+          const options = Array.from(question.querySelectorAll('.quiz-choices li'));
+          options.forEach(function (option) {
+            option.classList.remove('quiz-selected', 'quiz-correct', 'quiz-incorrect');
+          });
+        });
+
+        result.textContent = '';
+      });
+
+      controls.appendChild(checkBtn);
+      controls.appendChild(resetBtn);
+      quizSection.appendChild(controls);
+      quizSection.appendChild(result);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      initWorkbookTools();
+      initInteractiveQuiz();
+    });
+  })();
+</script>
+
+</body>
+</html>

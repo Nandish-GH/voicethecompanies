@@ -1,69 +1,34 @@
 /*
-Google Apps Script webhook for Voice the Companies submissions.
-Deploy as a Web App and use the URL as VITE_SUBMISSIONS_WEBHOOK_URL.
+Scheduler-only Apps Script for automated owner emails.
 
-Troubleshooting:
-- Use the Web App URL ending in /exec (not /dev).
-- Any of these env vars are accepted by the frontend:
-  VITE_SUBMISSIONS_WEBHOOK_URL
-  VITE_GOOGLE_SHEETS_WEBHOOK_URL
-  VITE_GOOGLE_SHEET_WEBHOOK_URL
-  VITE_GOOGLE_APPS_SCRIPT_WEBHOOK_URL
-  VITE_APPS_SCRIPT_WEBHOOK_URL
-- You can also set/override the webhook in-browser once by opening:
-  ?submissions_webhook_url=<your-web-app-exec-url>
-
-This script creates and routes rows into exactly 4 tabs:
-- Owners
-- Students
-- Workshops
-- BeforeVsAfter
+Handoff note:
+1) During development, you can run this script as your own Google account.
+2) For production, set MAIL_ENFORCE_SENDER_ACCOUNT = true so only the
+  client account can run the trigger.
 */
 
-const TAB_OWNERS = 'Owners';
-const TAB_STUDENTS = 'Students';
-const TAB_WORKSHOPS = 'Workshops';
-const TAB_BEFORE_AFTER = 'BeforeVsAfter';
-const SHEET_DATE_FORMAT = 'MMM d, yyyy h:mm a';
-
-// Mail merge configuration for the same source sheet.
-const MAIL_TAB = TAB_OWNERS;
+const MAIL_SHEET_NAME = 'Owners';
 const MAIL_RECIPIENT_COL = 'email';
 const MAIL_STATUS_COL = 'Email Sent';
-const MAIL_SENDER_NAME = 'Voice the Companies';
-const MAIL_TRIGGER_HANDLER = 'runAutomatedOwnerEmailJob';
-const MAIL_TRIGGER_EVERY_MINUTES = 5;
-const VTC_OPTIONAL_DATA_FORM_URL = 'https://forms.gle/X6YKriBykBpNe6C1A';
+const MAIL_OWNER_NAME_COL = 'owner_name';
+const MAIL_BUSINESS_NAME_COL = 'business_name';
 
-const TAB_HEADERS = {
-  [TAB_OWNERS]: ['submitted_at', 'entity', 'id', 'business_name', 'owner_name', 'email', 'phone', 'business_type', 'website_exists', 'services_needed', 'additional_info', 'created_date', 'updated_date'],
-  [TAB_STUDENTS]: ['submitted_at', 'entity', 'id', 'full_name', 'email', 'phone', 'school', 'grade_level', 'interests', 'experience', 'why_interested', 'created_date', 'updated_date'],
-  [TAB_WORKSHOPS]: ['submitted_at', 'entity', 'id', 'name', 'email', 'workshop_title', 'workshop_timing', 'workshop_format', 'workshop_duration', 'subject', 'message', 'status', 'created_date', 'updated_date'],
-  [TAB_BEFORE_AFTER]: ['submitted_at', 'entity', 'id', 'business_name', 'owner_email', 'period_label', 'website_sessions', 'unique_visitors', 'social_followers', 'social_reach', 'google_profile_views', 'google_direction_requests', 'confidence_website', 'confidence_social', 'confidence_analytics', 'notes', 'created_date', 'updated_date'],
-};
+const MAIL_REQUIRED_SENDER_ACCOUNT = 'voicethecompanies@gmail.com';
+const MAIL_ENFORCE_SENDER_ACCOUNT = false;
+const MAIL_SENDER_NAME = 'Voice the Companies';
+const MAIL_TRY_SEND_AS_REQUIRED_ACCOUNT = true;
+const MAIL_TRIGGER_HANDLER = 'runAutomatedOwnerEmailJob';
+const MAIL_TRIGGER_EVERY_MINUTES = 3;
+
+const VTC_OPTIONAL_DATA_FORM_URL = 'https://forms.gle/X6YKriBykBpNe6C1A';
 
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('VTC Mail')
-    .addItem('Setup VTC System', 'setupVtcSystem')
-    .addItem('Send Pending Owner Emails', 'sendOwnerEmailsFromDraft')
     .addItem('Enable Auto Email Scheduler', 'enableAutoEmailScheduler')
     .addItem('Disable Auto Email Scheduler', 'disableAutoEmailScheduler')
+    .addItem('Run Scheduler Now', 'runAutomatedOwnerEmailJob')
     .addToUi();
-}
-
-function setupVtcSystem() {
-  ensureTabsExist_();
-  const ownersSheet = getOrCreateSheet_(TAB_OWNERS);
-  const ownersHeaders = TAB_HEADERS[TAB_OWNERS];
-  ensureHeader_(ownersSheet, ownersHeaders);
-
-  const ownerHeaderValues = ownersSheet
-    .getRange(1, 1, 1, ownersSheet.getLastColumn() || ownersHeaders.length)
-    .getValues()[0]
-    .filter((v) => String(v || '').trim() !== '');
-  ensureStatusColumn_(ownersSheet, ownerHeaderValues, MAIL_STATUS_COL);
-  ensureAutoEmailTrigger_();
 }
 
 function enableAutoEmailScheduler() {
@@ -71,8 +36,7 @@ function enableAutoEmailScheduler() {
 }
 
 function disableAutoEmailScheduler() {
-  const triggers = ScriptApp.getProjectTriggers();
-  triggers.forEach((trigger) => {
+  ScriptApp.getProjectTriggers().forEach((trigger) => {
     if (trigger.getHandlerFunction() === MAIL_TRIGGER_HANDLER) {
       ScriptApp.deleteTrigger(trigger);
     }
@@ -80,8 +44,9 @@ function disableAutoEmailScheduler() {
 }
 
 function ensureAutoEmailTrigger_() {
-  const triggers = ScriptApp.getProjectTriggers();
-  const exists = triggers.some((trigger) => trigger.getHandlerFunction() === MAIL_TRIGGER_HANDLER);
+  const exists = ScriptApp.getProjectTriggers().some(
+    (trigger) => trigger.getHandlerFunction() === MAIL_TRIGGER_HANDLER
+  );
   if (exists) return;
 
   ScriptApp.newTrigger(MAIL_TRIGGER_HANDLER)
@@ -91,193 +56,72 @@ function ensureAutoEmailTrigger_() {
 }
 
 function runAutomatedOwnerEmailJob() {
-  sendOwnerEmailsFromDraft();
+  validateExecutionAccount_();
+  sendPendingOwnerEmails_();
 }
 
-function getAuthorizedRunnerEmail_() {
-  try {
-    const email = Session.getEffectiveUser().getEmail();
-    return String(email || '').trim();
-  } catch (_) {
-    return '';
-  }
-}
+function validateExecutionAccount_() {
+  const active = String(Session.getEffectiveUser().getEmail() || '').trim().toLowerCase();
+  const required = MAIL_REQUIRED_SENDER_ACCOUNT.toLowerCase();
 
-function doGet() {
-  return ContentService
-    .createTextOutput(JSON.stringify({ ok: true, service: 'vtc-webhook', status: 'ready' }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
+  if (active === required) return;
 
-function doPost(e) {
-  try {
-    const payload = parseIncomingPayload_(e);
-
-    const entity = String(payload.entity || '').trim();
-    const submittedAt = String(payload.submitted_at || new Date().toISOString());
-    const data = (payload && typeof payload.data === 'object' && payload.data) ? payload.data : {};
-
-    ensureTabsExist_();
-    const tabName = resolveTabName(entity, data, payload.sheet_tab_hint);
-    const sheet = getOrCreateSheet_(tabName);
-    const headers = TAB_HEADERS[tabName];
-    ensureHeader_(sheet, headers);
-
-    const row = headers.map((key) => {
-      if (key === 'submitted_at') return formatTimestampForSheet_(submittedAt);
-      if (key === 'entity') return entity;
-      const value = data[key];
-      if (value === null || typeof value === 'undefined') return '';
-      if (isTimestampField_(key)) return formatTimestampForSheet_(value);
-      if (typeof value === 'object') return JSON.stringify(value);
-      return value;
-    });
-
-    sheet.appendRow(row);
-
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: true, tab: tabName }))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch (error) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: false, error: String(error && error.message ? error.message : error) }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function parseIncomingPayload_(e) {
-  const empty = {};
-  if (!e) return empty;
-
-  const rawBody = (e.postData && typeof e.postData.contents === 'string') ? e.postData.contents : '';
-  if (rawBody) {
-    try {
-      const parsed = JSON.parse(rawBody);
-      if (parsed && typeof parsed === 'object') return parsed;
-    } catch (_) {
-      // Continue with other parsing strategies.
-    }
+  if (MAIL_ENFORCE_SENDER_ACCOUNT) {
+    throw new Error(
+      'This scheduler must run as ' + MAIL_REQUIRED_SENDER_ACCOUNT +
+      '. Current account is ' + (active || 'unknown') +
+      '. Install the trigger while signed in as ' + MAIL_REQUIRED_SENDER_ACCOUNT + '.'
+    );
   }
 
-  const params = (e.parameter && typeof e.parameter === 'object') ? e.parameter : {};
-  if (params.payload) {
-    try {
-      const parsedPayload = JSON.parse(String(params.payload));
-      if (parsedPayload && typeof parsedPayload === 'object') return parsedPayload;
-    } catch (_) {
-      // Continue with flattened parameter fallback.
-    }
-  }
-
-  const hasFlatKeys = params.entity || params.submitted_at || params.email || params.owner_email;
-  if (hasFlatKeys) {
-    const flatData = { ...params };
-    delete flatData.entity;
-    delete flatData.submitted_at;
-    delete flatData.sheet_tab_hint;
-    return {
-      entity: params.entity || '',
-      submitted_at: params.submitted_at || new Date().toISOString(),
-      sheet_tab_hint: params.sheet_tab_hint || '',
-      data: flatData,
-    };
-  }
-
-  return empty;
+  Logger.log(
+    'Running in development mode as %s. For production, set MAIL_ENFORCE_SENDER_ACCOUNT=true and install trigger as %s.',
+    active || 'unknown',
+    MAIL_REQUIRED_SENDER_ACCOUNT
+  );
 }
 
-function isTimestampField_(key) {
-  return key === 'submitted_at' || key.endsWith('_date');
-}
+function sendPendingOwnerEmails_() {
+  const sheet = getSheetOrThrow_(MAIL_SHEET_NAME);
+  const data = sheet.getDataRange().getDisplayValues();
+  if (data.length < 2) return;
 
-function formatTimestampForSheet_(value) {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return Utilities.formatDate(date, Session.getScriptTimeZone(), SHEET_DATE_FORMAT);
-}
+  const headers = data[0];
+  const recipientIdx = headers.indexOf(MAIL_RECIPIENT_COL);
+  const statusIdx = ensureStatusColumn_(sheet, headers, MAIL_STATUS_COL);
+  const ownerIdx = headers.indexOf(MAIL_OWNER_NAME_COL);
+  const businessIdx = headers.indexOf(MAIL_BUSINESS_NAME_COL);
 
-function resolveTabName(entity, data, sheetTabHint) {
-  const hint = String(sheetTabHint || '').trim();
-  if (hint && TAB_HEADERS[hint]) return hint;
-
-  if (entity === 'BusinessRequest') return TAB_OWNERS;
-  if (entity === 'StudentApplication') return TAB_STUDENTS;
-  if (entity === 'WorkshopInterest') return TAB_WORKSHOPS;
-  if (entity === 'BusinessStats') return TAB_BEFORE_AFTER;
-
-  // Backward compatibility: old workshop rows were sent as ContactInquiry with workshop subject.
-  if (entity === 'ContactInquiry') {
-    const subject = String((data && data.subject) || '').toLowerCase();
-    if (subject.includes('workshop interest')) return TAB_WORKSHOPS;
-  }
-
-  // Default fallback for unknown types.
-  return TAB_OWNERS;
-}
-
-function ensureTabsExist_() {
-  [TAB_OWNERS, TAB_STUDENTS, TAB_WORKSHOPS, TAB_BEFORE_AFTER].forEach((tabName) => {
-    const sheet = getOrCreateSheet_(tabName);
-    const headers = TAB_HEADERS[tabName];
-    ensureHeader_(sheet, headers);
-  });
-}
-
-function getOrCreateSheet_(name) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(name);
-  if (!sheet) {
-    sheet = ss.insertSheet(name);
-  }
-  return sheet;
-}
-
-function sendOwnerEmailsFromDraft() {
-  ensureTabsExist_();
-  const sheet = getOrCreateSheet_(MAIL_TAB);
-  const dataRange = sheet.getDataRange();
-  const values = dataRange.getDisplayValues();
-  if (values.length < 2) return;
-
-  const headers = values[0];
-  const recipientColIdx = headers.indexOf(MAIL_RECIPIENT_COL);
-  const statusColIdx = ensureStatusColumn_(sheet, headers, MAIL_STATUS_COL);
-
-  if (recipientColIdx === -1) {
+  if (recipientIdx === -1) {
     throw new Error('Missing required column: ' + MAIL_RECIPIENT_COL);
   }
 
-  const rows = values.slice(1).map((r) =>
-    headers.reduce((obj, key, i) => {
-      obj[key] = r[i] || '';
-      return obj;
-    }, {})
-  );
-
   const out = [];
-  rows.forEach((row) => {
-    const alreadySent = String(row[MAIL_STATUS_COL] || '').trim();
-    const recipient = String(row[MAIL_RECIPIENT_COL] || '').trim();
 
-    if (alreadySent) {
-      out.push([alreadySent]);
-      return;
+  for (let r = 1; r < data.length; r += 1) {
+    const row = data[r];
+    const existingStatus = String(row[statusIdx] || '').trim();
+    const recipient = String(row[recipientIdx] || '').trim();
+
+    if (existingStatus) {
+      out.push([existingStatus]);
+      continue;
     }
 
     if (!recipient || recipient.indexOf('@') === -1) {
       out.push(['Invalid or missing recipient']);
-      return;
+      continue;
     }
 
     try {
-      const ownerName = String(row.owner_name || 'there').trim();
-      const businessName = String(row.business_name || '').trim();
+      const ownerName = ownerIdx >= 0 ? String(row[ownerIdx] || 'there').trim() : 'there';
+      const businessName = businessIdx >= 0 ? String(row[businessIdx] || '').trim() : '';
       const subject = businessName
-        ? `VTC Optional Data Form - ${businessName}`
+        ? 'VTC Optional Data Form - ' + businessName
         : 'VTC Optional Data Form';
 
       const textBody = [
-        `Hi ${ownerName},`,
+        'Hi ' + ownerName + ',',
         '',
         'Please fill this short form for VTC data (optional):',
         VTC_OPTIONAL_DATA_FORM_URL,
@@ -286,25 +130,32 @@ function sendOwnerEmailsFromDraft() {
         'Voice the Companies',
       ].join('\n');
 
-      const htmlBody = `
-        <p>Hi ${escapeHtml_(ownerName)},</p>
-        <p>Please fill this short form for VTC data (optional):</p>
-        <p><a href="${VTC_OPTIONAL_DATA_FORM_URL}">${VTC_OPTIONAL_DATA_FORM_URL}</a></p>
-        <p>Thank you,<br/>Voice the Companies</p>
-      `;
+      const htmlBody =
+        '<p>Hi ' + escapeHtml_(ownerName) + ',</p>' +
+        '<p>Please fill this short form for VTC data (optional):</p>' +
+        '<p><a href="' + VTC_OPTIONAL_DATA_FORM_URL + '">' + VTC_OPTIONAL_DATA_FORM_URL + '</a></p>' +
+        '<p>Thank you,<br/>Voice the Companies</p>';
 
-      GmailApp.sendEmail(recipient, subject, textBody, {
-        htmlBody,
-        name: MAIL_SENDER_NAME,
-        replyTo: getAuthorizedRunnerEmail_() || undefined,
-      });
-      out.push([new Date()]);
+      const sentViaFallback = sendOwnerEmailBestEffort_(recipient, subject, textBody, htmlBody);
+      if (sentViaFallback) {
+        out.push(['Sent via fallback sender at ' + new Date().toISOString()]);
+      } else {
+        out.push([new Date()]);
+      }
     } catch (error) {
       out.push([String(error && error.message ? error.message : error)]);
     }
-  });
+  }
 
-  sheet.getRange(2, statusColIdx + 1, out.length, 1).setValues(out);
+  sheet.getRange(2, statusIdx + 1, out.length, 1).setValues(out);
+}
+
+function getSheetOrThrow_(sheetName) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+  if (!sheet) {
+    throw new Error('Sheet not found: ' + sheetName);
+  }
+  return sheet;
 }
 
 function ensureStatusColumn_(sheet, headers, statusColName) {
@@ -325,17 +176,31 @@ function escapeHtml_(value) {
     .replace(/'/g, '&#39;');
 }
 
-function ensureHeader_(sheet, headers) {
-  const hasAnyData = sheet.getLastRow() > 0;
-  if (!hasAnyData) {
-    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-    return;
+function sendOwnerEmailBestEffort_(recipient, subject, textBody, htmlBody) {
+  const baseOptions = {
+    htmlBody,
+    name: MAIL_SENDER_NAME,
+    replyTo: MAIL_REQUIRED_SENDER_ACCOUNT,
+  };
+
+  if (!MAIL_TRY_SEND_AS_REQUIRED_ACCOUNT) {
+    GmailApp.sendEmail(recipient, subject, textBody, baseOptions);
+    return false;
   }
 
-  const existingHeaders = sheet.getRange(1, 1, 1, headers.length).getValues()[0];
-  const exactMatch = headers.every((h, i) => String(existingHeaders[i] || '') === h);
-  if (!exactMatch) {
-    sheet.insertRowBefore(1);
-    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+  try {
+    GmailApp.sendEmail(recipient, subject, textBody, {
+      ...baseOptions,
+      from: MAIL_REQUIRED_SENDER_ACCOUNT,
+    });
+    return false;
+  } catch (sendAsError) {
+    Logger.log(
+      'Send-as attempt failed for %s, falling back to active account sender. Error: %s',
+      MAIL_REQUIRED_SENDER_ACCOUNT,
+      String(sendAsError && sendAsError.message ? sendAsError.message : sendAsError)
+    );
+    GmailApp.sendEmail(recipient, subject, textBody, baseOptions);
+    return true;
   }
 }
