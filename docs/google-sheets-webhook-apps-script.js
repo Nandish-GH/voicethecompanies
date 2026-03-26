@@ -12,23 +12,177 @@ const MAIL_RECIPIENT_COL = 'email';
 const MAIL_STATUS_COL = 'Email Sent';
 const MAIL_OWNER_NAME_COL = 'owner_name';
 const MAIL_BUSINESS_NAME_COL = 'business_name';
+const TARGET_SPREADSHEET_ID = '';
+
+const WEBHOOK_SHEET_BY_ENTITY = {
+  BusinessRequest: 'Owners',
+  StudentApplication: 'Students',
+  WorkshopInterest: 'Workshops',
+  BusinessStats: 'BeforeVsAfter',
+};
+const WEBHOOK_DEFAULT_SHEET = 'Submissions';
 
 const MAIL_REQUIRED_SENDER_ACCOUNT = 'voicethecompanies@gmail.com';
 const MAIL_ENFORCE_SENDER_ACCOUNT = false;
 const MAIL_SENDER_NAME = 'Voice the Companies';
 const MAIL_TRY_SEND_AS_REQUIRED_ACCOUNT = true;
 const MAIL_TRIGGER_HANDLER = 'runAutomatedOwnerEmailJob';
-const MAIL_TRIGGER_EVERY_MINUTES = 3;
+const MAIL_TRIGGER_EVERY_MINUTES = 5;
+const MAIL_ALLOWED_TRIGGER_MINUTES = [1, 5, 10, 15, 30];
 
 const VTC_OPTIONAL_DATA_FORM_URL = 'https://forms.gle/X6YKriBykBpNe6C1A';
 
+function doGet() {
+  return ContentService
+    .createTextOutput(JSON.stringify({ ok: true, service: 'vtc-webhook', timestamp: new Date().toISOString() }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  try {
+    const payload = parseWebhookPayload_(e);
+    const targetSheetName = resolveWebhookSheetName_(payload);
+    const targetSheet = getOrCreateSheet_(targetSheetName);
+
+    const flatData = flattenWebhookData_(payload);
+    upsertHeaderColumns_(targetSheet, Object.keys(flatData));
+    appendWebhookRow_(targetSheet, flatData);
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: true, sheet: targetSheetName }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: String(error && error.message ? error.message : error) }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function parseWebhookPayload_(e) {
+  const raw = String((e && e.postData && e.postData.contents) || '').trim();
+  if (!raw) {
+    throw new Error('Empty webhook payload');
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (_jsonError) {
+    const fallbackPayload = (e && e.parameter && (e.parameter.payload || e.parameter.data)) || '';
+    if (!fallbackPayload) {
+      throw new Error('Invalid JSON payload');
+    }
+    parsed = JSON.parse(fallbackPayload);
+  }
+
+  if (!parsed || typeof parsed !== 'object') {
+    throw new Error('Webhook payload must be an object');
+  }
+
+  return parsed;
+}
+
+function resolveWebhookSheetName_(payload) {
+  const explicitHint = String(payload.sheet_tab_hint || '').trim();
+  if (explicitHint) return explicitHint;
+
+  const entity = String(payload.entity || '').trim();
+  if (entity && WEBHOOK_SHEET_BY_ENTITY[entity]) {
+    return WEBHOOK_SHEET_BY_ENTITY[entity];
+  }
+
+  return WEBHOOK_DEFAULT_SHEET;
+}
+
+function getOrCreateSheet_(sheetName) {
+  const ss = getTargetSpreadsheet_();
+  let sheet = ss.getSheetByName(sheetName);
+  if (!sheet) {
+    sheet = ss.insertSheet(sheetName);
+  }
+  return sheet;
+}
+
+function getTargetSpreadsheet_() {
+  const explicitId = String(TARGET_SPREADSHEET_ID || '').trim();
+  if (explicitId) {
+    return SpreadsheetApp.openById(explicitId);
+  }
+
+  const active = SpreadsheetApp.getActiveSpreadsheet();
+  if (!active) {
+    throw new Error(
+      'No active spreadsheet context. Set TARGET_SPREADSHEET_ID to your Google Sheet ID.'
+    );
+  }
+
+  return active;
+}
+
+function flattenWebhookData_(payload) {
+  const entity = String(payload.entity || '').trim();
+  const submittedAt = String(payload.submitted_at || new Date().toISOString()).trim();
+  const data = payload.data && typeof payload.data === 'object' ? payload.data : {};
+
+  const out = {
+    entity,
+    submitted_at: submittedAt,
+  };
+
+  Object.keys(data).forEach((key) => {
+    const value = data[key];
+    out[key] = normalizeCellValue_(value);
+  });
+
+  return out;
+}
+
+function normalizeCellValue_(value) {
+  if (value === null || typeof value === 'undefined') return '';
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+  return JSON.stringify(value);
+}
+
+function upsertHeaderColumns_(sheet, requiredHeaders) {
+  const lastColumn = sheet.getLastColumn();
+  const existingHeaders = lastColumn
+    ? sheet.getRange(1, 1, 1, lastColumn).getValues()[0].map((v) => String(v || '').trim())
+    : [];
+
+  let nextColumn = existingHeaders.length + 1;
+  requiredHeaders.forEach((header) => {
+    if (existingHeaders.indexOf(header) !== -1) return;
+    sheet.getRange(1, nextColumn).setValue(header);
+    existingHeaders.push(header);
+    nextColumn += 1;
+  });
+}
+
+function appendWebhookRow_(sheet, record) {
+  const headers = sheet
+    .getRange(1, 1, 1, sheet.getLastColumn())
+    .getValues()[0]
+    .map((v) => String(v || '').trim());
+
+  const row = headers.map((header) => {
+    return Object.prototype.hasOwnProperty.call(record, header) ? record[header] : '';
+  });
+
+  sheet.appendRow(row);
+}
+
 function onOpen() {
-  SpreadsheetApp.getUi()
-    .createMenu('VTC Mail')
-    .addItem('Enable Auto Email Scheduler', 'enableAutoEmailScheduler')
-    .addItem('Disable Auto Email Scheduler', 'disableAutoEmailScheduler')
-    .addItem('Run Scheduler Now', 'runAutomatedOwnerEmailJob')
-    .addToUi();
+  try {
+    SpreadsheetApp.getUi()
+      .createMenu('VTC Mail')
+      .addItem('Enable Auto Email Scheduler', 'enableAutoEmailScheduler')
+      .addItem('Disable Auto Email Scheduler', 'disableAutoEmailScheduler')
+      .addItem('Run Scheduler Now', 'runAutomatedOwnerEmailJob')
+      .addToUi();
+  } catch (error) {
+    Logger.log('Skipping onOpen UI setup outside spreadsheet UI context: %s', String(error));
+  }
 }
 
 function enableAutoEmailScheduler() {
@@ -49,9 +203,13 @@ function ensureAutoEmailTrigger_() {
   );
   if (exists) return;
 
+  const triggerEveryMinutes = MAIL_ALLOWED_TRIGGER_MINUTES.indexOf(MAIL_TRIGGER_EVERY_MINUTES) !== -1
+    ? MAIL_TRIGGER_EVERY_MINUTES
+    : 5;
+
   ScriptApp.newTrigger(MAIL_TRIGGER_HANDLER)
     .timeBased()
-    .everyMinutes(MAIL_TRIGGER_EVERY_MINUTES)
+    .everyMinutes(triggerEveryMinutes)
     .create();
 }
 
@@ -151,7 +309,7 @@ function sendPendingOwnerEmails_() {
 }
 
 function getSheetOrThrow_(sheetName) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+  const sheet = getTargetSpreadsheet_().getSheetByName(sheetName);
   if (!sheet) {
     throw new Error('Sheet not found: ' + sheetName);
   }
