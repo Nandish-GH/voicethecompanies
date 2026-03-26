@@ -11,7 +11,7 @@ const LEGACY_SUBMISSIONS_WEBHOOK_KEYS = [
   'google_sheets_webhook_url',
 ];
 const FORM_SUBMIT_BASE_URL = 'https://formsubmit.co/ajax';
-const DEFAULT_SUBMISSIONS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbypMUt_t88wVFg6ID6e1AhOQbuQ4mfaiqXhnGQk7WwdmGG67N1KDHhjas5tzDL5cCXP/exec';
+const DEFAULT_SUBMISSIONS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxzImDJxv1n5hLvMznbFNbRxZi6Z7lbNOmuirf1-RRsRl9nBkJd1dVajQi3v9kokkZU/exec';
 const DEFAULT_FORM_SUBMIT_RELAY_TOKEN = '';
 let warnedMissingWebhook = false;
 let warnedDevWebhook = false;

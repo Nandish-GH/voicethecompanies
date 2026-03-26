@@ -34,7 +34,7 @@ export default function BusinessForm() {
         body: `A new business service request was submitted.\n\nBusiness: ${form.business_name}\nOwner: ${form.owner_name}\nEmail: ${form.email}\nPhone: ${form.phone}\nBusiness Type: ${form.business_type}\nHas Website: ${form.website_exists ? "Yes" : "No"}\n\nServices Needed:\n${form.services_needed}\n\nAdditional Info:\n${form.additional_info}`,
       });
       if (!emailResult?.success) {
-        setSubmitWarning("Your request was received, but email notifications are temporarily unavailable. Please also email voicethecompanies@gmail.com.");
+        setSubmitWarning("Your request was received.");
       }
       setSubmitted(true);
     } catch (error) {
