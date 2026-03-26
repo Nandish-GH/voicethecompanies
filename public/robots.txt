@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: /sitemap.xml
+Host: https://voicethecompanies.org
+Sitemap: https://voicethecompanies.org/sitemap.xml

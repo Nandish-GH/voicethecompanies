@@ -16,6 +16,11 @@ const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   <Layout currentPageName={currentPageName}>{children}</Layout>
   : <>{children}</>;
 
+const SITE_NAME = 'Voice the Companies';
+const SITE_URL = 'https://voicethecompanies.org';
+const SOCIAL_IMAGE_PATH = '/logo.png';
+const NOINDEX_ROUTES = new Set(['NOT_FOUND', 'BusinessDashboard']);
+
 const SEO_BY_ROUTE = {
   Home: {
     title: 'Voice the Companies | Student-Business Digital Impact Program',
@@ -76,7 +81,10 @@ const SeoManager = () => {
       : location.pathname.replace(/^\//, '');
 
     const seo = SEO_BY_ROUTE[routeKey] || SEO_BY_ROUTE.NOT_FOUND;
-    const canonicalUrl = `${window.location.origin}${location.pathname}`;
+    const canonicalPath = routeKey === mainPageKey ? '/' : location.pathname;
+    const canonicalUrl = `${window.location.origin}${canonicalPath}`;
+    const socialImageUrl = `${window.location.origin}${import.meta.env.BASE_URL}logo.png`;
+    const robotsContent = NOINDEX_ROUTES.has(routeKey) ? 'noindex,nofollow' : 'index,follow';
 
     document.title = seo.title;
 
@@ -91,11 +99,19 @@ const SeoManager = () => {
     };
 
     upsertMeta('name', 'description', seo.description);
+    upsertMeta('name', 'robots', robotsContent);
+    upsertMeta('name', 'author', SITE_NAME);
     upsertMeta('property', 'og:title', seo.title);
     upsertMeta('property', 'og:description', seo.description);
     upsertMeta('property', 'og:url', canonicalUrl);
+    upsertMeta('property', 'og:type', 'website');
+    upsertMeta('property', 'og:site_name', SITE_NAME);
+    upsertMeta('property', 'og:locale', 'en_US');
+    upsertMeta('property', 'og:image', socialImageUrl);
     upsertMeta('name', 'twitter:title', seo.title);
     upsertMeta('name', 'twitter:description', seo.description);
+    upsertMeta('name', 'twitter:card', 'summary_large_image');
+    upsertMeta('name', 'twitter:image', socialImageUrl);
 
     let canonical = document.head.querySelector('link[rel="canonical"]');
     if (!canonical) {
@@ -104,6 +120,60 @@ const SeoManager = () => {
       document.head.appendChild(canonical);
     }
     canonical.setAttribute('href', canonicalUrl);
+
+    const upsertAlternate = (hrefLang, href) => {
+      let link = document.head.querySelector(`link[rel="alternate"][hreflang="${hrefLang}"]`);
+      if (!link) {
+        link = document.createElement('link');
+        link.setAttribute('rel', 'alternate');
+        link.setAttribute('hreflang', hrefLang);
+        document.head.appendChild(link);
+      }
+      link.setAttribute('href', href);
+    };
+
+    upsertAlternate('en', canonicalUrl);
+    upsertAlternate('x-default', canonicalUrl);
+
+    const upsertJsonLd = (id, data) => {
+      let script = document.head.querySelector(`script[data-seo-jsonld="${id}"]`);
+      if (!script) {
+        script = document.createElement('script');
+        script.setAttribute('type', 'application/ld+json');
+        script.setAttribute('data-seo-jsonld', id);
+        document.head.appendChild(script);
+      }
+      script.textContent = JSON.stringify(data);
+    };
+
+    upsertJsonLd('organization', {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: `${SITE_URL}${SOCIAL_IMAGE_PATH}`,
+    });
+
+    upsertJsonLd('website', {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: SITE_NAME,
+      url: SITE_URL,
+      inLanguage: 'en-US',
+    });
+
+    upsertJsonLd('webpage', {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: seo.title,
+      description: seo.description,
+      url: canonicalUrl,
+      isPartOf: {
+        '@type': 'WebSite',
+        name: SITE_NAME,
+        url: SITE_URL,
+      },
+    });
   }, [location.pathname]);
 
   return null;
