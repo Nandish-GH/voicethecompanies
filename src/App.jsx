@@ -109,6 +109,16 @@ const SeoManager = () => {
   return null;
 };
 
+const ScrollToTop = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [location.pathname, location.search]);
+
+  return null;
+};
+
 const DebugActivityLogger = () => {
   if (!import.meta.env.DEV) return null;
 
@@ -237,6 +247,7 @@ function App() {
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
         <Router basename={import.meta.env.BASE_URL} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <ScrollToTop />
           <SeoManager />
           <DebugActivityLogger />
           <AuthenticatedApp />
